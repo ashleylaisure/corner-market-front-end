@@ -70,7 +70,7 @@ export {
     index,
     show,
     create,
-    update
-    deleteListing,
+    update,
+    deleteListing
 };
 

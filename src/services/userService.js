@@ -40,6 +40,58 @@ const getUserProfile = async (userId) => {
   }
 }
 
+const createUserProfile = async (userId, profileData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(profileData),
+    });
+
+    const data = await res.json();
+
+    if (data.err) {
+      throw new Error(data.err);
+    }
+
+    return data.profile;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err.message || 'Failed to create profile');
+  }
+};
+
+
+const updateUserProfile = async (userId, profileData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(profileData),
+    });
+
+    const data = await res.json();
+
+    if (data.err) {
+      throw new Error(data.err);
+    }
+
+    return data.profile;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err.message || 'Failed to update profile');
+  }
+}
+
 export {
-  index, getUserProfile
+  index, 
+  getUserProfile,
+  updateUserProfile,
+  createUserProfile
 };
