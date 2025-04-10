@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import {useParams} from 'react-router';
+import {useParams, Link} from 'react-router';
 import * as listingService from '../../services/listingService.js'
 
 import {UserContext} from '../../contexts/UserContext.jsx'
@@ -53,8 +53,10 @@ const ListingDetails = (props) => {
                     )}
                 
             </section>
+             <Link to={`/listings/${listingId}/edit`}>Edit</Link>
         </main>
     )
 }
 
 export default ListingDetails;
+

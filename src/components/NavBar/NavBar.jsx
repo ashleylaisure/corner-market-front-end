@@ -1,19 +1,21 @@
-import { useContext } from 'react';
-import { Link } from 'react-router';
+import { useContext } from "react";
+import { Link } from "react-router";
 
-import { UserContext } from '../../contexts/UserContext';
+import { UserContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
 
   const handleSignOut = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUser(null);
   };
 
   return (
     <nav>
-      <li><Link to='/'>Corner Market</Link></li>
+      <li>
+        <Link to="/">Corner Market</Link>
+      </li>
       {/* <li><Link to='/listings'>Listings</Link></li> */}
 
       {user ? (
@@ -21,13 +23,23 @@ const NavBar = () => {
           <li>Welcome, {user.username}</li>
           <li>Messages</li>
           <li>Profile</li>
-          <li><Link to='/' onClick={handleSignOut}>Sign Out</Link></li>
+          <li>
+            <Link to="/listings/new">Create a Listing</Link>
+          </li>
+          <li>
+            <Link to="/" onClick={handleSignOut}>
+              Sign Out
+            </Link>
+          </li>
         </ul>
       ) : (
         <ul>
-          
-          <li><Link to='/sign-in'>Sign In</Link></li>
-          <li><Link to='/sign-up'>Sign Up</Link></li>
+          <li>
+            <Link to="/sign-in">Sign In</Link>
+          </li>
+          <li>
+            <Link to="/sign-up">Sign Up</Link>
+          </li>
         </ul>
       )}
     </nav>
