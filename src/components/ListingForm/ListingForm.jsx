@@ -78,14 +78,14 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
         /> */}
         {/* Display files */}
         <div>
-          {formData.images.map((file, idx) => (
+          {/* {formData.images.map((file, idx) => (
             <img
               key={idx}
               src={URL.createObjectURL(file)}
               alt={`Preview ${idx}`}
               style={{ maxWidth: "100px", marginRight: "8px" }}
             />
-          ))}
+          ))} */}
         </div>
         <label htmlFor="price-input">Price</label>
         <input
