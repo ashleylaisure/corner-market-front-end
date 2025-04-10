@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {useParams} from 'react-router';
 import * as listingService from '../../services/listingService.js'
 
+import {UserContext} from '../../contexts/UserContext.jsx'
 
-const ListingDetails = () => {
+
+const ListingDetails = (props) => {
     const {listingId} = useParams();
     
+    const { user } = useContext(UserContext);
+
     const [listing, setListing] = useState(null);
 
     useEffect(() => {
@@ -41,6 +45,12 @@ const ListingDetails = () => {
                     <h4>Seller Information</h4>
                     <p>{listing.author.username}</p>
                     
+                    
+                    {user && listing.author._id === user._id && (
+                        <>
+                            <button onClick={() => props.handleDeleteListing(listingId)}>Delete</button>
+                        </>
+                    )}
                 
             </section>
         </main>
