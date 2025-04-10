@@ -39,10 +39,10 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
 
-//   const handleFileChange = (evt) => {
-//     const files = Array.from(evt.target.files);
-//     setFormData({ ...formData, images: files });
-//   };
+  //   const handleFileChange = (evt) => {
+  //     const files = Array.from(evt.target.files);
+  //     setFormData({ ...formData, images: files });
+  //   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -86,7 +86,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
               style={{ maxWidth: "100px", marginRight: "8px" }}
             />
           ))} */}
-        </div>
+        {/* </div> */}
         {/* </div> */}
         <label htmlFor="price-input">Price</label>
         <input
