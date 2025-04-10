@@ -77,8 +77,8 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           onChange={handleFileChange}
         /> */}
         {/* Display files */}
-        <div>
-          {/* {formData.images.map((file, idx) => (
+        {/* <div>
+          {formData.images.map((file, idx) => (
             <img
               key={idx}
               src={URL.createObjectURL(file)}
@@ -87,6 +87,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             />
           ))} */}
         </div>
+        {/* </div> */}
         <label htmlFor="price-input">Price</label>
         <input
           required
