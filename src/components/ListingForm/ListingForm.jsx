@@ -77,7 +77,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           onChange={handleFileChange}
         /> */}
         {/* Display files */}
-        <div>
+        {/* <div>
           {formData.images.map((file, idx) => (
             <img
               key={idx}
@@ -85,8 +85,8 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
               alt={`Preview ${idx}`}
               style={{ maxWidth: "100px", marginRight: "8px" }}
             />
-          ))}
-        </div>
+          ))} */}
+        {/* </div> */}
         <label htmlFor="price-input">Price</label>
         <input
           required

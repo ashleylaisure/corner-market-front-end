@@ -11,6 +11,7 @@ const UserProfile = ({ currentUser }) => {
     const { userId } = useParams();
     const navigate = useNavigate();
 
+
     // Check if the profile being viewed belongs to the current user
     const isOwnProfile = currentUser?._id === userId;
 
@@ -25,13 +26,23 @@ const UserProfile = ({ currentUser }) => {
             try {
                 setLoading(true);
                 const data = await getUserProfile(userId);
-                setProfile(data);
+
+                const { username, listings, profile: profileData } = data.user;
+    
+                // Flatten and merge for easy access
+                setProfile({
+                    username,
+                    listings,
+                    ...profileData // merges bio, location, etc. at top level
+                });
+    
                 setLoading(false);
             } catch (err) {
                 setError('Failed to load profile.' + err.message);
                 setLoading(false);
             }
         };
+    
         fetchProfile();
     }, [userId, currentUser, navigate]);
 
@@ -49,11 +60,7 @@ const UserProfile = ({ currentUser }) => {
                     <div className={styles.profilePicture}>
                         {profile.profilePicture ? (
                             <img src={profile.profilePicture} alt={`${profile.username}'s profile`} />
-                        ) : (
-                            <div className={styles.defaultAvatar}>
-                                {profile.username?.charAt(0).toUpperCase()}
-                            </div>
-                        )}
+                        ) : null}
                     </div>
 
                     {/* User information section */}
@@ -66,12 +73,15 @@ const UserProfile = ({ currentUser }) => {
                         </div>
 
                         {/* Bio section with fallback for empty bio */}
+                        <h3>Bio</h3>
                         <p className={styles.bio}>{profile.bio || ''}</p>
 
                         {/* Conditional rendering based on profile ownership */}
                         {isOwnProfile ? (
                             // Show Edit Profile button if it's the user's own profile
-                            <button className={styles.actionButton}>
+                            <button className={styles.actionButton}
+                                onClick={() => navigate('/profile/edit')}
+                            >
                                 Edit profile
                             </button>
                         ) : (
