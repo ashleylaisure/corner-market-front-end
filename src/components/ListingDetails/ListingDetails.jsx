@@ -49,11 +49,12 @@ const ListingDetails = (props) => {
                     {user && listing.author._id === user._id && (
                         <>
                             <button onClick={() => props.handleDeleteListing(listingId)}>Delete</button>
+                            <Link to={`/listings/${listingId}/edit`}>Edit</Link>
                         </>
                     )}
                 
             </section>
-             <Link to={`/listings/${listingId}/edit`}>Edit</Link>
+            
         </main>
     )
 }

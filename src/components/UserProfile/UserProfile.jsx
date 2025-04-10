@@ -14,6 +14,7 @@ const UserProfile = ({ currentUser }) => {
     // Check if the profile being viewed belongs to the current user
     const isOwnProfile = currentUser?._id === userId;
 
+
     useEffect(() => {
         // Redirect to login if not authenticated
         if (!currentUser) {
@@ -40,6 +41,7 @@ const UserProfile = ({ currentUser }) => {
     if (!profile) return <div>Profile not found.</div>;
 
     return (
+        <>
         <div className={styles.container}>
 
             <main className={styles.profileContent}>
@@ -108,6 +110,7 @@ const UserProfile = ({ currentUser }) => {
                 </section>
             </main>
         </div>
+        </>
     );
 }
 export default UserProfile;

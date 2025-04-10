@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import {Link} from 'react-router'
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -31,6 +32,12 @@ const Dashboard = () => {
           <li key={user._id}>{user.username}</li>
         ))}
       </ul>
+
+      <Link to={`/user/${user._id}/new`}>Create Profile</Link>
+      <br/>
+      <Link to={`/user/${user._id}/edit`}>Edit Profile</Link>
+
+
     </main>
   );
 };

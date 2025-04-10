@@ -40,6 +40,24 @@ const getUserProfile = async (userId) => {
   }
 }
 
+// create the users Profile
+
+const create = async (userId, profileFormData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(profileFormData),
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
-  index, getUserProfile
+  index, getUserProfile, create, 
 };

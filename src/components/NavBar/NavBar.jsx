@@ -22,7 +22,10 @@ const NavBar = () => {
         <ul>
           <li>Welcome, {user.username}</li>
           <li>Messages</li>
-          <li>Profile</li>
+          
+          <li>
+            <Link to="/user/:userId">Profile</Link>
+          </li>
           <li>
             <Link to="/listings/new">Create a Listing</Link>
           </li>

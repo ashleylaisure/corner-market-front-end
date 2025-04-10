@@ -1,14 +1,16 @@
 
 import { useContext, useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router";
-import { UserContext } from "./contexts/UserContext";
+import { UserContext, UserProvider } from "./contexts/UserContext";
 
 import NavBar from "./components/NavBar/NavBar";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 import Landing from "./components/Landing/Landing";
 import Dashboard from "./components/Dashboard/Dashboard";
+
 import UserProfile from './components/UserProfile/UserProfile';
+import UserProfileForm from "./components/UserProfileForm/UserProfileForm.jsx";
 
 
 import ListingIndex from "./components/ListingIndex/ListingIndex.jsx";
@@ -16,12 +18,14 @@ import ListingDetails from "./components/ListingDetails/ListingDetails.jsx";
 import ListingForm from "./components/ListingForm/ListingForm.jsx";
 
 import * as listingService from "./services/listingService.js";
+import * as userService from "./services/userService.js"
 
 const App = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [listings, setListings] = useState([]);
+  const [profile, setProfile] = useState(null);
 
 
   const handleDeleteListing = async (listingId) => {
@@ -60,6 +64,19 @@ const App = () => {
     navigate(`/listings/${listingId}`);
   };
 
+  const handleAddProfile = async (userId, profileFormData) => {
+    // console.log('profileformData', profileFormData)
+    // console.log('userId', userId)
+    const newProfile = await userService.create(userId, profileFormData)
+    setProfile(newProfile)
+    navigate('/')
+  }
+  
+  const handleProfileUpdate = async (userId, profileFormData) => {
+    console.log('userId', userId, 'formdata', profileFormData)
+    navigate(`/user/${userId}`)
+  }
+
   return (
     <>
       <NavBar />
@@ -79,9 +96,6 @@ const App = () => {
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/sign-in" element={<SignInForm />} />
 
-
-      
-
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
         
@@ -89,9 +103,12 @@ const App = () => {
         <Route path='/listings/:listingId' element={<ListingDetails handleDeleteListing={handleDeleteListing}/>}></Route>
 
         {/* Added the UserProfile route */}
-        <Route path='/users/:userId' element={<UserProfile currentUser={user} />} />
+        {/* <Route path='/user/:userId' element={<UserProfile currentUser={user} />} /> */}
 
+        <Route path='/user/:userId' element={<Dashboard currentUser={user}/>}/>
         
+        <Route path='/user/:userId/new' element={<UserProfileForm currentUser={user} handleAddProfile={handleAddProfile}/>}/>
+        <Route path='user/:userId/edit' element={<UserProfileForm currentUser={user} handleProfileUpdat={handleProfileUpdate}/>} />
 
       </Routes>
     </>
