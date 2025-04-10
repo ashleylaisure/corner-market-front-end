@@ -19,6 +19,27 @@ const index = async () => {
   }
 };
 
+// Get a single user profile
+
+const getUserProfile = async (userId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+
+    const data = await res.json();
+
+    if (data.err) {
+      throw new Error(data.err);
+    }
+
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 export {
-  index,
+  index, getUserProfile
 };
