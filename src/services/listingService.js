@@ -37,7 +37,6 @@ const deleteListing = async (listingId) => {
 
 export { 
     index,
-    show, 
-    
+    show,
     deleteListing,
 };

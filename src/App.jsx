@@ -21,9 +21,8 @@ const App = () => {
   const handleDeleteListing = async (listingId) => {
     // console.log('listingId', listingId)
     const deletedListing = await listingService.deleteListing(listingId)
-    setListings(listings.filter((listing) => listing._id !== deletedListing))
-    
-    navigate('/')
+    setListings(listings.filter((listing) => listing._id !== deletedListing._id));
+    navigate('/');
   }
 
   useEffect(() => {
