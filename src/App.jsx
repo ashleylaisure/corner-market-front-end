@@ -1,10 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router';
+import { Routes, Route, useNavigate } from 'react-router';
 import { UserContext } from './contexts/UserContext';
 
 import NavBar from './components/NavBar/NavBar';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
+
 import Landing from './components/Landing/Landing';
 import Dashboard from './components/Dashboard/Dashboard';
 import UserProfile from './components/UserProfile/UserProfile';
@@ -16,8 +17,15 @@ import * as listingService from './services/listingService.js'
 
 const App = () => {
   const { user } = useContext(UserContext);
-
+  const navigate = useNavigate();
   const [listings, setListings] = useState([])
+
+  const handleDeleteListing = async (listingId) => {
+    // console.log('listingId', listingId)
+    const deletedListing = await listingService.deleteListing(listingId)
+    setListings(listings.filter((listing) => listing._id !== deletedListing._id));
+    navigate('/');
+  }
 
   useEffect(() => {
     const fetchAllListings = async () => {
@@ -41,9 +49,13 @@ const App = () => {
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
         
-        <Route path='/listings/:listingId' element={<ListingDetails />}></Route>
+
+        <Route path='/listings/:listingId' element={<ListingDetails handleDeleteListing={handleDeleteListing}/>}></Route>
+
         {/* Added the UserProfile route */}
         <Route path='/users/:userId' element={<UserProfile currentUser={user} />} />
+=======
+        
       </Routes>
     </>
   );
