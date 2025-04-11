@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, Link } from 'react-router';
 import { getUserProfile } from '../../services/userService';
 import styles from './UserProfile.module.css';
 
 
-const UserProfile = ({ currentUser }) => {
+const UserProfile = ({ currentUser, listings}) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { userId } = useParams();
     const navigate = useNavigate();
 
-
     // Check if the profile being viewed belongs to the current user
     const isOwnProfile = currentUser?._id === userId;
+
+    // find all listings by this user
+    const userListings = listings.filter(listing => listing.author._id === userId)
+    console.log("user listings", userListings)
 
     useEffect(() => {
         // Redirect to login if not authenticated
@@ -26,13 +29,13 @@ const UserProfile = ({ currentUser }) => {
             try {
                 setLoading(true);
                 const data = await getUserProfile(userId);
+                console.log("user profile data", data.user)
 
-                const { username, listings, profile: profileData } = data.user;
-    
+                const { username, profile: profileData } = data.user;
+                
                 // Flatten and merge for easy access
                 setProfile({
                     username,
-                    listings,
                     ...profileData // merges bio, location, etc. at top level
                 });
     
@@ -45,6 +48,7 @@ const UserProfile = ({ currentUser }) => {
     
         fetchProfile();
     }, [userId, currentUser, navigate]);
+    
 
     if (loading) return <div>Loading profile...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
@@ -98,23 +102,40 @@ const UserProfile = ({ currentUser }) => {
                     <h2 className={styles.listingsHeading}>
                         {isOwnProfile ? "Your Listings" : `${profile.username}'s Listings`}
                     </h2>
-
+                    
                     {/* Grid of listings with conditional rendering */}
                     <div className={styles.listingsGrid}>
+
                         {/* Check if user has listings */}
-                        {profile.listings && profile.listings.length > 0 ?
-                            // Map through the listings array to create listing cards
-                            profile.listings.map(listing => (
-                                <div key={listing._id} className={styles.listingCard}>
-                                    {/* Placeholder for listing images - replace with actual images when available */}
-                                    <div className={styles.listingImagePlaceholder}></div>
-                                    {/* NOTE: You can add listing title, price, etc. here when available */}
-                                </div>
-                            )) :
-                            // Display message if no listings available
-                            <p className={styles.noListings}>No listings available</p>
-                        }
+                        {userListings.length > 0 ? (
+
+                        <ul>
+                            {/* Map through the listings array to create listing cards */}
+                            {userListings.map((listing) => (
+                                <li key={listing._id} className={styles.listingCard}>
+
+                                    {/* link back to the listingss detail page */}
+                                    <Link key={listing._id} to={`/listings/${listing._id}`}>
+                                        
+                                        <h2>{listing.title}</h2>
+                                        <p>{listing.price}</p>
+
+                                        {/* Placeholder for listing images - replace with actual images when available */}
+                                        <div className={styles.listingImagePlaceholder}></div>
+                                        
+                                        <p>{listing.description}</p>
+
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                        ) : (
+                        // Display message if no listings available
+                        <p className={styles.noListings}>No listings available</p>
+                        )}
+
                     </div>
+
                 </section>
             </main>
         </div>
