@@ -110,6 +110,7 @@ const App = () => {
           path="/users/:userId"
           element={
             <UserProfile
+              listings={listings}
               key={location.pathname}
               currentUser={user}
               profile={profile}
