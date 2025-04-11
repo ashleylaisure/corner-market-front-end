@@ -89,9 +89,59 @@ const updateUserProfile = async (userId, profileData) => {
   }
 }
 
+// Upload profile picture
+
+const uploadProfilePicture = async (userId, formData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}/profile-picture`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: formData
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.err || 'Failed to upload profile picture');
+    }
+    
+    return res.json();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+// Upload cover photo
+
+const uploadCoverPhoto = async (userId, formData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}/cover-photo`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: formData
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.err || 'Failed to upload cover photo');
+    }
+    
+    return res.json();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export {
   index, 
   getUserProfile,
   updateUserProfile,
-  createUserProfile
+  createUserProfile,
+  uploadProfilePicture,
+  uploadCoverPhoto
 };
