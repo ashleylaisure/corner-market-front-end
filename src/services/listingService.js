@@ -66,11 +66,61 @@ const deleteListing = async (listingId) => {
     }
 }
 
+// Function to upload images for a listing
+
+const uploadListingImages = async (listingId, formData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${listingId}/images`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: formData
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.err || 'Failed to upload images');
+    }
+    
+    return res.json();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+// Function to delete a specific image from a listing
+
+const deleteListingImage = async (listingId, imageIndex) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${listingId}/images/${imageIndex}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.err || 'Failed to delete image');
+    }
+    
+    return res.json();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+
 export { 
     index,
     show,
     create,
     update,
-    deleteListing
+    deleteListing,
+    uploadListingImages,
+    deleteListingImage
 };
 
