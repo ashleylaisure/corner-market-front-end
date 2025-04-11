@@ -1,0 +1,46 @@
+aside {
+    background: var(--color-white);
+    margin-left: 1rem;
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .4rem;
+
+
+}
+
+.cat {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    cursor: pointer;
+    transition: all 300ms ease;
+    position: relative;
+    width: 100%;
+}
+
+.cat:hover {
+    background: var(--color-primary-blue)
+}
+
+.cat p {
+    font-weight: 500px;
+    font-size: 13px;
+}
+
+.search {
+    display: flex;
+    border-radius: var(--border-radius);
+    padding: var(--btn-padding);
+    background: var(--color-primary-blue);
+    margin-top: 8px;
+    width: 200px;
+}
+
+.search input[type="search"]{
+    background: transparent;
+    color: var(--color-hero-dark);
+    font-size: 0.8rem;
+    width: 100px;
+}
