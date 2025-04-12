@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
-    updateUserProfile,
-    getUserProfile,
-    createUserProfile,
-  } from '../../services/userService';
+  updateUserProfile, getUserProfile, createUserProfile
+} from '../../services/userService';
+import ProfileImageUpload from '../ProfileImageUpload/ProfileImageUpload';
 import styles from './ProfileForm.module.css';
 
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
@@ -44,6 +43,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     }
   }, [currentUser, isNewUser]);
 
+  // Handler for form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -52,19 +52,28 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     }));
   };
 
+  // Handler for image upload completion
+  const handleImageUpload = (updatedProfile) => {
+    console.log('Profile image updated:', updatedProfile);
+    // You can update UI or state here if needed
+  };
+
+  // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Create or update profile details
       if (isNewUser) {
         await createUserProfile(currentUser._id, formData);
       } else {
         await updateUserProfile(currentUser._id, formData);
       }
-      navigate(`/users/${currentUser._id}`);
-      
+
+      // Navigate to profile page, replace avoids users hitting back and returning to form
+      navigate(`/users/${currentUser._id}`), { replace: true };
     } catch (err) {
-      setError(err.message);
-    } 
+      setError('Failed to save profile');
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -73,6 +82,14 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     <div className={styles.formContainer}>
       <h2>{isNewUser ? 'Complete Your Profile' : 'Edit Your Profile'}</h2>
       {error && <p className={styles.error}>{error}</p>}
+      
+      <div className={styles.imageUploadSection}>
+        <h3>Profile Images</h3>
+        <ProfileImageUpload 
+          userId={currentUser?._id} 
+          onImageUpload={handleImageUpload} 
+        />
+      </div>
       
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>

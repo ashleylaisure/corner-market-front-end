@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router';
 import { getUserProfile } from '../../services/userService';
 import styles from './UserProfile.module.css';
 
-
 const UserProfile = ({ currentUser }) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -11,9 +10,9 @@ const UserProfile = ({ currentUser }) => {
     const { userId } = useParams();
     const navigate = useNavigate();
 
-
     // Check if the profile being viewed belongs to the current user
     const isOwnProfile = currentUser?._id === userId;
+
 
     useEffect(() => {
         // Redirect to login if not authenticated
@@ -26,25 +25,63 @@ const UserProfile = ({ currentUser }) => {
             try {
                 setLoading(true);
                 const data = await getUserProfile(userId);
+                console.log('Profile data received:', data);
 
-                const { username, listings, profile: profileData } = data.user;
-    
-                // Flatten and merge for easy access
-                setProfile({
-                    username,
-                    listings,
-                    ...profileData // merges bio, location, etc. at top level
-                });
-    
+                // Handle different response structures
+                if (data.user) {
+                    // Structure: { user: { profile: {...}, username, listings } }
+                    const { username, listings = [], profile: profileData = {} } = data.user;
+
+                    setProfile({
+                        username,
+                        listings,
+                        ...profileData
+                    });
+
+                } else {
+                    // Direct profile data
+                    setProfile(data);
+                }
+
                 setLoading(false);
             } catch (err) {
-                setError('Failed to load profile.' + err.message);
+                console.error('Profile fetch error:', err);
+                setError('Failed to load profile: ' + err.message);
                 setLoading(false);
             }
         };
-    
+
         fetchProfile();
-    }, [userId, currentUser, navigate]);
+
+        // Define a cleanup function to handle component unmounting
+        return () => {
+            // This prevents state updates after unmounting
+            setLoading(false);
+        };
+    }, [userId, currentUser, navigate]); // Only dependencies that should trigger refetch
+
+    // Create a separate refresh function that doesn't cause rendering loops
+    // const refreshProfile = () => {
+    //     setLoading(true);
+    //     getUserProfile(userId)
+    //         .then(data => {
+    //             if (data.user) {
+    //                 const { username, listings, profile: profileData } = data.user;
+    //                 setProfile({
+    //                     username,
+    //                     listings,
+    //                     ...profileData
+    //                 });
+    //             } else {
+    //                 setProfile(data);
+    //             }
+    //             setLoading(false);
+    //         })
+    //         .catch(err => {
+    //             setError('Failed to refresh profile. ' + err.message);
+    //             setLoading(false);
+    //         });
+    // };
 
     if (loading) return <div>Loading profile...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
@@ -52,16 +89,36 @@ const UserProfile = ({ currentUser }) => {
 
     return (
         <div className={styles.container}>
-
             <main className={styles.profileContent}>
                 {/* Profile header with user image and info */}
                 <div className={styles.profileHeader}>
                     {/* Profile image with fallback to default avatar */}
                     <div className={styles.profilePicture}>
                         {profile.profilePicture ? (
-                            <img src={profile.profilePicture} alt={`${profile.username}'s profile`} />
-                        ) : null}
+                            <img
+                                src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.profilePicture}`}
+                                alt={`${profile.username}'s profile picture`}
+                            />
+                        ) : (
+                            <div className={styles.defaultAvatar}>
+                                {profile.username?.charAt(0).toUpperCase()}
+                            </div>
+                        )}
                     </div>
+
+                    {/* Cover photo (if you have one) */}
+                    {profile.coverPhoto && (
+                        <div className={styles.coverPhoto}>
+                            <img
+                                src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.coverPhoto}`}
+                                alt="Cover"
+                                onError={(e) => {
+                                    console.log('Cover image failed to load:', profile.coverPhoto);
+                                    e.target.style.display = 'none';
+                                }}
+                            />
+                        </div>
+                    )}
 
                     {/* User information section */}
                     <div className={styles.profileInfo}>
@@ -76,14 +133,34 @@ const UserProfile = ({ currentUser }) => {
                         <h3>Bio</h3>
                         <p className={styles.bio}>{profile.bio || ''}</p>
 
+                        {/* Social links if available */}
+                        {(profile.facebookLink || profile.twitterLink || profile.instagramLink) && (
+                            <div className={styles.socialLinks}>
+                                <h3>Social Media</h3>
+                                {profile.facebookLink && (
+                                    <a href={profile.facebookLink} target="_blank" rel="noopener noreferrer">Facebook</a>
+                                )}
+                                {profile.twitterLink && (
+                                    <a href={profile.twitterLink} target="_blank" rel="noopener noreferrer">Twitter</a>
+                                )}
+                                {profile.instagramLink && (
+                                    <a href={profile.instagramLink} target="_blank" rel="noopener noreferrer">Instagram</a>
+                                )}
+                            </div>
+                        )}
+
                         {/* Conditional rendering based on profile ownership */}
                         {isOwnProfile ? (
                             // Show Edit Profile button if it's the user's own profile
-                            <button className={styles.actionButton}
-                                onClick={() => navigate('/profile/edit')}
-                            >
-                                Edit profile
-                            </button>
+                            <div className={styles.profileActions}>
+                                <button
+                                    className={styles.actionButton}
+                                    onClick={() => navigate('/profile/edit')}
+                                >
+                                    Edit profile
+                                </button>
+                            
+                            </div>
                         ) : (
                             // Show Message button if viewing someone else's profile
                             <button className={styles.actionButton}>
@@ -105,10 +182,23 @@ const UserProfile = ({ currentUser }) => {
                         {profile.listings && profile.listings.length > 0 ?
                             // Map through the listings array to create listing cards
                             profile.listings.map(listing => (
-                                <div key={listing._id} className={styles.listingCard}>
-                                    {/* Placeholder for listing images - replace with actual images when available */}
-                                    <div className={styles.listingImagePlaceholder}></div>
-                                    {/* NOTE: You can add listing title, price, etc. here when available */}
+                                <div
+                                    key={listing._id}
+                                    className={styles.listingCard}
+                                    onClick={() => navigate(`/listings/${listing._id}`)}
+                                >
+                                    {/* Use actual listing images if available */}
+                                    {listing.images && listing.images.length > 0 ? (
+                                        <img
+                                            src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path}`}
+                                            alt={listing.title}
+                                            className={styles.listingImage}
+                                        />
+                                    ) : (
+                                        <div className={styles.listingImagePlaceholder}></div>
+                                    )}
+                                    <h3>{listing.title}</h3>
+                                    <p>${listing.price}</p>
                                 </div>
                             )) :
                             // Display message if no listings available
@@ -120,4 +210,5 @@ const UserProfile = ({ currentUser }) => {
         </div>
     );
 }
+
 export default UserProfile;

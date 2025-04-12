@@ -31,16 +31,20 @@ const create = async (listingFormData) => {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
+        // DO NOT manually set Content-Type here!
+        // Let the browser set it when sending FormData
       },
-      body: JSON.stringify(listingFormData),
+      body: listingFormData, // FormData, not JSON.stringify!
     });
-    return res.json();
+
+    const data = await res.json();
+    if (data.err) throw new Error(data.err);
+    return data;
   } catch (error) {
-    console.log(error);
+    console.error("Error creating listing:", error);
+    throw error;
   }
 };
-
 const show = async (listingId) => {
   try {
     const res = await fetch(`${BASE_URL}/${listingId}`);

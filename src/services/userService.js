@@ -23,20 +23,30 @@ const index = async () => {
 
 const getUserProfile = async (userId) => {
   try {
+    console.log('Fetching profile for user ID:', userId);
     const res = await fetch(`${BASE_URL}/${userId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
 
     const data = await res.json();
+    console.log('API response:', data); 
 
     if (data.err) {
       throw new Error(data.err);
     }
+     // If we got direct profile data (from image uploads)
+     if (data.profile && data.profile._id) {
+      return {
+        username: data.user?.username || 'User',
+        ...data.profile
+      };
+    }
 
     return data;
+
   } catch (err) {
-    console.log(err);
-    throw new Error(err);
+    console.error('Error fetching profile:', err);
+        throw err;
   }
 }
 

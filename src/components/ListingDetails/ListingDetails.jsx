@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router';
 import * as listingService from '../../services/listingService.js'
 import { useNavigate } from 'react-router'
+import styles from './ListingDetails.module.css';
 
 import { UserContext } from '../../contexts/UserContext.jsx'
 
@@ -24,15 +25,15 @@ const ListingDetails = (props) => {
 
     const handleDelete = async () => {
         try {
-          await props.handleDeleteListing(listingId); // calls the API + removes from global listings
-          if (props.onListingDeleted) {
-            props.onListingDeleted(listingId); // removes from profile listings state
-          }
-          navigate(`/users/${user._id}`); // go back to your profile
+            await props.handleDeleteListing(listingId); // calls the API + removes from global listings
+            if (props.onListingDeleted) {
+                props.onListingDeleted(listingId); // removes from profile listings state
+            }
+            navigate(`/users/${user._id}`); // go back to your profile
         } catch (err) {
-          console.error("Failed to delete listing:", err);
+            console.error("Failed to delete listing:", err);
         }
-      };
+    };
 
     if (!listing) return <main>Loading...</main>
 
@@ -45,6 +46,19 @@ const ListingDetails = (props) => {
                     <p>${listing.price}</p>
                     <p>{`Listed on ${new Date(listing.createdAt).toLocaleDateString()}`}</p>
                 </header>
+                {/* Listing Images */}
+                <div className={styles.listingImages}>
+                    {listing.images && listing.images.length > 0 ? (
+                        <div className={styles.mainImage}>
+                            <img
+                                src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path}`} 
+                                alt={listing.title}
+                            />
+                        </div>
+                    ) : (
+                        <div className={styles.noImagePlaceholder}>No image available</div>
+                    )}
+                </div>
 
                 <button>Message</button>
                 <button>Save</button>

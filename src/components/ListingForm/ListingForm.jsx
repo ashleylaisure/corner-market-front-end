@@ -39,11 +39,11 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
 
   // Second useEffect to clean up image preview URLs when component unmounts
   // also runs when the imagePreview array changes, ensuring any old previews are cleaned up
-useEffect(() => {
-  return () => {
-    imagePreview.forEach(url => URL.revokeObjectURL(url));
-  };
-}, [imagePreview]);
+  useEffect(() => {
+    return () => {
+      imagePreview.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [imagePreview]);
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
@@ -53,14 +53,27 @@ useEffect(() => {
   const handleFileChange = (evt) => {
     const files = Array.from(evt.target.files);
     setFormData({ ...formData, images: files });
+
+    const previewURLs = files.map((file) => URL.createObjectURL(file));
+    setImagePreview(previewURLs);
   };
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formDataToSend = new FormData();
+    for (const key in formData) {
+      if (key === "images") {
+        formData.images.forEach((file) => formDataToSend.append("images", file));
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
+    }
+
     if (listingId) {
-      handleUpdateListing(listingId, formData);
+      await handleUpdateListing(listingId, formDataToSend);
     } else {
-      handleAddListing(formData);
+      await handleAddListing(formDataToSend);
     }
   };
 
@@ -77,44 +90,44 @@ useEffect(() => {
           value={formData.title}
           onChange={handleChange}
         />
-       <label htmlFor="image-input">Upload Images:</label>
-<input
-  type="file"
-  name="images"
-  id="image-input"
-  multiple
-  accept="image/*"
-  onChange={handleFileChange}
-/>
+        <label htmlFor="image-input">Upload Images:</label>
+        <input
+          type="file"
+          name="images"
+          id="image-input"
+          multiple
+          accept="image/*"
+          onChange={handleFileChange}
+        />
 
-{/* Display image previews */}
-<div className={styles.imagePreview}>
-  {imagePreview.map((url, idx) => (
-    <div key={idx} className={styles.previewItem}>
-      <img
-        src={url}
-        alt={`Preview ${idx}`}
-        className={styles.previewImage}
-      />
-      <button 
-        type="button" 
-        className={styles.removeButton}
-        onClick={() => {
-          const newImages = [...formData.images];
-          newImages.splice(idx, 1);
-          setFormData({ ...formData, images: newImages });
-          
-          const newPreviews = [...imagePreview];
-          URL.revokeObjectURL(newPreviews[idx]);
-          newPreviews.splice(idx, 1);
-          setImagePreview(newPreviews);
-        }}
-      >
-        Remove
-      </button>
-    </div>
-  ))}
-</div>
+        {/* Display image previews */}
+        <div className={styles.imagePreview}>
+          {imagePreview.map((url, idx) => (
+            <div key={idx} className={styles.previewItem}>
+              <img
+                src={url}
+                alt={`Preview ${idx}`}
+                className={styles.previewImage}
+              />
+              <button
+                type="button"
+                className={styles.removeButton}
+                onClick={() => {
+                  const newImages = [...formData.images];
+                  newImages.splice(idx, 1);
+                  setFormData({ ...formData, images: newImages });
+
+                  const newPreviews = [...imagePreview];
+                  URL.revokeObjectURL(newPreviews[idx]);
+                  newPreviews.splice(idx, 1);
+                  setImagePreview(newPreviews);
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
         <label htmlFor="price-input">Price</label>
         <input
           required
@@ -136,17 +149,12 @@ useEffect(() => {
             -- Select Category --
           </option>
           <option value="Video Games">Video Games</option>
-          <option value="Arts & Crafts">Arts & Crafts</option>
-          <option value="Antiques & Collectables">
-            Antiques & Collectables
-          </option>
-          <option value="Video Games">Video Games</option>
           <option value="Antiques & Collectables">
             Antiques & Collectables
           </option>
           <option value="Arts & Crafts">Arts & Crafts</option>
-          <option value="Auto, Parts & Accessories">
-            Auto, Parts & Accessories
+          <option value="Auto Parts & Accessories">
+            Auto Parts & Accessories
           </option>
           <option value="Baby Products">Baby Products</option>
           <option value="Books, Movies & Music">Books, Movies & Music</option>
