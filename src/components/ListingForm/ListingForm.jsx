@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import styles from './ListingForm.module.css';
 
 import * as ListingService from "../../services/listingService.js";
 
 const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   const { listingId } = useParams();
+  const [imagePreview, setImagePreview] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     images: [],
@@ -35,21 +37,43 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     }
   }, [listingId]);
 
+  // Second useEffect to clean up image preview URLs when component unmounts
+  // also runs when the imagePreview array changes, ensuring any old previews are cleaned up
+  useEffect(() => {
+    return () => {
+      imagePreview.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [imagePreview]);
+
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
 
-  //   const handleFileChange = (evt) => {
-  //     const files = Array.from(evt.target.files);
-  //     setFormData({ ...formData, images: files });
-  //   };
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
+  // Handle file selection
+  const handleFileChange = (evt) => {
+    const files = Array.from(evt.target.files);
+    setFormData({ ...formData, images: files });
+
+    const previewURLs = files.map((file) => URL.createObjectURL(file));
+    setImagePreview(previewURLs);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formDataToSend = new FormData();
+    for (const key in formData) {
+      if (key === "images") {
+        formData.images.forEach((file) => formDataToSend.append("images", file));
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
+    }
     if (listingId) {
-      handleUpdateListing(listingId, formData);
+      await handleUpdateListing(listingId, formDataToSend);
     } else {
-      handleAddListing(formData);
+      await handleAddListing(formDataToSend);
     }
   };
 
@@ -66,28 +90,46 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           value={formData.title}
           onChange={handleChange}
         />
-        {/* <label htmlFor="image-input">Upload Images:</label>
+        <label htmlFor="image-input">Upload Images:</label>
         <input
-          required
           type="file"
           name="images"
           id="image-input"
           multiple
           accept="image/*"
           onChange={handleFileChange}
-        /> */}
-        {/* Display files */}
-        {/* <div>
-          {formData.images.map((file, idx) => (
-            <img
-              key={idx}
-              src={URL.createObjectURL(file)}
-              alt={`Preview ${idx}`}
-              style={{ maxWidth: "100px", marginRight: "8px" }}
-            />
-          ))} */}
-        {/* </div> */}
-        {/* </div> */}
+
+        />
+
+        {/* Display image previews */}
+        <div className={styles.imagePreview}>
+          {imagePreview.map((url, idx) => (
+            <div key={idx} className={styles.previewItem}>
+              <img
+                src={url}
+                alt={`Preview ${idx}`}
+                className={styles.previewImage}
+              />
+              <button
+                type="button"
+                className={styles.removeButton}
+                onClick={() => {
+                  const newImages = [...formData.images];
+                  newImages.splice(idx, 1);
+                  setFormData({ ...formData, images: newImages });
+
+                  const newPreviews = [...imagePreview];
+                  URL.revokeObjectURL(newPreviews[idx]);
+                  newPreviews.splice(idx, 1);
+                  setImagePreview(newPreviews);
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+
         <label htmlFor="price-input">Price</label>
         <input
           required
@@ -109,17 +151,12 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             -- Select Category --
           </option>
           <option value="Video Games">Video Games</option>
-          <option value="Arts & Crafts">Arts & Crafts</option>
-          <option value="Antiques & Collectables">
-            Antiques & Collectables
-          </option>
-          <option value="Video Games">Video Games</option>
           <option value="Antiques & Collectables">
             Antiques & Collectables
           </option>
           <option value="Arts & Crafts">Arts & Crafts</option>
-          <option value="Auto, Parts & Accessories">
-            Auto, Parts & Accessories
+          <option value="Auto Parts & Accessories">
+            Auto Parts & Accessories
           </option>
           <option value="Baby Products">Baby Products</option>
           <option value="Books, Movies & Music">Books, Movies & Music</option>
