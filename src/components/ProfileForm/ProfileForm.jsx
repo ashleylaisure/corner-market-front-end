@@ -1,20 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import {
-  updateUserProfile, getUserProfile, createUserProfile
-} from '../../services/userService';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import {updateUserProfile, getUserProfile, createUserProfile} from '../../services/userService';
 import ProfileImageUpload from '../ProfileImageUpload/ProfileImageUpload';
 import styles from './ProfileForm.module.css';
 
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    bio: '',
-    location: '',
-    emailAddress: '',
-    facebookLink: '',
-    twitterLink: '',
-    instagramLink: ''
+    bio: "",
+    location: "",
+    emailAddress: "",
+    facebookLink: "",
+    twitterLink: "",
+    instagramLink: "",
   });
   const [loading, setLoading] = useState(!isNewUser);
   const [error, setError] = useState(null);
@@ -24,18 +22,19 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     if (!isNewUser && currentUser) {
       const fetchProfile = async () => {
         try {
-          const profileData = await getUserProfile(currentUser._id);
+          const profileData = (await getUserProfile(currentUser._id)).user.profile;
+
           setFormData({
-            bio: profileData.bio || '',
-            location: profileData.location || '',
-            emailAddress: profileData.emailAddress || '',
-            facebookLink: profileData.facebookLink || '',
-            twitterLink: profileData.twitterLink || '',
-            instagramLink: profileData.instagramLink || ''
+            bio: profileData.bio || "",
+            location: profileData.location || "",
+            emailAddress: profileData.emailAddress || "",
+            facebookLink: profileData.facebookLink || "",
+            twitterLink: profileData.twitterLink || "",
+            instagramLink: profileData.instagramLink || "",
           });
           setLoading(false);
         } catch (err) {
-          setError('Failed to load profile data');
+          setError("Failed to load profile data");
           setLoading(false);
         }
       };
@@ -46,9 +45,9 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
   // Handler for form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -69,10 +68,12 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         await updateUserProfile(currentUser._id, formData);
       }
 
+
       // Navigate to profile page, replace avoids users hitting back and returning to form
       navigate(`/users/${currentUser._id}`), { replace: true };
     } catch (err) {
       setError('Failed to save profile');
+
     }
   };
 
@@ -80,8 +81,9 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
   return (
     <div className={styles.formContainer}>
-      <h2>{isNewUser ? 'Complete Your Profile' : 'Edit Your Profile'}</h2>
+      <h2>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h2>
       {error && <p className={styles.error}>{error}</p>}
+
       
       <div className={styles.imageUploadSection}>
         <h3>Profile Images</h3>
@@ -90,7 +92,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
           onImageUpload={handleImageUpload} 
         />
       </div>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label htmlFor="location">Location</label>
@@ -131,7 +133,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         </div>
 
         <h3>Social Media Links</h3>
-        
+
         <div className={styles.formGroup}>
           <label htmlFor="facebookLink">Facebook</label>
           <input
@@ -169,7 +171,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         </div>
 
         <button type="submit" className={styles.submitButton}>
-          {isNewUser ? 'Create Profile' : 'Save Changes'}
+          {isNewUser ? "Create Profile" : "Save Changes"}
         </button>
       </form>
     </div>

@@ -54,8 +54,8 @@ const show = async (listingId) => {
   }
 };
 
-
 const deleteListing = async (listingId) => {
+
     try {
         const res = await fetch(`${BASE_URL}/${listingId}`, {
             method: 'DELETE',
@@ -126,5 +126,4 @@ export {
     deleteListing,
     uploadListingImages,
     deleteListingImage
-};
-
+}

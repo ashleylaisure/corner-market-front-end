@@ -49,6 +49,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
 
+
   // Handle file selection
   const handleFileChange = (evt) => {
     const files = Array.from(evt.target.files);
@@ -69,7 +70,6 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
         formDataToSend.append(key, formData[key]);
       }
     }
-
     if (listingId) {
       await handleUpdateListing(listingId, formDataToSend);
     } else {
@@ -98,6 +98,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           multiple
           accept="image/*"
           onChange={handleFileChange}
+
         />
 
         {/* Display image previews */}
@@ -128,6 +129,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             </div>
           ))}
         </div>
+
         <label htmlFor="price-input">Price</label>
         <input
           required

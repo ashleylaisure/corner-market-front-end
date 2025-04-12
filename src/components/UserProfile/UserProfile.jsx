@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, Link } from 'react-router';
 import { getUserProfile } from '../../services/userService';
 import styles from './UserProfile.module.css';
 
+
 const UserProfile = ({ currentUser }) => {
+
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,7 +14,6 @@ const UserProfile = ({ currentUser }) => {
 
     // Check if the profile being viewed belongs to the current user
     const isOwnProfile = currentUser?._id === userId;
-
 
     useEffect(() => {
         // Redirect to login if not authenticated
@@ -53,6 +54,7 @@ const UserProfile = ({ currentUser }) => {
 
         fetchProfile();
 
+
         // Define a cleanup function to handle component unmounting
         return () => {
             // This prevents state updates after unmounting
@@ -82,6 +84,7 @@ const UserProfile = ({ currentUser }) => {
     //             setLoading(false);
     //         });
     // };
+
 
     if (loading) return <div>Loading profile...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
@@ -175,10 +178,12 @@ const UserProfile = ({ currentUser }) => {
                     <h2 className={styles.listingsHeading}>
                         {isOwnProfile ? "Your Listings" : `${profile.username}'s Listings`}
                     </h2>
-
+                    
                     {/* Grid of listings with conditional rendering */}
                     <div className={styles.listingsGrid}>
+
                         {/* Check if user has listings */}
+
                         {profile.listings && profile.listings.length > 0 ?
                             // Map through the listings array to create listing cards
                             profile.listings.map(listing => (
@@ -204,7 +209,10 @@ const UserProfile = ({ currentUser }) => {
                             // Display message if no listings available
                             <p className={styles.noListings}>No listings available</p>
                         }
+
+                        
                     </div>
+
                 </section>
             </main>
         </div>
