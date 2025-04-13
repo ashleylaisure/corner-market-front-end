@@ -21,7 +21,9 @@ const NavBar = () => {
       {user ? (
         <ul>
           <li>Welcome, {user.username}</li>
-          <li>Messages</li>
+          <li>
+            <Link to={`/conversations/${user._id}`}>Messages</Link>
+          </li>
           <li>
             <Link to={`/users/${user._id}`}>Profile</Link>
           </li>

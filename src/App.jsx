@@ -1,4 +1,3 @@
-
 import { useContext, useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router";
 import { UserContext } from "./contexts/UserContext";
@@ -8,13 +7,15 @@ import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 // import Landing from "./components/Landing/Landing";
 // import Dashboard from "./components/Dashboard/Dashboard";
-import UserProfile from './components/UserProfile/UserProfile';
-import ProfileForm from './components/ProfileForm/ProfileForm';
-
+import UserProfile from "./components/UserProfile/UserProfile";
+import ProfileForm from "./components/ProfileForm/ProfileForm";
 
 import ListingIndex from "./components/ListingIndex/ListingIndex.jsx";
 import ListingDetails from "./components/ListingDetails/ListingDetails.jsx";
 import ListingForm from "./components/ListingForm/ListingForm.jsx";
+
+import UserConversations from "./components/UserConversations/UserConversations.jsx";
+import ConversationDetails from "./components/ConversationDetails/ConversationDetails.jsx";
 
 import * as listingService from "./services/listingService.js";
 
@@ -25,7 +26,6 @@ const App = () => {
   const [profile, setProfile] = useState(null);
 
   const [listings, setListings] = useState([]);
-
 
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
@@ -40,9 +40,7 @@ const App = () => {
       if (!prev || !prev.listings) return prev;
       return {
         ...prev,
-        listings: prev.listings.filter(
-          (l) => l._id !== deletedListing._id
-        ),
+        listings: prev.listings.filter((l) => l._id !== deletedListing._id),
       };
     });
 
@@ -98,13 +96,11 @@ const App = () => {
         <Route path="/sign-in" element={<SignInForm />} />
         <Route
           path="/listings/:listingId"
-          element={
-            <ListingDetails handleDeleteListing={handleDeleteListing} />
-          }
+          element={<ListingDetails handleDeleteListing={handleDeleteListing} />}
         />
 
-        <Route path='/sign-up' element={<SignUpForm />} />
-        <Route path='/sign-in' element={<SignInForm />} />
+        <Route path="/sign-up" element={<SignUpForm />} />
+        <Route path="/sign-in" element={<SignInForm />} />
         {/* Added the UserProfile route */}
         <Route
           path="/users/:userId"
@@ -118,11 +114,19 @@ const App = () => {
           }
         />
 
-        <Route path='/profile/edit' element={<ProfileForm currentUser={user} isNewUser={false} />} />
-        <Route path='/profile/new' element={<ProfileForm currentUser={user} isNewUser={true} />} />
-
-
-
+        <Route
+          path="/profile/edit"
+          element={<ProfileForm currentUser={user} isNewUser={false} />}
+        />
+        <Route
+          path="/profile/new"
+          element={<ProfileForm currentUser={user} isNewUser={true} />}
+        />
+        <Route path="/conversations/:userId" element={<UserConversations />} />
+        <Route
+          path="/messages/:conversationId"
+          element={<ConversationDetails />}
+        ></Route>
       </Routes>
     </>
   );

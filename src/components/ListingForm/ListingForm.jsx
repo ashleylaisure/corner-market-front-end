@@ -86,7 +86,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
               style={{ maxWidth: "100px", marginRight: "8px" }}
             />
           ))} */}
-        </div>
+        {/* </div> */}
         {/* </div> */}
         <label htmlFor="price-input">Price</label>
         <input
