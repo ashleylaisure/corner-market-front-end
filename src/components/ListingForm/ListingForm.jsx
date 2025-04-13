@@ -98,6 +98,21 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           multiple
           accept="image/*"
           onChange={handleFileChange}
+//  james/messaging-functionality
+//         /> */}
+//         {/* Display files */}
+//         {/* <div>
+//           {formData.images.map((file, idx) => (
+//             <img
+//               key={idx}
+//               src={URL.createObjectURL(file)}
+//               alt={`Preview ${idx}`}
+//               style={{ maxWidth: "100px", marginRight: "8px" }}
+//             />
+//           ))} */}
+//         {/* </div> */}
+//         {/* </div> */}
+
 
         />
 
