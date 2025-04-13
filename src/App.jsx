@@ -3,12 +3,17 @@ import { Routes, Route, useNavigate, useLocation } from "react-router";
 import { UserContext } from "./contexts/UserContext";
 
 import NavBar from "./components/NavBar/NavBar";
+import Aside from "./components/Aside/Aside.jsx";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 // import Landing from "./components/Landing/Landing";
 // import Dashboard from "./components/Dashboard/Dashboard";
+
 import UserProfile from "./components/UserProfile/UserProfile";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
+
+import 'boxicons/css/boxicons.min.css';
+
 
 import ListingIndex from "./components/ListingIndex/ListingIndex.jsx";
 import ListingDetails from "./components/ListingDetails/ListingDetails.jsx";
@@ -79,55 +84,63 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <Routes>
-        {/* <Route path='/' element={user ? <Dashboard /> : <Landing />} /> */}
+      <main className="bodyGrid">
+        <div className="left">
+          <Aside />
+        </div>
 
-        <Route path="/" element={<ListingIndex listings={listings} />} />
-        {/* <Route path='/listings' element={<ListingIndex listings={listings}/>}></Route> */}
-        <Route
-          path="/listings/new"
-          element={<ListingForm handleAddListing={handleAddListing} />}
-        ></Route>
-        <Route
-          path="/listings/:listingId/edit"
-          element={<ListingForm handleUpdateListing={handleUpdateListing} />}
-        />
-        <Route path="/sign-up" element={<SignUpForm />} />
-        <Route path="/sign-in" element={<SignInForm />} />
-        <Route
-          path="/listings/:listingId"
-          element={<ListingDetails handleDeleteListing={handleDeleteListing} />}
-        />
+        <div className="center">
+          <Routes>
+            {/* <Route path='/' element={user ? <Dashboard /> : <Landing />} /> */}
 
-        <Route path="/sign-up" element={<SignUpForm />} />
-        <Route path="/sign-in" element={<SignInForm />} />
-        {/* Added the UserProfile route */}
-        <Route
-          path="/users/:userId"
-          element={
-            <UserProfile
-              key={location.pathname}
-              currentUser={user}
-              profile={profile}
-              setProfile={setProfile}
+            <Route path="/" element={<ListingIndex listings={listings} />} />
+            {/* <Route path='/listings' element={<ListingIndex listings={listings}/>}></Route> */}
+            <Route
+              path="/listings/new"
+              element={<ListingForm handleAddListing={handleAddListing} />}
+            ></Route>
+            <Route
+              path="/listings/:listingId/edit"
+              element={<ListingForm handleUpdateListing={handleUpdateListing} />}
             />
-          }
-        />
-
-        <Route
-          path="/profile/edit"
-          element={<ProfileForm currentUser={user} isNewUser={false} />}
-        />
-        <Route
-          path="/profile/new"
-          element={<ProfileForm currentUser={user} isNewUser={true} />}
-        />
-        <Route path="/conversations/:userId" element={<UserConversations />} />
-        <Route
-          path="/messages/:conversationId"
-          element={<ConversationDetails />}
+            <Route path="/sign-up" element={<SignUpForm />} />
+            <Route path="/sign-in" element={<SignInForm />} />
+            <Route
+              path="/listings/:listingId"
+              element={
+                <ListingDetails handleDeleteListing={handleDeleteListing} />
+              }
+            />
+            <Route path='/sign-up' element={<SignUpForm />} />
+            <Route path='/sign-in' element={<SignInForm />} />
+            {/* Added the UserProfile route */}
+            <Route
+              path="/users/:userId"
+              element={
+                <UserProfile
+                  listings={listings}
+                  key={location.pathname}
+                  currentUser={user}
+                  profile={profile}
+                  setProfile={setProfile}
+                />
+              }
+            />
+            <Route path='/profile/edit' element={<ProfileForm currentUser={user} isNewUser={false} />} />
+            <Route path='/profile/new' element={<ProfileForm currentUser={user} isNewUser={true} />} />
+            
+            <Route path="/conversations/:userId" element={<UserConversations />} />
+            <Route path="/messages/:conversationId" element={<ConversationDetails />}
         ></Route>
-      </Routes>
+          </Routes>
+        </div>
+
+        <div className="right">
+          <h1>Messaging</h1>
+        </div>
+
+      </main>
+      
     </>
   );
 };
