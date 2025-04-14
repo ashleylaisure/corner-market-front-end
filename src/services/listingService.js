@@ -9,21 +9,25 @@ const index = async () => {
   }
 };
 
-async function update(listingId, listingFormData) {
+const update = async (listingId, listingFormData) => {
   try {
     const res = await fetch(`${BASE_URL}/${listingId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
+        // Do NOT manually set "Content-Type" — FormData needs to set it
       },
-      body: JSON.stringify(listingFormData),
+      body: listingFormData, // FormData, not JSON.stringify
     });
-    return res.json();
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Update failed");
+    return data;
   } catch (error) {
-    console.log(error);
+    console.error("Error updating listing:", error);
+    throw error;
   }
-}
+};
 
 const create = async (listingFormData) => {
   try {
