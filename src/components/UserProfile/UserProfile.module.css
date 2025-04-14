@@ -1,34 +1,144 @@
+.profileContent {
+  /* flex: 1; */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 75vw;
+  margin-left: .5rem;
+}
+
+.coverPhoto {
+  width: 100%;
+  height: 225px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.coverPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .profilePicture {
     width: 150px;
     height: 150px;
     overflow: hidden;
     border-radius: 50%;
-    margin-right: 20px;
+    position: absolute;
+    top: 150px;
+    border: 3px solid white;
+    margin-left: .5rem;
+    z-index: 1;
   }
   
-  .profilePicture img {
+.profilePicture img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
+}
 
-  .coverPhoto {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    border-radius: 8px;
-  }
-  
-  .coverPhoto img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+/* Profile Info */
+.profileInfo {
+  display: grid;
+  grid-template-columns: 200px auto 200px;
+}
 
-  .listingImage {
+.socialLinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-left: 40px;
+  margin-top: 90px;
+}
+
+.profileActions {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.sectionDivider {
+  border: none;
+  border-top: 1px solid var(--color-primary-blue);
+  box-shadow: 0 .2rem 1rem var(--color-primary-blue);
+  margin: 10px 0;
+}
+
+/* listings Section */
+
+.listingsSection{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.listingsGrid {
+  display: flex; 
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.listingCard {
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    border: 1px solid var(--color-blue-gray);
+    box-shadow: -1px 5px 19px -5px rgba(0, 0, 0, 0.25);
+    transition: all 300ms ease;
+    height: 300px;
+    width: 235px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.listingCard:hover {
+  box-shadow: -1px 5px 19px -5px rgba(0, 0, 0, 0);
+}
+
+.listingImage {
     width: 100%;
     height: 200px;
     object-fit: cover;
     margin-bottom: 0.5rem;
+}
+
+.noImagePlaceholder{
+    margin: 5px;
+    height: 200px; /* Fixed height */
+    width: 200px;
+    overflow: hidden;
+    border: 1px solid var(--color-blue-gray);
+    border-radius: var(--card-border-radius);
+}
+
+.listingCard h2 {
+      font-size: 20px;
+      width: 200px;
+      height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .profileInfo {
+    grid-template-columns: 1fr;
   }
+
+  .socialLinks {
+    margin-left: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profileHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

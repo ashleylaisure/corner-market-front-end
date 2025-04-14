@@ -63,7 +63,7 @@ const ListingDetails = (props) => {
                                             }
                                         }}
                                     >
-                                        ✕
+                                        <i className='bx bx-x'></i>
                                     </button>
                                 )}
                             </div>

@@ -1,16 +1,17 @@
 
 .container{
+  flex: 1;
   height: 100%;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
-  padding: 2rem;
+  padding: 1rem;
 }
 
-.listingImages {
+/* .listingImages {
     display: flex;
     flex-direction: column;
-  }
+  } */
   
   .listingImages img {
     width: 400px;
@@ -18,6 +19,47 @@
     object-fit: contain;
     display: block;
     box-shadow: 0 2px 8px var(--color-primary-blue);
+  }
+
+  .imageGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .imageWrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .listingImage {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .deleteImageButton {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: var(--color-hero);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deleteImageButton:hover {
+    opacity: 0.7;
   }
 
   .detailsInfo{
@@ -59,6 +101,7 @@
     border: none;
     border-top: 1px solid var(--color-primary-blue);
   }
+  
   .sellerLink {
     margin-top: 1rem;
     display: flex;
@@ -76,38 +119,4 @@
       display: grid;
       grid-template-columns: 1fr;
     }
-  }
-
-/* ======= */
-.imageGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .imageWrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .listingImage {
-    width: 200px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .deleteImageButton {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background-color: rgba(255, 0, 0, 0.8);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 0.8rem;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 1;
   }
