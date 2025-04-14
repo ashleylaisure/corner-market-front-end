@@ -66,7 +66,7 @@ const handleProfilePictureUpload = async (e) => {
           htmlFor="profile-picture-input" 
           className={styles.uploadButton}
         >
-          {profileLoading ? 'Uploading...' : 'Choose File'}
+          {profileLoading ? 'Uploading...' : ''}
         </label>
       </div>
       
@@ -83,7 +83,7 @@ const handleProfilePictureUpload = async (e) => {
           htmlFor="cover-photo-input" 
           className={styles.uploadButton}
         >
-          {coverLoading ? 'Uploading...' : 'Choose File'}
+          {coverLoading ? 'Uploading...' : ''}
         </label>
       </div>
     </div>

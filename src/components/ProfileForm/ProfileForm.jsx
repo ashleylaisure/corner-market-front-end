@@ -80,20 +80,19 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className={styles.formContainer}>
-      <h2>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h2>
+    <div className={isNewUser? styles.newFormContainer : styles.formContainer}>
       {error && <p className={styles.error}>{error}</p>}
 
-      
       <div className={styles.imageUploadSection}>
-        <h3>Profile Images</h3>
+        <h1>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h1>
+        {/* <h3>Profile Images</h3> */}
         <ProfileImageUpload 
           userId={currentUser?._id} 
           onImageUpload={handleImageUpload} 
         />
       </div>
 
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.profileForm}>
         <div className={styles.formGroup}>
           <label htmlFor="location">Location</label>
           <input
@@ -135,7 +134,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         <h3>Social Media Links</h3>
 
         <div className={styles.formGroup}>
-          <label htmlFor="facebookLink">Facebook</label>
+          <label htmlFor="facebookLink"><i className='bx bxl-facebook bxSocail'></i>  Facebook</label>
           <input
             type="url"
             id="facebookLink"
@@ -147,7 +146,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="twitterLink">Twitter</label>
+          <label htmlFor="twitterLink"><i className='bx bxl-twitter bxSocail' ></i>  Twitter</label>
           <input
             type="url"
             id="twitterLink"
@@ -159,7 +158,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="instagramLink">Instagram</label>
+          <label htmlFor="instagramLink"><i className='bx bxl-instagram bxSocail'></i>  Instagram</label>
           <input
             type="url"
             id="instagramLink"
@@ -174,6 +173,8 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
           {isNewUser ? "Create Profile" : "Save Changes"}
         </button>
       </form>
+
+    
     </div>
   );
 };

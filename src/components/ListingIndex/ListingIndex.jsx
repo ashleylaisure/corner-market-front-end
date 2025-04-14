@@ -26,6 +26,7 @@ const ListingIndex = ({ listings: initialListings }) => {
                         <article className={styles.listingCard}>
                             {listing.images && listing.images.length > 0 ? (
                                 <div className={styles.imageContainer}>
+
                                     {listing.images.map((img, idx) => (
                                         <img
                                             key={idx}
