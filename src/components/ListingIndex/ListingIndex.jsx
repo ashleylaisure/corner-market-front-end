@@ -15,14 +15,14 @@ const ListingIndex = (props) => {
                             {/* Display the first image if available */}
                             {listing.images && listing.images.length > 0 ? (
                                 <div className={styles.imageContainer}>
-                                 {listing.images?.map((img, idx) => (
-                                    <img
-                                        key={idx}
-                                        src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
-                                        alt={`Listing image ${idx}`}
-                                        className={styles.listingImage}
-                                    />
-                                  ))}
+                                    {listing.images?.map((img, idx) => (
+                                        <img
+                                            key={idx}
+                                            src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
+                                            alt={`Listing image ${idx}`}
+                                            className={styles.listingImage}
+                                        />
+                                    ))}
                                 </div>
                             ) : (
                                 <div className={styles.noImagePlaceholder}><h4>Image Placeholder</h4></div>

@@ -81,7 +81,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   };
 
   return (
-    <main className={styles.overlay}>
+    <main className={listingId? styles.overlay : styles.newOverlay}>
       
       <form onSubmit={handleSubmit} className={styles.listingForm}>
       <h1>{listingId ? "Edit Listing" : "New Listing"}</h1>

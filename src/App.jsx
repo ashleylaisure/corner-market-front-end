@@ -87,7 +87,9 @@ const App = () => {
   return (
     <>
       <NavBar />
+
       <main className="bodyGrid">
+        
         {!hideAsideRoutes && (
           <div className="left">
             <Aside />

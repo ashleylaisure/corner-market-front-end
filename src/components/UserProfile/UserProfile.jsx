@@ -93,6 +93,21 @@ const UserProfile = ({ currentUser }) => {
     return (
         <div className={styles.container}>
             <main className={styles.profileContent}>
+
+                {/* Cover photo (if you have one) */}
+                {profile.coverPhoto && (
+                        <div className={styles.coverPhoto}>
+                            <img
+                                src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.coverPhoto}`}
+                                alt="Cover"
+                                onError={(e) => {
+                                    console.log('Cover image failed to load:', profile.coverPhoto);
+                                    e.target.style.display = 'none';
+                                }}
+                            />
+                        </div>
+                    )}
+
                 {/* Profile header with user image and info */}
                 <div className={styles.profileHeader}>
                     {/* Profile image with fallback to default avatar */}
@@ -109,69 +124,67 @@ const UserProfile = ({ currentUser }) => {
                         )}
                     </div>
 
-                    {/* Cover photo (if you have one) */}
-                    {profile.coverPhoto && (
-                        <div className={styles.coverPhoto}>
-                            <img
-                                src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.coverPhoto}`}
-                                alt="Cover"
-                                onError={(e) => {
-                                    console.log('Cover image failed to load:', profile.coverPhoto);
-                                    e.target.style.display = 'none';
-                                }}
-                            />
-                        </div>
-                    )}
-
                     {/* User information section */}
                     <div className={styles.profileInfo}>
-                        <h2 className={styles.username}>{profile.username}</h2>
-
-                        <div className={styles.locationInfo}>
-                            <h3>Location</h3>
-                            <p>{profile.location || 'Not specified'}</p>
-                        </div>
-
-                        {/* Bio section with fallback for empty bio */}
-                        <h3>Bio</h3>
-                        <p className={styles.bio}>{profile.bio || ''}</p>
-
-                        {/* Social links if available */}
-                        {(profile.facebookLink || profile.twitterLink || profile.instagramLink) && (
-                            <div className={styles.socialLinks}>
-                                <h3>Social Media</h3>
+                        <div className={styles.socialLinks}>
+                            {/* Social links if available */}
+                            {(profile.facebookLink || profile.twitterLink || profile.instagramLink) && (
+                            <div >
+                                {/* <h3>Social Media</h3> */}
                                 {profile.facebookLink && (
-                                    <a href={profile.facebookLink} target="_blank" rel="noopener noreferrer">Facebook</a>
+                                    <a href={profile.facebookLink} target="_blank" rel="noopener noreferrer"><i className='bx bxl-facebook-circle bxSocail'></i></a>
                                 )}
                                 {profile.twitterLink && (
-                                    <a href={profile.twitterLink} target="_blank" rel="noopener noreferrer">Twitter</a>
+                                    <a href={profile.twitterLink} target="_blank" rel="noopener noreferrer"><i className='bx bxl-twitter bxSocail'></i></a>
                                 )}
                                 {profile.instagramLink && (
-                                    <a href={profile.instagramLink} target="_blank" rel="noopener noreferrer">Instagram</a>
+                                    <a href={profile.instagramLink} target="_blank" rel="noopener noreferrer"><i className='bx bxl-instagram-alt bxSocail' ></i></a>
                                 )}
                             </div>
-                        )}
+                            )}
+                        </div>
 
-                        {/* Conditional rendering based on profile ownership */}
-                        {isOwnProfile ? (
+                        <div>
+                            <h2 className={styles.username}>{profile.username}</h2>
+
+                            <div className={styles.locationInfo}>
+                                {/* <h5>Location</h5> */}
+                                <h5>{profile.location || 'Not specified'}</h5>
+                            </div>
+
+                            {/* Bio section with fallback for empty bio */}
+                            {/* <h3>Bio</h3> */}
+                            <p className={styles.bio}>{profile.bio || ''}</p>
+                        </div>
+                        
+                        <div className={styles.profileActions}>
+                            {/* Conditional rendering based on profile ownership */}
+                            {isOwnProfile ? (
                             // Show Edit Profile button if it's the user's own profile
                             <div className={styles.profileActions}>
                                 <button
-                                    className={styles.actionButton}
+                                    className='btn'
                                     onClick={() => navigate('/profile/edit')}
                                 >
+                                    <i className='bx bx-calendar-edit'></i>
                                     Edit profile
                                 </button>
                             
                             </div>
-                        ) : (
+                            ) : (
                             // Show Message button if viewing someone else's profile
-                            <button className={styles.actionButton}>
-                                Message
-                            </button>
-                        )}
+                                <button className="btn">
+                                    Message
+                                </button>
+                            )}
+                        </div>
+
+                        
                     </div>
+
                 </div>
+
+                <div className={styles.sectionDivider}></div>
 
                 {/* User's listings section */}
                 <section className={styles.listingsSection}>
@@ -200,10 +213,13 @@ const UserProfile = ({ currentUser }) => {
                                             className={styles.listingImage}
                                         />
                                     ) : (
-                                        <div className={styles.listingImagePlaceholder}></div>
+                                        <div className={styles.noImagePlaceholder}></div>
                                     )}
-                                    <h3>{listing.title}</h3>
-                                    <p>${listing.price}</p>
+                                    <div>
+                                        <p>${listing.price}</p>
+                                        <h2>{listing.title}</h2>
+                                    </div>
+                                    
                                 </div>
                             )) :
                             // Display message if no listings available

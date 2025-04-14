@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router";
 import styles from './NavBar.module.css';
 import profile from '../../assets/images/channels4_profile.jpg'
+import * as userService from '../../services/userService.js'
 
 import { UserContext } from "../../contexts/UserContext";
 
@@ -9,11 +10,26 @@ const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
   const [showLabel, setShowLabel] = useState(null)
 
+  const [profile, setProfile] = useState(null);
+
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setUser(null);
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await userService.getUserProfile(user._id);        
+        setProfile(data);
+
+      } catch (err) {
+
+        console.error('Profile fetch error:', err);
+      }
+    }; fetchProfile();
+}, [user]);
 
   return (
 
