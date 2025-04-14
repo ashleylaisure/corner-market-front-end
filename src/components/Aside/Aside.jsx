@@ -1,25 +1,36 @@
+import {useContext} from "react";
 import { Link } from "react-router";
 import styles from './Aside.module.css';
 
+import {UserContext} from "../../contexts/UserContext"
+
 const Aside = () => {
+
+    const { user } = useContext(UserContext);
+
     return (
         <aside>
             <div className={styles.search}>
                 <i className='bx bx-search-alt'></i>
-                <input type="search" placeholder="Search" ></input>
+                <input type="search" placeholder="Search Market" ></input>
             </div>
 
-            <div className='btn'>
-                <i className='bx bx-add-to-queue'></i>
-                <Link to="/listings/new" className="btnText"> Create a Listing</Link>
-            </div>
-
-            <h2>CATEGORIES</h2>
-                <div className={styles.cat}>
-                    <i className='bx bx-plus-circle'></i><p>Arts & Crafts</p>
+            <div className={styles.create}>
+            {user ? (
+                <div>
+                    <Link to="/listings/new" className="btn"><i className='bx bx-add-to-queue'></i> Create New Listing</Link>
                 </div>
+                
+                ) : (<h5>Sign In to create a Listing</h5>) }
+            </div>
+            
+
+            <h3>CATEGORIES</h3>
                 <div className={styles.cat}>
                     <i className='bx bx-plus-circle'></i><p>Antiques & Collectables</p>
+                </div>
+                <div className={styles.cat}>
+                    <i className='bx bx-plus-circle'></i><p>Arts & Crafts</p>
                 </div>
                 <div className={styles.cat}>
                     <i className='bx bx-plus-circle'></i><p>Auto, Parts & Accessories</p>
