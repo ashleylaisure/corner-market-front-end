@@ -95,7 +95,7 @@ const App = () => {
             <Aside />
           </div>
         )}
-        
+
 
         <div className="center">
           <Routes>
@@ -136,10 +136,10 @@ const App = () => {
             />
             <Route path='/profile/edit' element={<ProfileForm currentUser={user} isNewUser={false} />} />
             <Route path='/profile/new' element={<ProfileForm currentUser={user} isNewUser={true} />} />
-            
+
             <Route path="/conversations/:userId" element={<UserConversations />} />
             <Route path="/messages/:conversationId" element={<ConversationDetails />}
-        ></Route>
+            ></Route>
           </Routes>
         </div>
 
@@ -148,7 +148,7 @@ const App = () => {
         </div> */}
 
       </main>
-      
+
     </>
   );
 };

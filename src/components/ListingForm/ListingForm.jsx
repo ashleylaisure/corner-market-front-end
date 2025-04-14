@@ -54,13 +54,18 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
 
   // Handle file selection
   const handleFileChange = (evt) => {
-    const files = Array.from(evt.target.files);
-    setFormData({ ...formData, images: files });
-
-    const previewURLs = files.map((file) => URL.createObjectURL(file));
-    setImagePreview(previewURLs);
+    const newFiles = Array.from(evt.target.files);
+  
+    // Merge with existing files
+    const updatedFiles = [...formData.images, ...newFiles];
+    setFormData({ ...formData, images: updatedFiles });
+  
+    // Create preview URLs for new files and merge with existing previews
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+    setImagePreview((prev) => [...prev, ...newPreviews]);
   };
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
