@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router";
 import styles from './ListingForm.module.css';
 
 import * as ListingService from "../../services/listingService.js";
 
 const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   const { listingId } = useParams();
+  const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -72,6 +74,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     }
     if (listingId) {
       await handleUpdateListing(listingId, formDataToSend);
+      navigate(`/listings/${listingId}`); // This triggers a refetch in ListingDetails
     } else {
       await handleAddListing(formDataToSend);
     }

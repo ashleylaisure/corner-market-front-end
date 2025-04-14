@@ -39,19 +39,40 @@ const ListingDetails = (props) => {
 
     return (
         <main className={styles.container}>
-            <section className={styles.listingImages}>
-                {/* Listing Images */}
+          {/* Listing Images */}
+            <div className={styles.listingImages}>
                 {listing.images && listing.images.length > 0 ? (
-                    <div className={styles.mainImage}>
-                        <img
-                            src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path}`} 
-                            alt={listing.title}
-                        />
+                    <div className={styles.imageGrid}>
+                        {listing.images.map((img, idx) => (
+                            <div key={idx} className={styles.imageWrapper}>
+                                <img
+                                    src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
+                                    alt={`Listing image ${idx}`}
+                                    className={styles.listingImage}
+                                />
+                                {user && listing.author._id === user._id && (
+                                    <button
+                                        className={styles.deleteImageButton}
+                                        onClick={async () => {
+                                            try {
+                                                await listingService.deleteListingImage(listing._id, idx);
+                                                const updated = await listingService.show(listing._id);
+                                                setListing(updated); // refresh state with updated listing
+                                            } catch (err) {
+                                                console.error("Failed to delete image:", err);
+                                            }
+                                        }}
+                                    >
+                                        ✕
+                                    </button>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 ) : (
                     <div className={styles.noImagePlaceholder}>No image available</div>
                 )}
-            </section>
+            </div>
 
             <section className={styles.detailsInfo}>
                 <header>

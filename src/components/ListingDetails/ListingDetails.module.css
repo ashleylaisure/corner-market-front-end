@@ -1,3 +1,4 @@
+
 .container{
   height: 100%;
   display: grid;
@@ -75,4 +76,38 @@
       display: grid;
       grid-template-columns: 1fr;
     }
+  }
+
+/* ======= */
+.imageGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .imageWrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .listingImage {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .deleteImageButton {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1;
   }
