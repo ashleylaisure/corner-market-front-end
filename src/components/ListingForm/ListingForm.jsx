@@ -81,53 +81,47 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   };
 
   return (
-    <main>
+    <main className={styles.overlay}>
+      
+      <form onSubmit={handleSubmit} className={styles.listingForm}>
       <h1>{listingId ? "Edit Listing" : "New Listing"}</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title-input">Title:</label>
-        <input
-          required
-          type="text"
-          name="title"
-          id="title-input"
-          value={formData.title}
-          onChange={handleChange}
-        />
-        <label htmlFor="image-input">Upload Images:</label>
-        <input
-          type="file"
-          name="images"
-          id="image-input"
-          multiple
-          accept="image/*"
-          onChange={handleFileChange}
-//  james/messaging-functionality
-//         /> */}
-//         {/* Display files */}
-//         {/* <div>
-//           {formData.images.map((file, idx) => (
-//             <img
-//               key={idx}
-//               src={URL.createObjectURL(file)}
-//               alt={`Preview ${idx}`}
-//               style={{ maxWidth: "100px", marginRight: "8px" }}
-//             />
-//           ))} */}
-//         {/* </div> */}
-//         {/* </div> */}
 
-
-        />
+        <div className={styles.listingInput}>
+          <label htmlFor="title-input">Title:</label>
+          <input
+            required
+            type="text"
+            name="title"
+            id="title-input"
+            value={formData.title}
+            onChange={handleChange}
+          />
+        </div>
+        
+        <div className={styles.listingInput}>
+          <label htmlFor="image-input">Upload Images:</label>
+          <input
+            type="file"
+            name="images"
+            id="image-input"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+            />
+        </div>
 
         {/* Display image previews */}
         <div className={styles.imagePreview}>
           {imagePreview.map((url, idx) => (
-            <div key={idx} className={styles.previewItem}>
+            
+            <div key={idx}>
+              <h6>Image Preview</h6>
               <img
                 src={url}
                 alt={`Preview ${idx}`}
                 className={styles.previewImage}
               />
+
               <button
                 type="button"
                 className={styles.removeButton}
@@ -144,87 +138,90 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
               >
                 Remove
               </button>
+
             </div>
           ))}
         </div>
 
-        <label htmlFor="price-input">Price</label>
-        <input
-          required
-          type="number"
-          name="price"
-          id="price-input"
-          value={formData.price}
-          onChange={handleChange}
-        />
-        <label htmlFor="category-input">Select a Category:</label>
-        <select
-          required
-          name="category"
-          id="category-input"
-          value={formData.category}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            -- Select Category --
-          </option>
-          <option value="Video Games">Video Games</option>
-          <option value="Antiques & Collectables">
-            Antiques & Collectables
-          </option>
-          <option value="Arts & Crafts">Arts & Crafts</option>
-          <option value="Auto Parts & Accessories">
-            Auto Parts & Accessories
-          </option>
-          <option value="Baby Products">Baby Products</option>
-          <option value="Books, Movies & Music">Books, Movies & Music</option>
-          <option value="Cell Phones & Accessories">
-            Cell Phones & Accessories
-          </option>
-          <option value="Clothing & Accessories">Clothing & Accessories</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Furniture">Furniture</option>
-          <option value="Health & Beauty">Health & Beauty</option>
-          <option value="Home & Kitchen">Home & Kitchen</option>
-          <option value="Jewelry & Watches">Jewelry & Watches</option>
-          <option value="Musical Instruments">Musical Instruments</option>
-          <option value="Office Supplies">Office Supplies</option>
-          <option value="Patio & Garden">Patio & Garden</option>
-          <option value="Pet Supplies">Pet Supplies</option>
-          <option value="Sporting Goods">Sporting Goods</option>
-          <option value="Tools & Home Improvement">
-            Tools & Home Improvement
-          </option>
-          <option value="Toys & Games">Toys & Games</option>
-          <option value="Travel & Luggage">Travel & Luggage</option>
-          <option value="Miscellaneous">Miscellaneous</option>
-        </select>
-        <label htmlFor="condition-input">Condition:</label>
-        <select
-          required
-          name="condition"
-          id="condition-input"
-          value={formData.condition}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            -- Select Condition --
-          </option>
-          <option value="New">New</option>
-          <option value="Used - Like New">Used - Like New</option>
-          <option value="Used - Good">Used - Good</option>
-          <option value="Used - Fair">Used - Fair</option>
-        </select>
-        <label htmlFor="description-input">Description:</label>
-        <input
-          required
-          maxLength={500}
-          type="text"
-          name="description"
-          id="description-input"
-          value={formData.description}
-          onChange={handleChange}
-        />
+        <div className={styles.listingInput}>
+          <label htmlFor="price-input">Price:</label>
+          <input
+            required
+            type="number"
+            name="price"
+            id="price-input"
+            value={formData.price}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.listingInput} >
+          <label htmlFor="category-input">Category:</label>
+          <select
+            required
+            name="category"
+            id="category-input"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="" disabled> -- Select A Category -- </option>
+            <option value="Antiques & Collectables">Antiques & Collectables</option>
+            <option value="Arts & Crafts">Arts & Crafts</option>
+            <option value="Auto Parts & Accessories">Auto Parts & Accessories</option>
+            <option value="Baby Products">Baby Products</option>
+            <option value="Books, Movies & Music">Books, Movies & Music</option>
+            <option value="Cell Phones & Accessories">Cell Phones & Accessories</option>
+            <option value="Clothing & Accessories">Clothing & Accessories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Health & Beauty">Health & Beauty</option>
+            <option value="Home & Kitchen">Home & Kitchen</option>
+            <option value="Jewelry & Watches">Jewelry & Watches</option>
+            <option value="Musical Instruments">Musical Instruments</option>
+            <option value="Office Supplies">Office Supplies</option>
+            <option value="Patio & Garden">Patio & Garden</option>
+            <option value="Pet Supplies">Pet Supplies</option>
+            <option value="Sporting Goods">Sporting Goods</option>
+            <option value="Tools & Home Improvement">Tools & Home Improvement</option>
+            <option value="Toys & Games">Toys & Games</option>
+            <option value="Travel & Luggage">Travel & Luggage</option>
+            <option value="Video Games">Video Games</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+          </select>
+        </div>
+
+        <div className={styles.listingInput}>
+          <label htmlFor="condition-input">Condition:</label>
+          <select
+            required
+            name="condition"
+            id="condition-input"
+            value={formData.condition}
+            onChange={handleChange}
+          >
+            <option value="" disabled>-- Select Condition --</option>
+            <option value="New">New</option>
+            <option value="Used - Like New">Used - Like New</option>
+            <option value="Used - Good">Used - Good</option>
+            <option value="Used - Fair">Used - Fair</option>
+          </select> 
+        </div>
+
+        <div className={styles.listingInput}>
+          <label htmlFor="description-input">Description:</label>
+          <input
+            required
+            maxLength={500}
+            type="text"
+            name="description"
+            id="description-input"
+            placeholder="Be as descriptive as possible"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+        
+        
         <button type="submit">SUBMIT</button>
       </form>
     </main>

@@ -32,6 +32,9 @@ const App = () => {
 
   const [listings, setListings] = useState([]);
 
+  const noAsideRoutes = ["/listings/new", '/sign-up', '/sign-in', '/profile/new']
+  const hideAsideRoutes = noAsideRoutes.includes(location.pathname)
+
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
 
@@ -85,9 +88,12 @@ const App = () => {
     <>
       <NavBar />
       <main className="bodyGrid">
-        <div className="left">
-          <Aside />
-        </div>
+        {!hideAsideRoutes && (
+          <div className="left">
+            <Aside />
+          </div>
+        )}
+        
 
         <div className="center">
           <Routes>
@@ -135,9 +141,9 @@ const App = () => {
           </Routes>
         </div>
 
-        <div className="right">
+        {/* <div className="right">
           <h1>Messaging</h1>
-        </div>
+        </div> */}
 
       </main>
       

@@ -38,82 +38,118 @@ const ListingDetails = (props) => {
     if (!listing) return <main>Loading...</main>
 
     return (
-        <main>
-            <section>
+        <main className={styles.container}>
+          {/* Listing Images */}
+            <div className={styles.listingImages}>
+                {listing.images && listing.images.length > 0 ? (
+                    <div className={styles.imageGrid}>
+                        {listing.images.map((img, idx) => (
+                            <div key={idx} className={styles.imageWrapper}>
+                                <img
+                                    src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
+                                    alt={`Listing image ${idx}`}
+                                    className={styles.listingImage}
+                                />
+                                {user && listing.author._id === user._id && (
+                                    <button
+                                        className={styles.deleteImageButton}
+                                        onClick={async () => {
+                                            try {
+                                                await listingService.deleteListingImage(listing._id, idx);
+                                                const updated = await listingService.show(listing._id);
+                                                setListing(updated); // refresh state with updated listing
+                                            } catch (err) {
+                                                console.error("Failed to delete image:", err);
+                                            }
+                                        }}
+                                    >
+                                        ✕
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.noImagePlaceholder}>No image available</div>
+                )}
+            </div>
+
+            <section className={styles.detailsInfo}>
                 <header>
-                    <h2>{listing.title}</h2>
-                    <h4>Category: {listing.category}</h4>
-                    <p>${listing.price}</p>
-                    <p>{`Listed on ${new Date(listing.createdAt).toLocaleDateString()}`}</p>
+                    <div>
+                        <h2>{listing.title}</h2>
+                        <h4>Category: {listing.category}</h4>
+                    </div>
+                    
+                    <div>
+                        <p>${listing.price}</p>
+                        <h6>{`Listed on ${new Date(listing.createdAt).toLocaleDateString()}`}</h6>
+                    </div>
+                    
                 </header>
-                {/* Listing Images */}
-                <div className={styles.listingImages}>
-                    {listing.images && listing.images.length > 0 ? (
-                        <div className={styles.imageGrid}>
-                            {listing.images.map((img, idx) => (
-                                <div key={idx} className={styles.imageWrapper}>
-                                    <img
-                                        src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
-                                        alt={`Listing image ${idx}`}
-                                        className={styles.listingImage}
-                                    />
-                                    {user && listing.author._id === user._id && (
-                                        <button
-                                            className={styles.deleteImageButton}
-                                            onClick={async () => {
-                                                try {
-                                                    await listingService.deleteListingImage(listing._id, idx);
-                                                    const updated = await listingService.show(listing._id);
-                                                    setListing(updated); // refresh state with updated listing
-                                                } catch (err) {
-                                                    console.error("Failed to delete image:", err);
-                                                }
-                                            }}
-                                        >
-                                            ✕
-                                        </button>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className={styles.noImagePlaceholder}>No image available</div>
-                    )}
+
+                <div className={styles.detailLinks}>
+                    <div className={styles.links}>
+                        <i className='bx bxl-messenger bxDetails'></i>
+                        <p>Message</p>
+                    </div>
+
+                    <div className={styles.links}>
+                        <i className='bx bxs-save bxDetails'></i>
+                        <p>Save</p>
+                    </div>
                 </div>
-
-                <button>Message</button>
-                <button>Save</button>
-
-                <h4>Details</h4>
-                <h5>Condition: {listing.condition}</h5>
+                <div>
+                    <h4>Details:</h4>
+                    <h5>Condition: {listing.condition}</h5>
+                </div>
+                
                 <p>{listing.description}</p>
 
                 <p>{listing.location}</p>
 
+                <div className={styles.sectionDivider}></div>
+
                 {/* Only show seller information if the viewer is NOT the seller */}
                 {listing.author._id !== user?._id && (
-                    <>
+                    <div className={styles.seller}>
                         <h4>Seller Information</h4>
                         {user ? (
-                            <Link to={`/users/${listing.author._id}`}>
-                                {listing.author.username}'s Profile
-                            </Link>
+                            <div className={styles.sellerLink}>
+                                <i className='bx bxs-face'></i>
+                                <Link to={`/users/${listing.author._id}`}>
+                                    {listing.author.username}'s Profile
+                                </Link>
+                            </div>
+                            
                         ) : (
                             <p>
                                 Log in to see {listing.author.username}'s profile!
                             </p>
                         )}
-                    </>
+                    </div>
                 )}
+
+                
 
                 {/* Show Edit & Delete buttons if the user owns the listing */}
                 {user && listing.author._id === user._id && (
-                    <>
-                        <button onClick={handleDelete}>Delete</button>
-                        <button onClick={() => navigate(`/listings/${listingId}/edit`)}>Edit</button>
-                    </>
+                    <div className={styles.detailLinks}>
+                    
+                        <div className={styles.links} onClick={handleDelete}>
+                            <i className='bx bx-task-x bxDetails'></i>
+                            <p>Delete</p>
+                        </div>
+
+                        <div className={styles.links} onClick={() => navigate(`/listings/${listingId}/edit`)}>
+                        <i className='bx bx-calendar-edit bxDetails'></i>
+                            <p>Edit</p>
+                        </div>
+                    </div>
                 )}
+
             </section>
+
         </main>
     );
 }

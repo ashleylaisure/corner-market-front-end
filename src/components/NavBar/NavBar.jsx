@@ -1,13 +1,14 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router";
 import styles from './NavBar.module.css';
-import Logo from '../../assets/images/logo-2.jpg'
 import profile from '../../assets/images/channels4_profile.jpg'
 
 import { UserContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
+  const [showLabel, setShowLabel] = useState(null)
+
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
@@ -15,48 +16,23 @@ const NavBar = () => {
   };
 
   return (
-//     james/messaging-functionality
-//     <nav>
-//       <li>
-//         <Link to="/">Corner Market</Link>
-//       </li>
-//       {/* <li><Link to='/listings'>Listings</Link></li> */}
-
-//       {user ? (
-//         <ul>
-//           <li>Welcome, {user.username}</li>
-//           <li>
-//             <Link to={`/conversations/${user._id}`}>Messages</Link>
-//           </li>
-//           <li>
-//             <Link to={`/users/${user._id}`}>Profile</Link>
-//           </li>
-//           <li>
-//             <Link to="/listings/new">Create a Listing</Link>
-//           </li>
-//           <li>
-//             <Link to="/" onClick={handleSignOut}>
-//               Sign Out
-//             </Link>
-//           </li>
-//         </ul>
-//       ) : (
-//         <ul>
-//           <li>
-//             <Link to="/sign-in">Sign In</Link>
-//           </li>
-//           <li>
-//             <Link to="/sign-up">Sign Up</Link>
-//           </li>
-//         </ul>
-//       )}
 
     
     <nav className={styles.container}>
 
       <div className={styles.navLeft}>
-        <Link to="/"><img src={Logo} alt='Corner Market Log' className={styles.logo}/></Link>
-        <h1>Corner Market</h1>
+
+        <div className={styles.iconLabel} onMouseEnter={() => setShowLabel('home')} onMouseLeave={() => setShowLabel(null)}>
+
+            <Link to="/">
+              <i className='bx bxs-home-smile bxNav'></i>
+              {showLabel === 'home' && (
+                <span className={styles.hoverLabel}>HOME</span>
+              )}
+            </Link>
+        </div>
+        
+        <h1 className={styles.logo}>Corner Market</h1>
       </div>
 
       <div>
@@ -66,9 +42,34 @@ const NavBar = () => {
       <div >
         {user ? (
           <div className={styles.navRight}>
-            <i className='bx bx-message-dots' ></i>
-            <Link to={`/users/${user._id}`}><img src={profile} alt="profile picture" /></Link>
-            <Link to="/" onClick={handleSignOut}><i className='bx bx-chevrons-right'></i></Link>
+
+            <div className={styles.iconLabel} onMouseEnter={() => setShowLabel('mesg')} onMouseLeave={() => setShowLabel(null)}>
+              <Link to={`/conversations/${user._id}`}>
+                <i className='bx bxl-messenger bxNav'></i>
+                {showLabel === 'mesg' && (
+                <span className={styles.hoverLabel}>Messenger</span>
+              )}
+              </Link>
+            </div>
+
+            <div className={styles.iconLabel} onMouseEnter={() => setShowLabel('profile')} onMouseLeave={() => setShowLabel(null)}>
+              <Link to={`/users/${user._id}`}>
+                <img src={profile} alt="profile picture" />
+                {showLabel === 'profile' && (
+                <span className={styles.hoverLabel}>Profile</span>
+              )}
+              </Link>
+            </div>
+
+            <div className={styles.iconLabel} onMouseEnter={() => setShowLabel('logout')} onMouseLeave={() => setShowLabel(null)}>
+              <Link to="/" onClick={handleSignOut}>
+                <i className='bx bx-chevrons-right bxNav'></i>
+                {showLabel === 'logout' && (
+                <span className={styles.hoverLabel}>Log Out</span>
+              )}
+              </Link>
+            </div>
+            
           </div>
 
         ) : (
