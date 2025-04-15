@@ -11,7 +11,7 @@ const getConversations = async (userId) => {
     });
     return res.json();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -26,8 +26,43 @@ const getMessages = async (conversationId) => {
     });
     return await res.json();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-export { getConversations, getMessages };
+// Create or resume conversation with another user
+const createOrGetConversation = async (senderId, receiverId) => {
+  try {
+    const res = await fetch(BASE_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ senderId, receiverId }),
+    });
+
+    return res.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Send a message to another user
+const sendMessage = async (conversationId, messageData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${conversationId}/messages`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(messageData),
+    });
+    return res.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getConversations, getMessages, sendMessage, createOrGetConversation };
