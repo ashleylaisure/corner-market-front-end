@@ -9,6 +9,15 @@ const index = async () => {
   }
 };
 
+const getByCategory = async (category) => {
+  try {
+    const res = await fetch(`${BASE_URL}/filter/${category}`);
+    return res.json();
+  } catch (error) {
+    console.log(error)
+  }
+};
+
 const update = async (listingId, listingFormData) => {
   try {
     const res = await fetch(`${BASE_URL}/${listingId}`, {
@@ -124,6 +133,7 @@ const deleteListingImage = async (listingId, imageIndex) => {
 
 export { 
     index,
+    getByCategory,
     show,
     create,
     update,

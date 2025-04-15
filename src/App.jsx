@@ -23,13 +23,13 @@ import UserConversations from "./components/UserConversations/UserConversations.
 import ConversationDetails from "./components/ConversationDetails/ConversationDetails.jsx";
 
 import * as listingService from "./services/listingService.js";
+import { IoGitMerge } from "react-icons/io5";
 
 const App = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState(null);
-
   const [listings, setListings] = useState([]);
 
   const noAsideRoutes = ["/listings/new", '/sign-up', '/sign-in', '/profile/new']
@@ -140,6 +140,8 @@ const App = () => {
             <Route path="/conversations/:userId" element={<UserConversations />} />
             <Route path="/messages/:conversationId" element={<ConversationDetails />}
             ></Route>
+
+            <Route path="/listings/filter/:category" element={<ListingIndex  />} />
           </Routes>
         </div>
 
