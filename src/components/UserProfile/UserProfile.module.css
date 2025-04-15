@@ -41,7 +41,7 @@
 /* Profile Info */
 .profileInfo {
   display: grid;
-  grid-template-columns: 200px auto 200px;
+  grid-template-columns: 200px auto 250px;
 }
 
 .socialLinks {
@@ -53,9 +53,9 @@
 }
 
 .profileActions {
-  width: 80%;
+  width: 70%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
