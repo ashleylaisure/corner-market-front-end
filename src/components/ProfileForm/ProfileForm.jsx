@@ -6,6 +6,7 @@ import { UserContext } from '../../contexts/UserContext';
 import styles from './ProfileForm.module.css';
 
 
+
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
     const navigate = useNavigate();
@@ -41,6 +42,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                         twitterLink: profileData.twitterLink || "",
                         instagramLink: profileData.instagramLink || "",
                     });
+                    setLoading(false);
 
                     setInitialProfileImage(
                         profileData.profilePicture
@@ -116,7 +118,13 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         } catch (err) {
             setError("Failed to save profile");
         }
+      };
+      fetchProfile();
+    }
+  }, [currentUser, isNewUser]);
 
+  const handleGoBack = () => {
+    navigate(-1);
     };
 
     if (loading) return <div>Loading...</div>;
@@ -216,12 +224,12 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                 <button type="submit" className={styles.submitButton}>
                     {isNewUser ? "Create Profile" : "Save Changes"}
                 </button>
+                {isNewUser ? "" : <button onClick={handleGoBack}>Cancel</button>}
             </form>
-
-
 
         </div>
     );
+
 };
 
 export default ProfileForm;

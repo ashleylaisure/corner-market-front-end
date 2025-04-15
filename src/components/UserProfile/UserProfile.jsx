@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { getUserProfile } from "../../services/userService";
 import styles from "./UserProfile.module.css";
 import * as messageService from "../../services/messageService.js";

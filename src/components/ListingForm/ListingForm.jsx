@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router";
-import styles from './ListingForm.module.css';
+import styles from "./ListingForm.module.css";
 
 import * as ListingService from "../../services/listingService.js";
 
@@ -12,7 +12,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   const [formData, setFormData] = useState({
     title: "",
     images: [],
-    price: 9999,
+    price: "",
     category: "",
     condition: "",
     description: "",
@@ -24,7 +24,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
       const listingData = await ListingService.show(listingId);
       setFormData(listingData);
       if (listingData.images && listingData.images.length > 0) {
-        const previewUrls = listingData.images.map(img => {
+        const previewUrls = listingData.images.map((img) => {
           return `${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`;
         });
         setImagePreview(previewUrls);
@@ -36,7 +36,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
       setFormData({
         title: "",
         images: [],
-        price: 9999,
+        price: "",
         category: "",
         condition: "",
         description: "",
@@ -49,14 +49,13 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   // also runs when the imagePreview array changes, ensuring any old previews are cleaned up
   useEffect(() => {
     return () => {
-      imagePreview.forEach(url => URL.revokeObjectURL(url));
+      imagePreview.forEach((url) => URL.revokeObjectURL(url));
     };
   }, [imagePreview]);
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
-
 
   // Handle file selection
   const handleFileChange = (evt) => {
@@ -71,14 +70,15 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     setImagePreview((prev) => [...prev, ...newPreviews]);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
     for (const key in formData) {
       if (key === "images") {
-        formData.images.forEach((file) => formDataToSend.append("images", file));
+        formData.images.forEach((file) =>
+          formDataToSend.append("images", file)
+        );
       } else {
         formDataToSend.append(key, formData[key]);
       }
@@ -91,9 +91,12 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <main className={listingId ? styles.overlay : styles.newOverlay}>
-
       <form onSubmit={handleSubmit} className={styles.listingForm}>
         <h1>{listingId ? "Edit Listing" : "New Listing"}</h1>
 
@@ -124,7 +127,6 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
         {/* Display image previews */}
         <div className={styles.imagePreview}>
           {imagePreview.map((url, idx) => (
-
             <div key={idx}>
               <h6>Image Preview</h6>
               <img
@@ -144,7 +146,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
                   const newPreviews = [...imagePreview];
 
                   // Only revoke blob URLs
-                  if (newPreviews[idx].startsWith('blob:')) {
+                  if (newPreviews[idx].startsWith("blob:")) {
                     URL.revokeObjectURL(newPreviews[idx]);
                   }
 
@@ -154,7 +156,6 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
               >
                 Remove
               </button>
-
             </div>
           ))}
         </div>
@@ -171,7 +172,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           />
         </div>
 
-        <div className={styles.listingInput} >
+        <div className={styles.listingInput}>
           <label htmlFor="category-input">Category:</label>
           <select
             required
@@ -180,14 +181,25 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             value={formData.category}
             onChange={handleChange}
           >
-            <option value="" disabled> -- Select A Category -- </option>
-            <option value="Antiques & Collectables">Antiques & Collectables</option>
+            <option value="" disabled>
+              {" "}
+              -- Select A Category --{" "}
+            </option>
+            <option value="Antiques & Collectables">
+              Antiques & Collectables
+            </option>
             <option value="Arts & Crafts">Arts & Crafts</option>
-            <option value="Auto Parts & Accessories">Auto Parts & Accessories</option>
+            <option value="Auto Parts & Accessories">
+              Auto Parts & Accessories
+            </option>
             <option value="Baby Products">Baby Products</option>
             <option value="Books, Movies & Music">Books, Movies & Music</option>
-            <option value="Cell Phones & Accessories">Cell Phones & Accessories</option>
-            <option value="Clothing & Accessories">Clothing & Accessories</option>
+            <option value="Cell Phones & Accessories">
+              Cell Phones & Accessories
+            </option>
+            <option value="Clothing & Accessories">
+              Clothing & Accessories
+            </option>
             <option value="Electronics">Electronics</option>
             <option value="Furniture">Furniture</option>
             <option value="Health & Beauty">Health & Beauty</option>
@@ -198,7 +210,9 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             <option value="Patio & Garden">Patio & Garden</option>
             <option value="Pet Supplies">Pet Supplies</option>
             <option value="Sporting Goods">Sporting Goods</option>
-            <option value="Tools & Home Improvement">Tools & Home Improvement</option>
+            <option value="Tools & Home Improvement">
+              Tools & Home Improvement
+            </option>
             <option value="Toys & Games">Toys & Games</option>
             <option value="Travel & Luggage">Travel & Luggage</option>
             <option value="Video Games">Video Games</option>
@@ -215,7 +229,9 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             value={formData.condition}
             onChange={handleChange}
           >
-            <option value="" disabled>-- Select Condition --</option>
+            <option value="" disabled>
+              -- Select Condition --
+            </option>
             <option value="New">New</option>
             <option value="Used - Like New">Used - Like New</option>
             <option value="Used - Good">Used - Good</option>
@@ -237,8 +253,9 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           />
         </div>
 
-
         <button type="submit">SUBMIT</button>
+
+        <button onClick={handleGoBack}>CANCEL</button>
       </form>
     </main>
   );
