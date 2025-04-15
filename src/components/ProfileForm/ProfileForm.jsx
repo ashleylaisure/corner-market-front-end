@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import {updateUserProfile, getUserProfile, createUserProfile} from '../../services/userService';
-import ProfileImageUpload from '../ProfileImageUpload/ProfileImageUpload';
-import styles from './ProfileForm.module.css';
+import {
+  updateUserProfile,
+  getUserProfile,
+  createUserProfile,
+} from "../../services/userService";
+import ProfileImageUpload from "../ProfileImageUpload/ProfileImageUpload";
+import styles from "./ProfileForm.module.css";
 
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
   const navigate = useNavigate();
@@ -22,7 +26,8 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     if (!isNewUser && currentUser) {
       const fetchProfile = async () => {
         try {
-          const profileData = (await getUserProfile(currentUser._id)).user.profile;
+          const profileData = (await getUserProfile(currentUser._id)).user
+            .profile;
 
           setFormData({
             bio: profileData.bio || "",
@@ -53,7 +58,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
   // Handler for image upload completion
   const handleImageUpload = (updatedProfile) => {
-    console.log('Profile image updated:', updatedProfile);
+    console.log("Profile image updated:", updatedProfile);
     // You can update UI or state here if needed
   };
 
@@ -68,27 +73,29 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         await updateUserProfile(currentUser._id, formData);
       }
 
-
       // Navigate to profile page, replace avoids users hitting back and returning to form
       navigate(`/users/${currentUser._id}`), { replace: true };
     } catch (err) {
-      setError('Failed to save profile');
-
+      setError("Failed to save profile");
     }
+  };
+
+  const handleGoBack = () => {
+    navigate(-1);
   };
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className={isNewUser? styles.newFormContainer : styles.formContainer}>
+    <div className={isNewUser ? styles.newFormContainer : styles.formContainer}>
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.imageUploadSection}>
         <h1>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h1>
         {/* <h3>Profile Images</h3> */}
-        <ProfileImageUpload 
-          userId={currentUser?._id} 
-          onImageUpload={handleImageUpload} 
+        <ProfileImageUpload
+          userId={currentUser?._id}
+          onImageUpload={handleImageUpload}
         />
       </div>
 
@@ -134,7 +141,9 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         <h3>Social Media Links</h3>
 
         <div className={styles.formGroup}>
-          <label htmlFor="facebookLink"><i className='bx bxl-facebook bxSocail'></i>  Facebook</label>
+          <label htmlFor="facebookLink">
+            <i className="bx bxl-facebook bxSocail"></i> Facebook
+          </label>
           <input
             type="url"
             id="facebookLink"
@@ -146,7 +155,9 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="twitterLink"><i className='bx bxl-twitter bxSocail' ></i>  Twitter</label>
+          <label htmlFor="twitterLink">
+            <i className="bx bxl-twitter bxSocail"></i> Twitter
+          </label>
           <input
             type="url"
             id="twitterLink"
@@ -158,7 +169,9 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="instagramLink"><i className='bx bxl-instagram bxSocail'></i>  Instagram</label>
+          <label htmlFor="instagramLink">
+            <i className="bx bxl-instagram bxSocail"></i> Instagram
+          </label>
           <input
             type="url"
             id="instagramLink"
@@ -172,9 +185,8 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         <button type="submit" className={styles.submitButton}>
           {isNewUser ? "Create Profile" : "Save Changes"}
         </button>
+        {isNewUser ? "" : <button onClick={handleGoBack}>Cancel</button>}
       </form>
-
-    
     </div>
   );
 };
