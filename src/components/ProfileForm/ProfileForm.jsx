@@ -7,6 +7,7 @@ import styles from './ProfileForm.module.css';
 
 
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
+
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         bio: "",
@@ -115,6 +116,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         } catch (err) {
             setError("Failed to save profile");
         }
+
     };
 
     if (loading) return <div>Loading...</div>;
@@ -215,6 +217,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                     {isNewUser ? "Create Profile" : "Save Changes"}
                 </button>
             </form>
+
 
 
         </div>
