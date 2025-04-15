@@ -23,6 +23,12 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     const fetchListing = async () => {
       const listingData = await ListingService.show(listingId);
       setFormData(listingData);
+      if (listingData.images && listingData.images.length > 0) {
+        const previewUrls = listingData.images.map(img => {
+          return `${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`;
+        });
+        setImagePreview(previewUrls);
+      }
     };
     if (listingId) {
       fetchListing();
@@ -55,17 +61,17 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   // Handle file selection
   const handleFileChange = (evt) => {
     const newFiles = Array.from(evt.target.files);
-  
+
     // Merge with existing files
     const updatedFiles = [...formData.images, ...newFiles];
     setFormData({ ...formData, images: updatedFiles });
-  
+
     // Create preview URLs for new files and merge with existing previews
     const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
     setImagePreview((prev) => [...prev, ...newPreviews]);
   };
 
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,10 +92,10 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   };
 
   return (
-    <main className={listingId? styles.overlay : styles.newOverlay}>
-      
+    <main className={listingId ? styles.overlay : styles.newOverlay}>
+
       <form onSubmit={handleSubmit} className={styles.listingForm}>
-      <h1>{listingId ? "Edit Listing" : "New Listing"}</h1>
+        <h1>{listingId ? "Edit Listing" : "New Listing"}</h1>
 
         <div className={styles.listingInput}>
           <label htmlFor="title-input">Title:</label>
@@ -102,7 +108,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             onChange={handleChange}
           />
         </div>
-        
+
         <div className={styles.listingInput}>
           <label htmlFor="image-input">Upload Images:</label>
           <input
@@ -112,13 +118,13 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             multiple
             accept="image/*"
             onChange={handleFileChange}
-            />
+          />
         </div>
 
         {/* Display image previews */}
         <div className={styles.imagePreview}>
           {imagePreview.map((url, idx) => (
-            
+
             <div key={idx}>
               <h6>Image Preview</h6>
               <img
@@ -136,7 +142,12 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
                   setFormData({ ...formData, images: newImages });
 
                   const newPreviews = [...imagePreview];
-                  URL.revokeObjectURL(newPreviews[idx]);
+
+                  // Only revoke blob URLs
+                  if (newPreviews[idx].startsWith('blob:')) {
+                    URL.revokeObjectURL(newPreviews[idx]);
+                  }
+
                   newPreviews.splice(idx, 1);
                   setImagePreview(newPreviews);
                 }}
@@ -209,7 +220,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             <option value="Used - Like New">Used - Like New</option>
             <option value="Used - Good">Used - Good</option>
             <option value="Used - Fair">Used - Fair</option>
-          </select> 
+          </select>
         </div>
 
         <div className={styles.listingInput}>
@@ -225,8 +236,8 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             onChange={handleChange}
           />
         </div>
-        
-        
+
+
         <button type="submit">SUBMIT</button>
       </form>
     </main>
