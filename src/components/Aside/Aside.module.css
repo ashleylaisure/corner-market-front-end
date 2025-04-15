@@ -10,16 +10,18 @@ aside {
     width: 25vw;
 }
 
+.catContainer {
+    width: 90%;
+}
 
 .cat {
     display: flex;
     align-items: center;
     height: 2rem;
-    /* cursor: pointer; */
-    transition: all 300ms ease;
     position: relative;
     gap: 5px;
     width: 100%;
+    transition: all 300ms ease;
 }
 
 .cat:hover {
@@ -33,10 +35,12 @@ aside {
 
 .catLink {
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 5px;
+    width: 100%;
+    
 }
+
 
 .search {
     display: flex;

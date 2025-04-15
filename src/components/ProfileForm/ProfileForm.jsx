@@ -16,6 +16,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
   });
   const [loading, setLoading] = useState(!isNewUser);
   const [error, setError] = useState(null);
+  const [photosAdded, setPhotosAdded] = useState(false);
 
   useEffect(() => {
     // If editing existing profile, fetch current data
@@ -54,20 +55,28 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
   // Handler for image upload completion
   const handleImageUpload = (updatedProfile) => {
     console.log('Profile image updated:', updatedProfile);
+    setPhotosAdded(true);
+    
     // You can update UI or state here if needed
   };
 
+  console.log('has the user added photos?', photosAdded)
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      
       // Create or update profile details
       if (isNewUser) {
-        await createUserProfile(currentUser._id, formData);
+        if (photosAdded) {
+          await updateUserProfile(currentUser._id, formData);
+        } else {
+          await createUserProfile(currentUser._id, formData);
+        }
       } else {
         await updateUserProfile(currentUser._id, formData);
       }
-
+      
 
       // Navigate to profile page, replace avoids users hitting back and returning to form
       navigate(`/users/${currentUser._id}`), { replace: true };
