@@ -1,30 +1,33 @@
+
 import { useState, useEffect } from 'react';
 import { uploadProfilePicture, uploadCoverPhoto } from '../../services/userService';
 import styles from './ProfileImageUpload.module.css';
 
 const ProfileImageUpload = ({ userId, onImageUpload }) => {
-    const [profileLoading, setProfileLoading] = useState(false);
-    const [coverLoading, setCoverLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [profilePreview, setProfilePreview] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [coverLoading, setCoverLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [profilePreview, setProfilePreview] = useState(null);
   const [coverPreview, setCoverPreview] = useState(null);
 
-const handleProfilePictureUpload = async (e) => {
+
+  const handleProfilePictureUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
     //  Create preview 
   setProfilePreview(URL.createObjectURL(file));
-    
+
     const formData = new FormData();
-    formData.append('profilePicture', file);
-    
+    formData.append("profilePicture", file);
+
     try {
       setProfileLoading(true);
       setError(null);
-      
+
       const result = await uploadProfilePicture(userId, formData);
       if (onImageUpload) onImageUpload(result.profile);
-      
+
       setProfileLoading(false);
     } catch (err) {
       setError("Failed to upload profile picture");
@@ -35,19 +38,21 @@ const handleProfilePictureUpload = async (e) => {
   const handleCoverPhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
     
     setCoverPreview(URL.createObjectURL(file));
 
+
     const formData = new FormData();
-    formData.append('coverPhoto', file);
-    
+    formData.append("coverPhoto", file);
+
     try {
       setCoverLoading(true);
       setError(null);
-      
+
       const result = await uploadCoverPhoto(userId, formData);
       if (onImageUpload) onImageUpload(result.profile);
-      
+
       setCoverLoading(false);
     } catch (err) {
       setError("Failed to upload cover photo");
@@ -111,5 +116,6 @@ const handleProfilePictureUpload = async (e) => {
       </div>
     );
   };
+
 
 export default ProfileImageUpload;

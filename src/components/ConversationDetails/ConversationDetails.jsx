@@ -9,16 +9,24 @@ const ConversationDetails = () => {
   const { user } = useContext(UserContext);
   const { conversationId } = useParams();
   const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [otherUser, setOtherUser] = useState(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const AllMessages = await messageService.getMessages(
+        const allMessages = await messageService.getMessages(
           conversationId,
           user._id
         );
+        setMessages(allMessages);
 
-        setMessages(AllMessages);
+        if (allMessages.length > 0) {
+          const first = allMessages[0];
+          const other =
+            first.senderId._id === user._id ? first.receiverId : first.senderId;
+          setOtherUser(other);
+        }
       } catch (err) {
         console.error("Error fetching messages:", err);
       }
@@ -26,6 +34,27 @@ const ConversationDetails = () => {
 
     fetchMessages();
   }, [conversationId, user._id]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+
+    try {
+      await messageService.sendMessage(conversationId, {
+        senderId: user._id,
+        receiverId: otherUser._id,
+        message: newMessage,
+      });
+
+      const updatedMessages = await messageService.getMessages(
+        conversationId,
+        user._id
+      );
+      setMessages(updatedMessages);
+      setNewMessage("");
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
+  };
 
   return (
     <main>
@@ -41,6 +70,16 @@ const ConversationDetails = () => {
           </li>
         ))}
       </ul>
+
+      <form onSubmit={handleSendMessage}>
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Send a Message"
+        />
+        <button type="submit">Send</button>
+      </form>
     </main>
   );
 };
