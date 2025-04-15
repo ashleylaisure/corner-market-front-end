@@ -29,8 +29,9 @@ const Aside = () => {
 
                 <h3>CATEGORIES</h3>
                     <div className={styles.cat}>
-                        <i className='bx bxs-coin bxAside'></i><p>Antiques & Collectables</p>
+                        <Link to={`/listings/filter/${encodeURIComponent("Antiques & Collectables")}`} className={styles.catLink}><i className='bx bxs-coin bxAside'></i><p>Antiques & Collectables</p></Link>
                     </div>
+                    
                     <div className={styles.cat}>
                         <i className='bx bxs-brush bxAside'></i><p>Arts & Crafts</p>
                     </div>
