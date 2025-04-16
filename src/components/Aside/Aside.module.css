@@ -7,7 +7,7 @@ aside {
     align-items: flex-start;
     gap: .4rem;
     box-shadow: 0.2rem 0 .3rem var(--color-primary-blue);
-    width: 25vw;
+    width: 20vw;
 }
 
 .catContainer {

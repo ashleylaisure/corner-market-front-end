@@ -1,7 +1,12 @@
 .formContainer {
     position: relative;
-    width: 75vw;
-    background: rgba(0,0,0,.5);
+    width: 80vw;
+
+    background-image: url('../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -12,16 +17,24 @@
 .newFormContainer {
     position: relative;
     width: 100vw;
-    background: rgba(0,0,0,.5);
+
+    background-image: url('../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+.formBackdrop {
+    width: 100%;
+    backdrop-filter: blur(4px);
+}
+
 .profileDataContainer {
     margin: 2.5rem 0;
-    width: 75%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,7 +48,7 @@
     border-radius: var(--card-border-radius);
     max-width: 650px;
     width: 95%;
-    box-shadow: 0 0 20px var(--color-hero);
+    box-shadow: 0 0 20px var(--color-blue-gray);
 
     display: flex;
     flex-direction: column;

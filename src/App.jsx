@@ -37,6 +37,7 @@ const App = () => {
     "/sign-in",
     "/profile/new",
   ];
+  
   const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
 
   const handleDeleteListing = async (listingId) => {

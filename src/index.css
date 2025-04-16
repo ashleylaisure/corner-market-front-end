@@ -64,7 +64,6 @@ a {
   display: flex;
   align-items: flex-start;
   column-gap: .3rem;
-  position: absolute;
 }
 
 .bxNav {
