@@ -143,3 +143,10 @@
     align-items: center;
   }
 }
+
+.staticMap {
+    margin: 2rem 0;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    border: 1px solid #ccc;
+  }

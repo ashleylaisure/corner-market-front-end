@@ -9,11 +9,11 @@ const ListingIndex = ({ listings: initialListings }) => {
     const location = useLocation();
 
     const {category} = useParams();
-    // console.log('category', category)
+    
     const [filteredListing, setFilteredListing] = useState(null)
 
     const listingsToRender = category ? (filteredListing || []) : listings;
-    // console.log("render", listingsToRender)
+    
 
     useEffect(() => {
         const fetchLatest = async () => {

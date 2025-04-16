@@ -5,6 +5,8 @@ import styles from "./UserProfile.module.css";
 import * as messageService from "../../services/messageService.js";
 import defaultCoverPhoto from "../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg";
 import defaultProfilePic from '../../assets/images/default-profile-picture.png';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+
 
 const UserProfile = ({ currentUser }) => {
     const [profile, setProfile] = useState(null);
@@ -31,7 +33,6 @@ const UserProfile = ({ currentUser }) => {
 
                 // Handle different response structures
                 if (data.user) {
-                    // Structure: { user: { profile: {...}, username, listings } }
                     const {
                         username,
                         listings = [],
@@ -188,7 +189,11 @@ const UserProfile = ({ currentUser }) => {
 
                             <div className={styles.locationInfo}>
                                 {/* <h5>Location</h5> */}
-                                <h5>{profile.location || "Not specified"}</h5>
+                                <h5>
+                                    {profile.location?.city && profile.location?.state
+                                        ? `${profile.location.city}, ${profile.location.state}`
+                                        : "Not specified"}
+                                </h5>
                             </div>
 
                             {/* Bio section with fallback for empty bio */}
@@ -219,6 +224,25 @@ const UserProfile = ({ currentUser }) => {
                         </div>
                     </div>
                 </div>
+                {profile?.location?.coordinates?.lat && profile?.location?.coordinates?.lng && (
+                    <div className={styles.staticMap}>
+                        <MapContainer
+                            center={[profile.location.coordinates.lat, profile.location.coordinates.lng]}
+                            zoom={12}
+                            style={{ height: "300px", width: "100%" }}
+                            dragging={false}
+                            scrollWheelZoom={false}
+                            doubleClickZoom={false}
+                            zoomControl={false}
+                        >
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution="&copy; OpenStreetMap contributors"
+                            />
+                            <Marker position={[profile.location.coordinates.lat, profile.location.coordinates.lng]} />
+                        </MapContainer>
+                    </div>
+                )}
 
                 <div className={styles.sectionDivider}></div>
 
