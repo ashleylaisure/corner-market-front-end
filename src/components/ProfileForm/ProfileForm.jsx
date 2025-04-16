@@ -69,8 +69,8 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
       };
 
       fetchProfile();
-
     }
+  }, [currentUser, isNewUser]);
 
   // Handler for form input changes
   const handleChange = (e) => {
