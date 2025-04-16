@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router";
 import * as listingService from "../../services/listingService.js";
 import defaultProfilePic from "../../assets/images/default-profile-picture.png";
 import styles from "./ListingDetails.module.css";
+import DetailsImageSlider from "../DetailsImageSlider/DetailsImageSlider.jsx";
 
 import { UserContext } from "../../contexts/UserContext.jsx";
 import * as messageService from "../../services/messageService.js";
@@ -55,36 +56,37 @@ const ListingDetails = (props) => {
             {/* Listing Images */}
             <div className={styles.listingImages}>
                 {listing.images && listing.images.length > 0 ? (
-                    <div className={styles.imageGrid}>
-                        {listing.images.map((img, idx) => (
-                            <div key={idx} className={styles.imageWrapper}>
-                                <img
-                                    src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
-                                    alt={`Listing image ${idx}`}
-                                    className={styles.listingImage}
-                                />
-                                {user && listing.author._id === user._id && (
-                                    <button
-                                        className={styles.deleteImageButton}
-                                        onClick={async () => {
-                                            try {
-                                                await listingService.deleteListingImage(
-                                                    listing._id,
-                                                    idx
-                                                );
-                                                const updated = await listingService.show(listing._id);
-                                                setListing(updated); // refresh state with updated listing
-                                            } catch (err) {
-                                                console.error("Failed to delete image:", err);
-                                            }
-                                        }}
-                                    >
-                                        <i className="bx bx-x"></i>
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                    <DetailsImageSlider images={listing.images}/>
+                    // <div className={styles.imageGrid}>
+                    //     {listing.images.map((img, idx) => (
+                    //         <div key={idx} className={styles.imageWrapper}>
+                    //             <img
+                    //                 src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
+                    //                 alt={`Listing image ${idx}`}
+                    //                 className={styles.listingImage}
+                    //             />
+                    //             {user && listing.author._id === user._id && (
+                    //                 <button
+                    //                     className={styles.deleteImageButton}
+                    //                     onClick={async () => {
+                    //                         try {
+                    //                             await listingService.deleteListingImage(
+                    //                                 listing._id,
+                    //                                 idx
+                    //                             );
+                    //                             const updated = await listingService.show(listing._id);
+                    //                             setListing(updated); // refresh state with updated listing
+                    //                         } catch (err) {
+                    //                             console.error("Failed to delete image:", err);
+                    //                         }
+                    //                     }}
+                    //                 >
+                    //                     <i className="bx bx-x"></i>
+                    //                 </button>
+                    //             )}
+                    //         </div>
+                    //     ))}
+                    // </div>
                 ) : (
                     <div className={styles.noImagePlaceholder}>No image available</div>
                 )}
@@ -105,21 +107,27 @@ const ListingDetails = (props) => {
                     </div>
                 </header>
 
-                <div className={styles.detailLinks}>
+                <div >
                     {user && listing.author._id !== user._id && (
-                        <div className={styles.links} onClick={handleStartConversation}>
-                            <i className="bx bxl-messenger bxDetails"></i>
-                            <p>Message</p>
+                        <div className={styles.detailLinks}>
+                            <div className={styles.links} onClick={handleStartConversation}>
+                                <i className="bx bxl-messenger bxDetails"></i>
+                                <p>Message</p>
+                            </div>
+                            <div className={styles.links}>
+                                <i className="bx bxs-save bxDetails"></i>
+                                <p>Save</p>
+                            </div>
                         </div>
+
                     )}
 
-                    <div className={styles.links}>
-                        <i className="bx bxs-save bxDetails"></i>
-                        <p>Save</p>
-                    </div>
+                    
                 </div>
-
-                <p>{listing.description}</p>
+                <div>
+                    <h6>Condition: {listing.condition}</h6>
+                    <p>{listing.description}</p>
+                </div>
 
                 <p>{listing.location}</p>
 
