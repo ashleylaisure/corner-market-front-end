@@ -3,7 +3,21 @@ const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/conversations`;
 //Get all conversations for a user
 const getConversations = async (userId) => {
   try {
-    const res = await fetch(`${BASE_URL}/${userId}`, {
+    const res = await fetch(`${BASE_URL}/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return res.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getConversation = async (conversationId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${conversationId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
@@ -65,4 +79,10 @@ const sendMessage = async (conversationId, messageData) => {
   }
 };
 
-export { getConversations, getMessages, sendMessage, createOrGetConversation };
+export {
+  getConversations,
+  getMessages,
+  sendMessage,
+  createOrGetConversation,
+  getConversation,
+};
