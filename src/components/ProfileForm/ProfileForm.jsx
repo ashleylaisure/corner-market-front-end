@@ -11,6 +11,7 @@ import ProfileImageUpload from "../ProfileImageUpload/ProfileImageUpload";
 import { UserContext } from "../../contexts/UserContext";
 import styles from "./ProfileForm.module.css";
 
+
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -135,6 +136,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
     return (
         <div className={isNewUser ? styles.newFormContainer : styles.formContainer}>
+          <div className={styles.formBackdrop}>
             <div className={styles.profileDataContainer}>
                 {error && <p className={styles.error}>{error}</p>}
 
@@ -243,6 +245,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                 </form>
             
             </div>
+          </div>
     </div>
   );
 };

@@ -15,6 +15,7 @@
     height: 125px;
     border-radius: var(--card-border-radius);
     overflow: hidden;
+    object-fit: cover;
 }
 
 .coverPreview img {
@@ -22,4 +23,5 @@
     height: 125px;
     border-radius: var(--card-border-radius); 
     overflow: hidden;
+    object-fit: cover;
 }

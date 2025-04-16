@@ -1,17 +1,32 @@
 .overlay {
     position: relative;
-    width: 75vw;
-    background: rgba(0,0,0,.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 80vw;
+    
+    background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    
 
 }
 
 .newOverlay {
     position: relative;
     width: 100vw;
-    background: rgba(0,0,0,.5);
+
+    background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formBackdrop {
+    width: 100%;
+    backdrop-filter: blur(4px);
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,10 +38,11 @@
     border-radius: var(--card-border-radius);
     max-width: 650px;
     width: 95%;
-    box-shadow: 0 0 20px var(--color-hero);
+    box-shadow: 0 0 20px var(--color-primary);
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1rem;
     margin: 4rem 0;
 }
@@ -63,6 +79,7 @@
     aspect-ratio: 1/1;
     border-radius: var(--card-border-radius);
     overflow: hidden;
+    object-fit: cover;
 }
 
 .imagePreview button {
