@@ -57,18 +57,20 @@ const ProfileImageUpload = ({
               className={styles.fileInput}
             />
             <label htmlFor="profile-picture-input" className={styles.uploadButton}>
-              Choose Profile Image
+              
             </label>
             {profilePreview || initialProfileImage ? (
-              <img
-              src={profilePreview || initialProfileImage || defaultProfilePic}
-                alt="Profile preview"
-                className={styles.previewImage}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = defaultProfilePic;
-                }}
-              />
+              <div className={styles.profilePreview}> 
+                <img
+                src={profilePreview || initialProfileImage || defaultProfilePic}
+                  alt="Profile preview"
+                  className={styles.profilePic}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = defaultProfilePic;
+                  }}
+                />
+              </div>
             ): null}
           </div>
     
@@ -82,18 +84,21 @@ const ProfileImageUpload = ({
               className={styles.fileInput}
             />
             <label htmlFor="cover-photo-input" className={styles.uploadButton}>
-              Choose Cover Photo
+              
             </label>
             {coverPreview || initialCoverImage ? (
-              <img
-              src={coverPreview || initialCoverImage || defaultCoverPhoto}
-                alt="Cover preview"
-                className={styles.previewImage}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = defaultCoverPhoto;
-                }}
-              />
+              <div className={styles.coverPreview}>
+                <img
+                src={coverPreview || initialCoverImage || defaultCoverPhoto}
+                  alt="Cover preview"
+                  className={styles.coverPic}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = defaultCoverPhoto;
+                  }}
+                />
+              </div>
+              
             ) : null}
           </div>
         </div>
