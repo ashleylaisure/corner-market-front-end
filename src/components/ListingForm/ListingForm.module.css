@@ -1,6 +1,7 @@
 .overlay {
     position: relative;
     width: 80vw;
+    height: 100vh;
     
     background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
     background-size: cover;
@@ -13,6 +14,7 @@
 .newOverlay {
     position: relative;
     width: 100vw;
+    height: 100vh;
 
     background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
     background-size: cover;

@@ -136,7 +136,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
                   className={styles.previewImage}
                 />
 
-                <button
+                {/* <button
                   type="button"
                   className={styles.removeButton}
                   onClick={() => {
@@ -156,6 +156,37 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
                   }}
                 >
                   Remove
+                </button> */}
+                <button
+                    className={styles.deleteImageButton}
+                    onClick={async (e) => {
+                        e.preventDefault();
+                        
+                        try {
+                            await ListingService.deleteListingImage( listingId,idx);
+                            
+                            const newImages = [...formData.images];
+                            newImages.splice(idx, 1);
+                            setFormData({ ...formData, images: newImages });
+
+                            const newPreviews = [...imagePreview];
+
+                            // Only revoke blob URLs
+                            if (newPreviews[idx].startsWith("blob:")) {
+                              URL.revokeObjectURL(newPreviews[idx]);
+                            }
+
+                            newPreviews.splice(idx, 1);
+                            setImagePreview(newPreviews);
+                            
+                            
+                      
+                        } catch (err) {
+                            console.error("Failed to delete image:", err);
+                        }
+                    }}
+                >
+                    Remove
                 </button>
               </div>
             ))}
