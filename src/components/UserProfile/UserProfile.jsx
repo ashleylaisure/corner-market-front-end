@@ -34,7 +34,6 @@ const UserProfile = ({ currentUser }) => {
 
                 // Handle different response structures
                 if (data.user) {
-                    // Structure: { user: { profile: {...}, username, listings } }
                     const {
                         username,
                         listings = [],

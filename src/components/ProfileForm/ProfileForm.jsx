@@ -93,12 +93,10 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log("📍 Raw location input:", formData.location);
             // Geocode the location before saving
             const locationString = `${formData.location.city}, ${formData.location.state}`;
             const coords = await geocodeLocation(locationString);
-            console.log("🧭 Geocoded coords:", coords);
-
+            
             if (!coords) {
                 setError("Failed to geocode location. Please check your input.");
                 return;

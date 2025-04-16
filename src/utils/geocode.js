@@ -26,6 +26,6 @@ const geocodeLocation = async (locationString) => {
     return null;
   }
 };
-console.log("📡 geocodeLocation function was called");
+
 
 export { geocodeLocation };
