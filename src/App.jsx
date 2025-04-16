@@ -12,8 +12,7 @@ import SignInForm from "./components/SignInForm/SignInForm";
 import UserProfile from "./components/UserProfile/UserProfile";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
 
-import 'boxicons/css/boxicons.min.css';
-
+import "boxicons/css/boxicons.min.css";
 
 import ListingIndex from "./components/ListingIndex/ListingIndex.jsx";
 import ListingDetails from "./components/ListingDetails/ListingDetails.jsx";
@@ -32,8 +31,13 @@ const App = () => {
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
 
-  const noAsideRoutes = ["/listings/new", '/sign-up', '/sign-in', '/profile/new']
-  const hideAsideRoutes = noAsideRoutes.includes(location.pathname)
+  const noAsideRoutes = [
+    "/listings/new",
+    "/sign-up",
+    "/sign-in",
+    "/profile/new",
+  ];
+  const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
 
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
@@ -89,13 +93,11 @@ const App = () => {
       <NavBar />
 
       <main className="bodyGrid">
-        
         {!hideAsideRoutes && (
           <div className="left">
             <Aside />
           </div>
         )}
-
 
         <div className="center">
           <Routes>
@@ -109,7 +111,9 @@ const App = () => {
             ></Route>
             <Route
               path="/listings/:listingId/edit"
-              element={<ListingForm handleUpdateListing={handleUpdateListing} />}
+              element={
+                <ListingForm handleUpdateListing={handleUpdateListing} />
+              }
             />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
@@ -119,8 +123,8 @@ const App = () => {
                 <ListingDetails handleDeleteListing={handleDeleteListing} />
               }
             />
-            <Route path='/sign-up' element={<SignUpForm />} />
-            <Route path='/sign-in' element={<SignInForm />} />
+            <Route path="/sign-up" element={<SignUpForm />} />
+            <Route path="/sign-in" element={<SignInForm />} />
             {/* Added the UserProfile route */}
             <Route
               path="/users/:userId"
@@ -134,23 +138,35 @@ const App = () => {
                 />
               }
             />
-            <Route path='/profile/edit' element={<ProfileForm currentUser={user} isNewUser={false} />} />
-            <Route path='/profile/new' element={<ProfileForm currentUser={user} isNewUser={true} />} />
+            <Route
+              path="/profile/edit"
+              element={<ProfileForm currentUser={user} isNewUser={false} />}
+            />
+            <Route
+              path="/profile/new"
+              element={<ProfileForm currentUser={user} isNewUser={true} />}
+            />
 
-            <Route path="/conversations/:userId" element={<UserConversations />} />
-            <Route path="/messages/:conversationId" element={<ConversationDetails />}
+            <Route
+              path="/conversations/user/:userId"
+              element={<UserConversations />}
+            />
+            <Route
+              path="/messages/:conversationId"
+              element={<ConversationDetails />}
             ></Route>
 
-            <Route path="/listings/filter/:category" element={<ListingIndex  />} />
+            <Route
+              path="/listings/filter/:category"
+              element={<ListingIndex />}
+            />
           </Routes>
         </div>
 
         {/* <div className="right">
           <h1>Messaging</h1>
         </div> */}
-
       </main>
-
     </>
   );
 };
