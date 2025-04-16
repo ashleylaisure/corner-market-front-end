@@ -2,41 +2,17 @@
 .container{
   flex: 1;
   height: 100%;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
   padding: 1rem;
+  margin-top: 2rem;
 }
 
-/* .listingImages {
-    display: flex;
-    flex-direction: column;
-  } */
-  
-  .listingImages img {
-    width: 400px;
-    height: 400px;
-    object-fit: contain;
-    display: block;
-    box-shadow: 0 2px 8px var(--color-primary-blue);
-  }
-
-  .imageGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .imageWrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .listingImage {
-    width: 200px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
+.listingImages {
+    height: 500px;
+    aspect-ratio: 5/4;
+    margin: 0 auto;
   }
   
   .deleteImageButton {
@@ -114,12 +90,12 @@
   }
 
 
-  @media only screen and (max-width: 768px) {
+  /* @media only screen and (max-width: 900px) {
     .container {
       display: grid;
       grid-template-columns: 1fr;
     }
-  }
+  } */
 
   .sellerImage {
     width: 50px;

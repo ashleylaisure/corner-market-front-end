@@ -12,6 +12,7 @@ import ProfileImageUpload from "../ProfileImageUpload/ProfileImageUpload";
 import { UserContext } from "../../contexts/UserContext";
 import styles from "./ProfileForm.module.css";
 
+
 const ProfileForm = ({ currentUser, isNewUser = false }) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -154,6 +155,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
     return (
         <div className={isNewUser ? styles.newFormContainer : styles.formContainer}>
+          <div className={styles.formBackdrop}>
             <div className={styles.profileDataContainer}>
                 {error && <p className={styles.error}>{error}</p>}
 
@@ -287,14 +289,26 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                     </div>
 
                     <button type="submit" className={styles.submitButton}>
-                        {isNewUser ? "Create Profile" : "Save Changes"}
+                      {isNewUser ? "Create Profile" : "Save Changes"}
                     </button>
-                    {isNewUser ? "" : <button onClick={handleGoBack}>Cancel</button>}
+                    {isNewUser ? (
+                        <button
+                            type="button"
+                            onClick={() => navigate(`/users/${currentUser._id}`)}
+                          > Cancel
+                        </button>
+                      ) : (
+                        <button type="button" onClick={handleGoBack}>
+                          Cancel
+                        </button>
+                      )}
                 </form>
 
             </div>
-        </div>
-    );
+
+          </div>
+    </div>
+  );
 };
 
 export default ProfileForm;
