@@ -234,7 +234,18 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         <button type="submit" className={styles.submitButton}>
           {isNewUser ? "Create Profile" : "Save Changes"}
         </button>
-        {isNewUser ? "" : <button onClick={handleGoBack}>Cancel</button>}
+        {isNewUser ? (
+          <button
+            type="button"
+            onClick={() => navigate(`/users/${currentUser._id}`)}
+          >
+            Cancel
+          </button>
+        ) : (
+          <button type="button" onClick={handleGoBack}>
+            Cancel
+          </button>
+        )}
       </form>
     </div>
   );

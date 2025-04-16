@@ -255,7 +255,9 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
 
         <button type="submit">SUBMIT</button>
 
-        <button onClick={handleGoBack}>CANCEL</button>
+        <button type="button" onClick={handleGoBack}>
+          CANCEL
+        </button>
       </form>
     </main>
   );
