@@ -21,12 +21,11 @@ const ConversationDetails = () => {
         );
         setMessages(allMessages);
 
-        if (allMessages.length > 0) {
-          const first = allMessages[0];
-          const other =
-            first.senderId._id === user._id ? first.receiverId : first.senderId;
-          setOtherUser(other);
-        }
+        const conversation = await messageService.getConversation(
+          conversationId
+        );
+        const other = conversation.participants.find((p) => p._id !== user._id);
+        setOtherUser(other);
       } catch (err) {
         console.error("Error fetching messages:", err);
       }
@@ -34,6 +33,8 @@ const ConversationDetails = () => {
 
     fetchMessages();
   }, [conversationId, user._id]);
+
+  console.log(messages);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
