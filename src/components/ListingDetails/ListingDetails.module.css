@@ -128,3 +128,24 @@
     object-fit: cover;
     margin-right: 0.5rem;
   }
+
+  .locationText {
+    text-align: left;
+    margin-top: 0.25rem;
+  }
+  
+  .locationText h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .approxNote {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+ 
+
+ 

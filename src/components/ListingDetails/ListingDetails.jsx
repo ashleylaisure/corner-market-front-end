@@ -4,6 +4,8 @@ import * as listingService from "../../services/listingService.js";
 import defaultProfilePic from "../../assets/images/default-profile-picture.png";
 import styles from "./ListingDetails.module.css";
 import DetailsImageSlider from "../DetailsImageSlider/DetailsImageSlider.jsx";
+import { MapContainer, TileLayer, Circle } from 'react-leaflet';
+
 
 import { UserContext } from "../../contexts/UserContext.jsx";
 import * as messageService from "../../services/messageService.js";
@@ -18,7 +20,7 @@ const ListingDetails = (props) => {
     useEffect(() => {
         const fetchListing = async () => {
             const listingData = await listingService.show(listingId);
-            
+
             setListing(listingData);
         };
 
@@ -56,7 +58,7 @@ const ListingDetails = (props) => {
             {/* Listing Images */}
             <div className={styles.listingImages}>
                 {listing.images && listing.images.length > 0 ? (
-                    <DetailsImageSlider images={listing.images}/>
+                    <DetailsImageSlider images={listing.images} />
                     // <div className={styles.imageGrid}>
                     //     {listing.images.map((img, idx) => (
                     //         <div key={idx} className={styles.imageWrapper}>
@@ -122,7 +124,7 @@ const ListingDetails = (props) => {
 
                     )}
 
-                    
+
                 </div>
                 <div>
                     <h6>Condition: {listing.condition}</h6>
@@ -132,6 +134,43 @@ const ListingDetails = (props) => {
                 <p>{listing.location}</p>
 
                 <div className={styles.sectionDivider}></div>
+
+                {listing.author.profile?.location?.coordinates && (
+                    <div className={styles.mapWrapper}>
+                        <MapContainer
+                            center={[
+                                listing.author.profile.location.coordinates.lat,
+                                listing.author.profile.location.coordinates.lng,
+                            ]}
+                            zoom={12}
+                            scrollWheelZoom={true}
+                            style={{ height: "250px", width: "100%", borderRadius: "8px", marginBottom: "1rem" }}
+                        >
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution="&copy; OpenStreetMap contributors"
+                            />
+                            <Circle
+                                center={[
+                                    listing.author.profile.location.coordinates.lat,
+                                    listing.author.profile.location.coordinates.lng,
+                                ]}
+                                radius={2000} // ~2km for approximate location
+                                pathOptions={{
+                                    color: "gray",
+                                    fillColor: "lightgray",
+                                    fillOpacity: 0.3,
+                                }}
+                            />
+                        </MapContainer>
+                    </div>
+                )}
+                <div className={styles.locationText}>
+                    <h5>
+                        {listing.author.profile?.location?.city}, {listing.author.profile?.location?.state}
+                    </h5>
+                    <p className={styles.approxNote}>Location is approximate</p>
+                </div>
 
                 {/* Only show seller information if the viewer is NOT the seller */}
                 {listing.author._id !== user?._id && (

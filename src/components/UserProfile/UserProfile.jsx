@@ -6,7 +6,6 @@ import * as messageService from "../../services/messageService.js";
 import defaultCoverPhoto from "../../assets/images/paul-povoroznuk-bJkynpjVRBQ-unsplash.jpg";
 import defaultProfilePic from '../../assets/images/default-profile-picture.png';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import L from 'leaflet';
 
 
 const UserProfile = ({ currentUser }) => {
