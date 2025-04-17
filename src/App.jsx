@@ -3,7 +3,6 @@ import { Routes, Route, useNavigate, useLocation } from "react-router";
 import { UserContext } from "./contexts/UserContext";
 
 import NavBar from "./components/NavBar/NavBar";
-import Aside from "./components/Aside/Aside.jsx";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 // import Landing from "./components/Landing/Landing";
@@ -33,14 +32,15 @@ const App = () => {
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
 
-  const noAsideRoutes = [
-    "/listings/new",
-    "/sign-up",
-    "/sign-in",
-    "/profile/new",
-  ];
+  // const noAsideRoutes = [
+  //   "/listings/new",
+  //   "/sign-up",
+  //   "/sign-in",
+  //   "/profile/new",
+  // ];
+  
+  // const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
 
-  const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
 
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
@@ -111,13 +111,8 @@ const App = () => {
       <NavBar />
 
       <main className="bodyGrid">
-        {!hideAsideRoutes && (
-          <div className="left">
-            <Aside />
-          </div>
-        )}
 
-        <div className="center">
+        <div>
           <Routes>
             {/* <Route path='/' element={user ? <Dashboard /> : <Landing />} /> */}
 
@@ -184,10 +179,7 @@ const App = () => {
             />
           </Routes>
         </div>
-
-        {/* <div className="right">
-          <h1>Messaging</h1>
-        </div> */}
+        
       </main>
     </>
   );

@@ -7,6 +7,8 @@ import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 
 
+import Aside from "../Aside/Aside.jsx";
+
 const ListingIndex = ({ listings: initialListings }) => {
     const [listings, setListings] = useState(initialListings);
     const location = useLocation();
@@ -108,6 +110,10 @@ const ListingIndex = ({ listings: initialListings }) => {
 
 
     return (
+        <div className={styles.listingContainer}>
+
+        <Aside />
+
         <div className={styles.indexBody}>
 
             {category ? (<h4>Category: {decodeURIComponent(category)}</h4>)
@@ -155,6 +161,7 @@ const ListingIndex = ({ listings: initialListings }) => {
             </main>
 
         </div>
+    </div>
     );
 };
 

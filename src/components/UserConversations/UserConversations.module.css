@@ -1,0 +1,68 @@
+.container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    
+    /* background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg'); */
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.containerBackdrop {
+    /* backdrop-filter: blur(10px); */
+
+    display: grid;
+    grid-template-columns: 250px auto;
+    gap: 1rem;
+}
+
+.userConversations {
+    height: 100vh;
+    padding: 1.5rem;
+    box-shadow: 0.2rem 0 .3rem var(--color-primary-blue);
+}
+
+.userConvoContainer {
+    display: flex;
+    margin: .7rem auto;
+    gap: .7rem;
+    
+}
+
+.userConvoContainer:hover {
+    background-color:var(--color-blue-gray) ;
+}
+
+.userConvoContainer img {
+    width: 50px;
+    aspect-ratio: 1/1;
+    border-radius: 50px;;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.userConvo {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+/* Right Section */
+.rightSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightMessage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.rightMessage i {
+    font-size: 6rem;
+}

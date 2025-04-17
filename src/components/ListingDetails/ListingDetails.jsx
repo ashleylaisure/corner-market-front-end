@@ -59,36 +59,7 @@ const ListingDetails = (props) => {
             <div className={styles.listingImages}>
                 {listing.images && listing.images.length > 0 ? (
                     <DetailsImageSlider images={listing.images} />
-                    // <div className={styles.imageGrid}>
-                    //     {listing.images.map((img, idx) => (
-                    //         <div key={idx} className={styles.imageWrapper}>
-                    //             <img
-                    //                 src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
-                    //                 alt={`Listing image ${idx}`}
-                    //                 className={styles.listingImage}
-                    //             />
-                    //             {user && listing.author._id === user._id && (
-                    //                 <button
-                    //                     className={styles.deleteImageButton}
-                    //                     onClick={async () => {
-                    //                         try {
-                    //                             await listingService.deleteListingImage(
-                    //                                 listing._id,
-                    //                                 idx
-                    //                             );
-                    //                             const updated = await listingService.show(listing._id);
-                    //                             setListing(updated); // refresh state with updated listing
-                    //                         } catch (err) {
-                    //                             console.error("Failed to delete image:", err);
-                    //                         }
-                    //                     }}
-                    //                 >
-                    //                     <i className="bx bx-x"></i>
-                    //                 </button>
-                    //             )}
-                    //         </div>
-                    //     ))}
-                    // </div>
+        
                 ) : (
                     <div className={styles.noImagePlaceholder}>No image available</div>
                 )}

@@ -1,32 +1,20 @@
 .formContainer {
     position: relative;
-    width: 80vw;
-
-    background-image: url('../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-}
-
-.newFormContainer {
-    position: relative;
     width: 100vw;
+    height: 100%;
 
     background-image: url('../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    
+
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
+
 
 .formBackdrop {
     width: 100%;
@@ -79,6 +67,14 @@
     background: var(--color-primary-blue);
     border-radius: var(--card-border-radius);
 }
+
+.listingBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
 
 .profileForm button {
     cursor: pointer;
