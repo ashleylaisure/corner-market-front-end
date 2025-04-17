@@ -3,6 +3,7 @@ import { UserContext } from "../../contexts/UserContext.jsx";
 import { Link } from "react-router";
 
 import * as messageService from "../../services/messageService.js";
+import { VscGlobe } from "react-icons/vsc";
 
 const UserConversations = () => {
   const { user } = useContext(UserContext);
@@ -32,7 +33,12 @@ const UserConversations = () => {
             const lastMessage = convo.messages[0];
 
             return (
-              <li key={convo._id}>
+              <li
+                key={convo._id}
+                className={
+                  lastMessage?.isRead === false ? "unreadConversation" : ""
+                }
+              >
                 <Link to={`/messages/${convo._id}`}>
                   <h4>{otherUser.username}</h4>
                   <p>{lastMessage?.message || "No messages yet"}</p>

@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import styles from "./NavBar.module.css";
 import defaultProfilePic from "../../assets/images/default-profile-picture.png";
 import * as userService from "../../services/userService.js";
+import * as messageService from "../../services/messageService.js";
 
 import { UserContext } from "../../contexts/UserContext";
 
@@ -11,6 +12,7 @@ const NavBar = () => {
   const [showLabel, setShowLabel] = useState(null);
 
   const [profile, setProfile] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
@@ -28,6 +30,21 @@ const NavBar = () => {
     };
     fetchProfile();
   }, [user]);
+
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const fetchUnreadMessages = async () => {
+      try {
+        const res = await messageService.getUnreadMessageCount(user._id);
+        setUnreadCount(res.unreadCount);
+      } catch (err) {
+        console.error("Failed to fetch unread messages:", err);
+      }
+    };
+
+    fetchUnreadMessages();
+  }, [user?._id]);
 
   console.log("🔍 Profile state in NavBar:", profile);
   return (
@@ -61,8 +78,11 @@ const NavBar = () => {
               onMouseEnter={() => setShowLabel("mesg")}
               onMouseLeave={() => setShowLabel(null)}
             >
-              <Link to={`/conversations/user/${user._id}`}>
+              <Link to={`/conversations/user/${user._id}`} className="relative">
                 <i className="bx bxl-messenger bxNav"></i>
+                {unreadCount > 0 && (
+                  <span className={styles.unreadBadge}>{unreadCount}</span>
+                )}
                 {showLabel === "mesg" && (
                   <span className={styles.hoverLabel}>Messenger</span>
                 )}
