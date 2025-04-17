@@ -18,6 +18,20 @@ const getByCategory = async (category) => {
   }
 };
 
+// Function to get nearby listings based on latitude, longitude, and radius
+
+const getNearbyListings = async ({ lat, lng, radius }) => {
+  if (lat == null || lng == null || radius == null) return [];
+  
+  try {
+    const res = await fetch(`${BASE_URL}/nearby?lat=${lat}&lng=${lng}&radius=${radius}`);
+    return await res.json(); 
+  } catch (error) {
+    console.log(error);
+    return []; 
+  }
+};
+
 const update = async (listingId, listingFormData) => {
   try {
     const res = await fetch(`${BASE_URL}/${listingId}`, {
@@ -139,5 +153,6 @@ export {
     update,
     deleteListing,
     uploadListingImages,
-    deleteListingImage
+    deleteListingImage,
+    getNearbyListings
 }
