@@ -22,10 +22,12 @@ import UserConversations from "./components/UserConversations/UserConversations.
 import ConversationDetails from "./components/ConversationDetails/ConversationDetails.jsx";
 
 import * as listingService from "./services/listingService.js";
+import { getUserProfile } from './services/userService';
 import { IoGitMerge } from "react-icons/io5";
+import LocationFilterPage from "./components/LocationFilterPage/LocationFilterPage.jsx";
 
 const App = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState(null);
@@ -37,7 +39,7 @@ const App = () => {
     "/sign-in",
     "/profile/new",
   ];
-  
+
   const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
 
   const handleDeleteListing = async (listingId) => {
@@ -59,6 +61,21 @@ const App = () => {
 
     return deletedListing;
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user && !user.profile) {
+        const fullData = await getUserProfile(user._id);
+        setUser((prevUser) => ({
+          ...prevUser,
+          profile: fullData.user.profile,
+        }));
+      }
+    };
+
+    fetchUserProfile();
+  }, [user, setUser]);
+
 
   useEffect(() => {
     const fetchAllListings = async () => {
@@ -104,8 +121,11 @@ const App = () => {
           <Routes>
             {/* <Route path='/' element={user ? <Dashboard /> : <Landing />} /> */}
 
-            <Route path="/" element={<ListingIndex listings={listings} />} />
-            {/* <Route path='/listings' element={<ListingIndex listings={listings}/>}></Route> */}
+            <Route
+              path="/"
+              element={<ListingIndex listings={listings} key={location.pathname} />}
+            />
+
             <Route
               path="/listings/new"
               element={<ListingForm handleAddListing={handleAddListing} />}
@@ -118,6 +138,7 @@ const App = () => {
             />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
+            <Route path="/location-filter" element={<LocationFilterPage />} />
             <Route
               path="/listings/:listingId"
               element={

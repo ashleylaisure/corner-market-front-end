@@ -67,3 +67,29 @@ aside {
         width: 150px;
     }
 }
+
+.locationDisplay {
+    margin-top: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .locationHeader {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+  
+  .locationText {
+    color: #1877f2;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  .locationText:hover {
+    text-decoration: underline;
+  }
+  
+  .locationRadius {
+    color: #333;
+    font-weight: normal;
+  }

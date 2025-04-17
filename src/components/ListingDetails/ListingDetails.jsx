@@ -131,7 +131,10 @@ const ListingDetails = (props) => {
                     <p>{listing.description}</p>
                 </div>
 
-                <p>{listing.location}</p>
+                <p>
+                    {listing.location?.city ?? "Unknown city"},{" "}
+                    {listing.location?.state ?? "Unknown state"}
+                </p>
 
                 <div className={styles.sectionDivider}></div>
 

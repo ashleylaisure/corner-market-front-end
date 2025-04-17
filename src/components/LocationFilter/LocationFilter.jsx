@@ -28,6 +28,12 @@ const LocationFilter = ({ initialCoords, initialRadius = 10, onApplyFilter }) =>
         onApplyFilter({ coords, radius });
     };
 
+    useEffect(() => {
+        if (initialCoords) {
+            setCoords(initialCoords);
+        }
+    }, [initialCoords]);
+
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>

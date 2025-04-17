@@ -19,6 +19,8 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!user?._id) return; // avoid null access error
+      
       try {
         const data = await userService.getUserProfile(user._id);
         setProfile(data.user.profile);
