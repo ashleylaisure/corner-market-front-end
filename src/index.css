@@ -8,6 +8,7 @@
   --color-blue-gray: #cfcfe0;
   --color-secondary: #EB4B00;
   --color-hero: #1F00AF;
+  --color-hero-light: #6253a4;
   --color-hero-dark: #00016F;
   --color-dark: #000032;
 
@@ -15,6 +16,7 @@
   --card-border-radius: 1rem;
   --btn-padding: 0.6rem 1rem;
   --card-padding: 1rem;
+
 }
 
 
@@ -26,6 +28,7 @@
   text-decoration: none;
   list-style: none;
   border: none;
+  
 }
 
 body {
@@ -50,7 +53,7 @@ h2 {
 
 h5 {
   font-weight: 400;
-  font-style: italic;
+
 }
 
 h6 {

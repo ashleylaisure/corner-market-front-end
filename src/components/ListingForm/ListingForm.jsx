@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router";
 import styles from "./ListingForm.module.css";
@@ -9,6 +9,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   const { listingId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState([]);
+  const imageFileInput = useRef(null)
   const [formData, setFormData] = useState({
     title: "",
     images: [],
@@ -95,6 +96,11 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     navigate(-1);
   };
 
+  const handleImageButtonClick = (e) => {
+    e.preventDefault();
+    imageFileInput.current?.click()
+  }
+
   return (
     <main className={styles.overlay}>
       <div className={styles.formBackdrop}>
@@ -115,14 +121,21 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
 
           <div className={styles.listingInput}>
             <label htmlFor="image-input">Upload Images:</label>
-            <input
-              type="file"
-              name="images"
-              id="image-input"
-              multiple
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+            <div className={styles.fileUpload}>
+              <button 
+                className={styles.fileUploadBtn}
+                onClick={handleImageButtonClick}>{imagePreview.length > 0 ? "Add Additional Images" : "No File Chosen"}</button>
+              <input
+                type="file"
+                name="images"
+                id="image-input"
+                ref={imageFileInput}
+                multiple
+                accept="image/*"
+                onChange={handleFileChange}
+                
+              />
+              </div>
           </div>
 
           {/* Display image previews */}

@@ -50,7 +50,7 @@ const NavBar = () => {
       </div>
 
       <div>
-        {user ? <h4>Welcome, {user.username}</h4> : <h3>Welcome, Guest</h3>}
+        {user ? <h4>Welcome, {user.username}</h4> : <h4>Welcome, Guest</h4>}
       </div>
 
       <div>

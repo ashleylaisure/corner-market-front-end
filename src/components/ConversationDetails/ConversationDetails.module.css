@@ -1,24 +1,121 @@
-.container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
+.rightContainer {
+    position: absolute;
+    top: 0;
+    left: 16rem;
+    height: 90%;
+    width: 70%;
     
-    background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+}
 
+/* Message header */
+.topRight{
+    position: fixed;
+    background: white;
+    width: 100%;
+    z-index: 10;
+    padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
+.sentContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .5rem;
+}
+
+.sentContainer img {
+    width: 50px;
+    aspect-ratio: 1/1;
+    border-radius: 50px;;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.sectionDivider {
+    border: none;
+    border-top: 1px solid var(--color-primary-blue);
+    box-shadow: 0 .2rem 1rem var(--color-primary-blue);
+    margin: 10px 0;
+}
+
+/* send message text field */
+
+.bottomRight {
+    position: relative;
+    top: 6rem;
     flex: 1;
+    display: flex;
+    flex-direction: column;
     
+}
+
+.messageingCentral {
+    position: flex;
+    flex-direction: column;
+    margin-top: auto;
+    max-height: 100%;
+}
+
+.sendMessage {
+
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+
+    padding: var(--btn-padding);
+    background: var(--color-primary-blue);
+    border-radius: var(--card-border-radius);
 
 }
 
-.containerBackdrop {
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(10px);
+.sendMessage input {
+    background: transparent;
+    width: 90%;
+}
 
-    display: grid;
-    grid-template-columns: 300px auto;
-    gap: 1rem;
+.sendMessage button {
+    background: none;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.sendMessage p:hover {
+    color: var(--color-secondary)
+}
+
+/* Messages sent from another user */
+.convoCentral {
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    justify-content: flex-end;
+    overflow-y: auto;
+}
+
+
+.otherUserSent {
+    background: var(--color-primary-blue);
+    max-width: 50%;
+    width: fit-content;
+    padding: var(--card-padding);
+    border-radius: 0 20px 20px 20px;
+    text-align: left;
+
+}
+
+.userSent {
+    position: relative;
+    right: 0;
+    background: var(--color-hero);
+    opacity: 0.7;
+    max-width: 50%;
+    width: fit-content;
+    padding: var(--card-padding);
+    border-radius: 20px 0 20px 20px;
+    text-align: left;
+    color: white;
+    margin-left: auto;
 }

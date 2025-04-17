@@ -6,6 +6,7 @@ import * as messageService from "../../services/messageService.js";
 import UserConversations from "../UserConversations/UserConversations.jsx";
 
 import styles from './ConversationDetails.module.css'
+import defaultPhoto from '../../assets/images/default-profile-picture.png'
 
 const ConversationDetails = () => {
   const { user } = useContext(UserContext);
@@ -66,26 +67,44 @@ const ConversationDetails = () => {
           <UserConversations />
         </div>
 
-        <div>
-          <ul>
-            {messages.map((msg) => (
-              <li key={msg._id}>
-                {msg.senderId._id === user._id ? "You" : msg.senderId.username}:{" "}
-                {msg.message}
-              </li>
-            ))}
-          </ul>
+        <div className={styles.rightContainer}>
 
-          <form onSubmit={handleSendMessage}>
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Send a Message"
-            />
-            <button type="submit">Send</button>
-          </form>
+          <div className={styles.topRight}>
+            <div className={styles.sentContainer}>
+              <img src={defaultPhoto} alt="default user photo"/>
+              <h4>{otherUser?.username}</h4>
+            </div>
+            <div className={styles.sectionDivider}></div>
+          </div>
+
+          <div className={styles.bottomRight}>
+            <div className={styles.messageingCentral}>
+              <ul className={styles.convoCentral}>
+                {messages.map((msg) => (
+                  <li key={msg._id} className={msg.senderId._id === user._id ? styles.userSent : styles.otherUserSent}>
+                    {/* {msg.senderId._id === user._id ? "You" : msg.senderId.username}:{" "} */}
+                    <h5>{msg.message}</h5>
+                  </li>
+                ))}
+              </ul>
+      
+
+              <div >
+                <form onSubmit={handleSendMessage} className={styles.sendMessage}>
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Message..."
+                  />
+                  <button type="submit"><p>Send</p></button>
+                </form>
+              </div>
+            </div>
+          </div>
+
         </div>
+
       </div>
 
     </main>
