@@ -154,161 +154,163 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className={isNewUser ? styles.newFormContainer : styles.formContainer}>
-          <div className={styles.formBackdrop}>
-            <div className={styles.profileDataContainer}>
-                {error && <p className={styles.error}>{error}</p>}
+        <div className={styles.formContainer}>
+            <div className={styles.formBackdrop}>
+                <div className={styles.profileDataContainer}>
+                    {error && <p className={styles.error}>{error}</p>}
 
-                <div className={styles.imageUploadSection}>
-                    <h1>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h1>
-                    {/* <h3>Profile Images</h3> */}
-                    <ProfileImageUpload
-                        onSelectProfilePicture={(file) => setProfileImageFile(file)}
-                        onSelectCoverPhoto={(file) => setCoverPhotoFile(file)}
-                        initialProfileImage={initialProfileImage}
-                        initialCoverImage={initialCoverImage}
-                    />
+                    <div className={styles.imageUploadSection}>
+                        <h1>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h1>
+                        {/* <h3>Profile Images</h3> */}
+                        <ProfileImageUpload
+                            onSelectProfilePicture={(file) => setProfileImageFile(file)}
+                            onSelectCoverPhoto={(file) => setCoverPhotoFile(file)}
+                            initialProfileImage={initialProfileImage}
+                            initialCoverImage={initialCoverImage}
+                        />
+                    </div>
+
+                    <form onSubmit={handleSubmit} className={styles.profileForm}>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="city">City</label>
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                value={formData.location.city}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        location: { ...prev.location, city: e.target.value },
+                                    }))
+                                }
+                                placeholder="New Orleans"
+                                required={isNewUser}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="state">State</label>
+                            <input
+                                type="text"
+                                id="state"
+                                name="state"
+                                value={formData.location.state}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        location: { ...prev.location, state: e.target.value },
+                                    }))
+                                }
+                                placeholder="LA"
+                                required={isNewUser}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="zip">Zip Code</label>
+                            <input
+                                type="text"
+                                id="zip"
+                                name="zip"
+                                value={formData.location.zip}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        location: { ...prev.location, zip: e.target.value },
+                                    }))
+                                }
+                                placeholder="70117"
+                                required={isNewUser}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="emailAddress">Contact Email</label>
+                            <input
+                                type="email"
+                                id="emailAddress"
+                                name="emailAddress"
+                                value={formData.emailAddress}
+                                onChange={handleChange}
+                                placeholder="email@example.com"
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="bio">Bio</label>
+                            <textarea
+                                id="bio"
+                                name="bio"
+                                value={formData.bio}
+                                onChange={handleChange}
+                                placeholder="Tell others about yourself"
+                                rows="4"
+                                maxLength="500"
+                            />
+                        </div>
+
+                        <h3>Social Media Links</h3>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="facebookLink"><i className='bx bxl-facebook bxSocail'></i>  Facebook</label>
+                            <input
+                                type="url"
+                                id="facebookLink"
+                                name="facebookLink"
+                                value={formData.facebookLink}
+                                onChange={handleChange}
+                                placeholder="https://facebook.com/yourusername"
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="twitterLink"><i className='bx bxl-twitter bxSocail' ></i>  Twitter</label>
+                            <input
+                                type="url"
+                                id="twitterLink"
+                                name="twitterLink"
+                                value={formData.twitterLink}
+                                onChange={handleChange}
+                                placeholder="https://twitter.com/yourusername"
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="instagramLink"><i className='bx bxl-instagram bxSocail'></i>  Instagram</label>
+                            <input
+                                type="url"
+                                id="instagramLink"
+                                name="instagramLink"
+                                value={formData.instagramLink}
+                                onChange={handleChange}
+                                placeholder="https://instagram.com/yourusername"
+                            />
+                        </div>
+
+                        <div className={styles.listingBtn}>
+                            <button type="submit" className={styles.submitButton}>
+                            {isNewUser ? "Create Profile" : "Save Changes"}
+                            </button>
+                            {isNewUser ? (
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(`/users/${currentUser._id}`)}
+                                > Cancel
+                                </button>
+                            ) : (
+                                <button type="button" onClick={handleGoBack}>
+                                Cancel
+                                </button>
+                            )}
+                        </div>
+                    </form>
+
                 </div>
 
-                <form onSubmit={handleSubmit} className={styles.profileForm}>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="city">City</label>
-                        <input
-                            type="text"
-                            id="city"
-                            name="city"
-                            value={formData.location.city}
-                            onChange={(e) =>
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    location: { ...prev.location, city: e.target.value },
-                                }))
-                            }
-                            placeholder="New Orleans"
-                            required={isNewUser}
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="state">State</label>
-                        <input
-                            type="text"
-                            id="state"
-                            name="state"
-                            value={formData.location.state}
-                            onChange={(e) =>
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    location: { ...prev.location, state: e.target.value },
-                                }))
-                            }
-                            placeholder="LA"
-                            required={isNewUser}
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="zip">Zip Code</label>
-                        <input
-                            type="text"
-                            id="zip"
-                            name="zip"
-                            value={formData.location.zip}
-                            onChange={(e) =>
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    location: { ...prev.location, zip: e.target.value },
-                                }))
-                            }
-                            placeholder="70117"
-                            required={isNewUser}
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="emailAddress">Contact Email</label>
-                        <input
-                            type="email"
-                            id="emailAddress"
-                            name="emailAddress"
-                            value={formData.emailAddress}
-                            onChange={handleChange}
-                            placeholder="email@example.com"
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="bio">Bio</label>
-                        <textarea
-                            id="bio"
-                            name="bio"
-                            value={formData.bio}
-                            onChange={handleChange}
-                            placeholder="Tell others about yourself"
-                            rows="4"
-                            maxLength="500"
-                        />
-                    </div>
-
-                    <h3>Social Media Links</h3>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="facebookLink"><i className='bx bxl-facebook bxSocail'></i>  Facebook</label>
-                        <input
-                            type="url"
-                            id="facebookLink"
-                            name="facebookLink"
-                            value={formData.facebookLink}
-                            onChange={handleChange}
-                            placeholder="https://facebook.com/yourusername"
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="twitterLink"><i className='bx bxl-twitter bxSocail' ></i>  Twitter</label>
-                        <input
-                            type="url"
-                            id="twitterLink"
-                            name="twitterLink"
-                            value={formData.twitterLink}
-                            onChange={handleChange}
-                            placeholder="https://twitter.com/yourusername"
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label htmlFor="instagramLink"><i className='bx bxl-instagram bxSocail'></i>  Instagram</label>
-                        <input
-                            type="url"
-                            id="instagramLink"
-                            name="instagramLink"
-                            value={formData.instagramLink}
-                            onChange={handleChange}
-                            placeholder="https://instagram.com/yourusername"
-                        />
-                    </div>
-
-                    <button type="submit" className={styles.submitButton}>
-                      {isNewUser ? "Create Profile" : "Save Changes"}
-                    </button>
-                    {isNewUser ? (
-                        <button
-                            type="button"
-                            onClick={() => navigate(`/users/${currentUser._id}`)}
-                          > Cancel
-                        </button>
-                      ) : (
-                        <button type="button" onClick={handleGoBack}>
-                          Cancel
-                        </button>
-                      )}
-                </form>
-
             </div>
-
-          </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default ProfileForm;

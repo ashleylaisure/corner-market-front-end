@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import * as listingService from '../../services/listingService';
 
+import Aside from "../Aside/Aside.jsx";
+
 const ListingIndex = ({ listings: initialListings }) => {
     const [listings, setListings] = useState(initialListings);
     const location = useLocation();
@@ -36,6 +38,10 @@ const ListingIndex = ({ listings: initialListings }) => {
     // console.log('listings', listings)
 
     return (
+        <div className={styles.listingContainer}>
+
+        <Aside />
+
         <div className={styles.indexBody}>
 
             {category ? (<h4>Category: {decodeURIComponent(category)}</h4>)
@@ -79,6 +85,7 @@ const ListingIndex = ({ listings: initialListings }) => {
                 
             </main>
         </div>
+    </div>
     );
 };
 
