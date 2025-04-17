@@ -1,9 +1,8 @@
-
 .container{
   flex: 1;
   height: 100%;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto 420px;
   gap: 1rem;
   padding: 1rem;
   margin-top: 2rem;
@@ -11,11 +10,11 @@
 
 .listingImages {
     height: 500px;
-    aspect-ratio: 5/4;
+    max-width: 700px;
     margin: 0 auto;
   }
   
-  .deleteImageButton {
+  /* .deleteImageButton {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -32,11 +31,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+  } */
 
-  .deleteImageButton:hover {
+  /* .deleteImageButton:hover {
     opacity: 0.7;
-  }
+  } */
 
   .detailsInfo{
     display: flex;
@@ -90,12 +89,12 @@
   }
 
 
-  /* @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 900px) {
     .container {
       display: grid;
       grid-template-columns: 1fr;
     }
-  } */
+  }
 
   .sellerImage {
     width: 50px;
@@ -121,7 +120,3 @@
     font-size: 0.9rem;
     color: #666;
   }
-
- 
-
- 

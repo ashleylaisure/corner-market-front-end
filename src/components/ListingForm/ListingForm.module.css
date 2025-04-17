@@ -1,28 +1,12 @@
 .overlay {
     position: relative;
-    width: 80vw;
-    height: 100vh;
-    
-    background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-
-    
-
-}
-
-.newOverlay {
-    position: relative;
     width: 100vw;
-    height: 100vh;
-
+    height: 100%;
+    
     background-image: url('../../assets/images/nikola-duza-fi6kmznklGQ-unsplash.jpg');
     background-size: cover;
     background-repeat: no-repeat;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .formBackdrop {
@@ -38,20 +22,20 @@
     background-color: var(--color-primary);
     padding: 2rem;
     border-radius: var(--card-border-radius);
-    max-width: 650px;
-    width: 95%;
+    max-width: 600px;
+    min-width: 500px;
     box-shadow: 0 0 20px var(--color-primary);
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    margin: 4rem 0;
+    margin: 2.5rem 0;
 }
 
 .listingForm input, select, button{
     width: 100%;
-    padding: var(--card-padding);
+    padding: var(--btn-padding);
     background: var(--color-primary-blue);
     border-radius: var(--card-border-radius);
 }
@@ -88,7 +72,12 @@
     width: 100px;
 }
 
-
+.listingBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
 
 .listingForm button {
     cursor: pointer;

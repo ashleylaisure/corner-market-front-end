@@ -38,6 +38,11 @@ h1 {
   font-family: "Slackey", sans-serif;
 }
 
+h3{
+  font-family: "Slackey", sans-serif;
+  font-weight: 200;
+}
+
 h2 {
   color: var(--color-dark-hero);
   font-weight: 500;
@@ -61,9 +66,6 @@ a {
 .bodyGrid {
   position: relative;
   top: 65px;
-  display: flex;
-  align-items: flex-start;
-  column-gap: .3rem;
 }
 
 .bxNav {

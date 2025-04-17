@@ -5,6 +5,8 @@ import { UserContext } from "../../contexts/UserContext.jsx";
 import * as messageService from "../../services/messageService.js";
 import UserConversations from "../UserConversations/UserConversations.jsx";
 
+import styles from './ConversationDetails.module.css'
+
 const ConversationDetails = () => {
   const { user } = useContext(UserContext);
   const { conversationId } = useParams();
@@ -58,29 +60,34 @@ const ConversationDetails = () => {
   };
 
   return (
-    <main>
-      <div>
-        <UserConversations />
+    <main className={styles.container}>
+      <div className={styles.containerBackdrop}>
+        <div>
+          <UserConversations />
+        </div>
+
+        <div>
+          <ul>
+            {messages.map((msg) => (
+              <li key={msg._id}>
+                {msg.senderId._id === user._id ? "You" : msg.senderId.username}:{" "}
+                {msg.message}
+              </li>
+            ))}
+          </ul>
+
+          <form onSubmit={handleSendMessage}>
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Send a Message"
+            />
+            <button type="submit">Send</button>
+          </form>
+        </div>
       </div>
 
-      <ul>
-        {messages.map((msg) => (
-          <li key={msg._id}>
-            {msg.senderId._id === user._id ? "You" : msg.senderId.username}:{" "}
-            {msg.message}
-          </li>
-        ))}
-      </ul>
-
-      <form onSubmit={handleSendMessage}>
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Send a Message"
-        />
-        <button type="submit">Send</button>
-      </form>
     </main>
   );
 };

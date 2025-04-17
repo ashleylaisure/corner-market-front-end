@@ -96,7 +96,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   };
 
   return (
-    <main className={listingId ? styles.overlay : styles.newOverlay}>
+    <main className={styles.overlay}>
       <div className={styles.formBackdrop}>
         <form onSubmit={handleSubmit} className={styles.listingForm}>
           <h1>{listingId ? "Edit Listing" : "New Listing"}</h1>
@@ -285,11 +285,12 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             />
           </div>
 
-          <button type="submit">SUBMIT</button>
+          <div className={styles.listingBtn}>
+            <button type="submit">SUBMIT</button>
+            <button type="button" onClick={handleGoBack}>CANCEL</button>
+          </div>
 
-          <button type="button" onClick={handleGoBack}>
-            CANCEL
-          </button>
+          
         </form>
       </div>
     </main>
