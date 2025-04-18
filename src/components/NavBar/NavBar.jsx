@@ -75,20 +75,25 @@ const NavBar = () => {
       <div>
         {user ? (
           <div className={styles.navRight}>
-            <div
-              className={styles.iconLabel}
-              onMouseEnter={() => setShowLabel("mesg")}
-              onMouseLeave={() => setShowLabel(null)}
-            >
-              <Link to={`/conversations/user/${user._id}`} className="relative">
-                <i className="bx bxl-messenger bxNav"></i>
+            
+            <div className={styles.iconLabel} >
                 {unreadCount > 0 && (
-                  <span className={styles.unreadBadge}>{unreadCount}</span>
-                )}
-                {showLabel === "mesg" && (
-                  <span className={styles.hoverLabel}>Messenger</span>
-                )}
-              </Link>
+                      <div className={styles.unreadBadge}>
+                          <i className='bx bxs-bolt'></i>
+                      </div>
+                    )}
+              <div className={styles.messagingIcons}
+                    onMouseEnter={() => setShowLabel("mesg")}
+                    onMouseLeave={() => setShowLabel(null)}>
+                <Link to={`/conversations/user/${user._id}`} 
+                      onClick={() => setUnreadCount(0)}>
+                      <i className="bx bxl-messenger bxNav"></i>
+                      {showLabel === "mesg" && (
+                        <span className={styles.hoverLabel}>Messenger</span>
+                      )}
+                </Link>
+              </div>
+              
             </div>
 
             <div
@@ -121,7 +126,7 @@ const NavBar = () => {
               <Link to="/" onClick={handleSignOut}>
                 <i className="bx bx-chevrons-right bxNav"></i>
                 {showLabel === "logout" && (
-                  <span className={styles.hoverLabel}>Log Out</span>
+                  <span className={styles.hoverLabel}>Logout</span>
                 )}
               </Link>
             </div>
