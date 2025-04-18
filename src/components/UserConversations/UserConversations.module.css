@@ -1,43 +1,37 @@
 .container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    max-width: 700px;
+    margin-top: 20px auto;
+    margin: 0 auto;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 1px 4px 12px var(--color-primary-blue);
     
-    
-    .container {
-        max-width: 700px;
-        margin: 2rem auto;
-        padding: 2rem;
-        background-color: #f6f6fb;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
 }
 
 .containerBackdrop {
-
-
     display: grid;
-    grid-template-columns: 250px auto;
+    grid-template-columns: 250px 400px;
     gap: 1rem;
 }
+
 
 .userConversations {
     height: 100vh;
     padding: 1.5rem;
-    box-shadow: 0.2rem 0 .3rem var(--color-primary-blue);
+    border-radius: 12px;
+    box-shadow: 0.8rem 0 1rem var(--color-primary-blue);
 }
 
 .userConvoContainer {
     display: flex;
     margin: .7rem auto;
     gap: .7rem;
-    
 }
 
 .userConvoContainer:hover {
-    background-color:var(--color-blue-gray) ;
+    background-color:var(--color-blue-gray);
+    border-radius: var(--card-border-radius);
 }
 
 .userConvoContainer img {

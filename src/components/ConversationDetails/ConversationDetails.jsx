@@ -71,9 +71,9 @@ const ConversationDetails = () => {
   return (
     <main className={styles.container}>
       <div className={styles.containerBackdrop}>
-        <div>
+        <div className={styles.jointContainer}>
           <UserConversations />
-        </div>
+        
 
         <div className={styles.rightContainer}>
 
@@ -124,6 +124,8 @@ const ConversationDetails = () => {
           </div>
 
         </div>
+
+      </div>
 
       </div>
 
