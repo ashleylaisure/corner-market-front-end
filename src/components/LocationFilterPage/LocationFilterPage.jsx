@@ -12,21 +12,19 @@ const LocationFilterPage = () => {
     const navigate = useNavigate();
 
     const handleApplyFilter = async ({ coords, radius }) => {
-        console.log("Updating global locationFilter:", coords, radius);
-      
+
         const place = await reverseGeocode(coords.lat, coords.lng);
-        console.log("reverseGeocode result:", place); 
-      
+
         setLocationFilter({
-          lat: coords.lat,
-          lng: coords.lng,
-          radius,
-          city: place?.city || "Unknown",
-          state: place?.state || "Unknown"
+            lat: coords.lat,
+            lng: coords.lng,
+            radius,
+            city: place?.city || "Unknown",
+            state: place?.state || "Unknown"
         });
-      
+
         navigate("/");
-      };
+    };
 
     return (
         <div className={styles.pageContainer}>

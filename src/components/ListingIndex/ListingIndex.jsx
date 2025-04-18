@@ -16,9 +16,8 @@ const ListingIndex = ({ listings: initialListings }) => {
     const { category } = useParams();
     const { user } = useContext(UserContext);
 
-    const { locationFilter, setLocationFilter } = useContext(LocationFilterContext);
+    const { locationFilter } = useContext(LocationFilterContext);
     const [nearbyListings, setNearbyListings] = useState(null);
-    // const [loadingNearby, setLoadingNearby] = useState(true);
     const [categoryListings, setCategoryListings] = useState(null);
 
     const listingsToRender = category
@@ -30,7 +29,7 @@ const ListingIndex = ({ listings: initialListings }) => {
                 : []; // while waiting for nearbyListings to load
 
 
-            
+
     // Effect to fetch all listings when component mounts
     useEffect(() => {
         const fetchLatest = async () => {
@@ -66,108 +65,84 @@ const ListingIndex = ({ listings: initialListings }) => {
     }, [category]);
 
 
-
-    // Effect to set location filter based on user profile
-    useEffect(() => {
-        const profileLoc = user?.profile?.location;
-      
-        // Only set profile location if no locationFilter exists yet
-        if (
-          !locationFilter &&
-          profileLoc?.coordinates?.lat &&
-          profileLoc?.coordinates?.lng &&
-          profileLoc?.city &&
-          profileLoc?.state
-        ) {
-          setLocationFilter({
-            lat: profileLoc.coordinates.lat,
-            lng: profileLoc.coordinates.lng,
-            radius: 10,
-            city: profileLoc.city,
-            state: profileLoc.state,
-          });
-        }
-      }, [user, locationFilter, setLocationFilter]);
-
-
     // Effect to fetch nearby listings based on location filter
     useEffect(() => {
         const fetchNearby = async () => {
-          const { lat, lng, radius } = locationFilter || {};
-          const isValid = typeof lat === "number" && typeof lng === "number" && typeof radius === "number";
-      
-          if (!isValid) return;
-      
-          try {
-            const nearby = await listingService.getNearbyListings({ lat, lng, radius });
-      
-            const valid = Array.isArray(nearby)
-              ? nearby.filter(l => l.location?.coordinates && l.author?._id !== user?._id)
-              : [];
-      
-            setNearbyListings(valid);
-          } catch (err) {
-            console.error("Error fetching nearby listings:", err);
-          }
+            const { lat, lng, radius } = locationFilter || {};
+            const isValid = typeof lat === "number" && typeof lng === "number" && typeof radius === "number";
+
+            if (!isValid) return;
+
+            try {
+                const nearby = await listingService.getNearbyListings({ lat, lng, radius });
+
+                const valid = Array.isArray(nearby)
+                    ? nearby.filter(l => l.location?.coordinates && l.author?._id !== user?._id)
+                    : [];
+
+                setNearbyListings(valid);
+            } catch (err) {
+                console.error("Error fetching nearby listings:", err);
+            }
         };
-      
+
         fetchNearby();
-      }, [locationFilter, user]);
+    }, [locationFilter, user]);
 
 
     return (
         <div className={styles.listingContainer}>
 
-        <Aside />
+            <Aside />
 
-        <div className={styles.indexBody}>
+            <div className={styles.indexBody}>
 
-            {category ? (<h4>Category: {decodeURIComponent(category)}</h4>)
-                : (<h4>Available Listings</h4>)}
+                {category ? (<h4>Category: {decodeURIComponent(category)}</h4>)
+                    : (<h4>Available Listings</h4>)}
 
-            <main>
-                {user && !category && nearbyListings === null ? (
-                    <h4>Loading nearby listings...</h4>
-                ) : Array.isArray(listingsToRender) && listingsToRender.length > 0 ? (
-                    <div className={styles.container}>
-                        {listingsToRender.map((listing) => (
-                            <Link key={listing._id} to={`/listings/${listing._id}`}>
-                                <article className={styles.listingCard}>
-                                    {/* Images */}
-                                    {listing.images?.length > 0 ? (
-                                        <div className={styles.imageContainer}>
-                                            {listing.images.map((img, idx) => (
-                                                <img
-                                                    key={idx}
-                                                    src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
-                                                    alt={`Listing image ${idx}`}
-                                                    className={styles.listingImage}
-                                                />
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className={styles.noImagePlaceholder}>
-                                            <h4>Image Placeholder</h4>
-                                        </div>
-                                    )}
-                                    <header>
-                                        <p className={styles.price}>${listing.price}</p>
-                                        <h2>{listing.title}</h2>
-                                        <h6 className={styles.metadata}>
-                                            {`${listing.author?.username || 'Unknown'} posted on ${new Date(listing.createdAt).toLocaleDateString()}`}
-                                        </h6>
-                                    </header>
-                                </article>
-                            </Link>
-                        ))}
-                    </div>
-                ) : (
-                    <h4>No Listings Found</h4>
-                )}
-            </main>
+                <main>
+                    {user && !category && nearbyListings === null ? (
+                        <h4>Loading nearby listings...</h4>
+                    ) : Array.isArray(listingsToRender) && listingsToRender.length > 0 ? (
+                        <div className={styles.container}>
+                            {listingsToRender.map((listing) => (
+                                <Link key={listing._id} to={`/listings/${listing._id}`}>
+                                    <article className={styles.listingCard}>
+                                        {/* Images */}
+                                        {listing.images?.length > 0 ? (
+                                            <div className={styles.imageContainer}>
+                                                {listing.images.map((img, idx) => (
+                                                    <img
+                                                        key={idx}
+                                                        src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${img.path}`}
+                                                        alt={`Listing image ${idx}`}
+                                                        className={styles.listingImage}
+                                                    />
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className={styles.noImagePlaceholder}>
+                                                <h4>Image Placeholder</h4>
+                                            </div>
+                                        )}
+                                        <header>
+                                            <p className={styles.price}>${listing.price}</p>
+                                            <h2>{listing.title}</h2>
+                                            <h6 className={styles.metadata}>
+                                                {`${listing.author?.username || 'Unknown'} posted on ${new Date(listing.createdAt).toLocaleDateString()}`}
+                                            </h6>
+                                        </header>
+                                    </article>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <h4>No Listings Found</h4>
+                    )}
+                </main>
 
+            </div>
         </div>
-    </div>
     );
 };
 

@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router";
 import { UserContext } from "./contexts/UserContext";
+import { LocationFilterContext } from "./contexts/LocationFilterContext";
 
 import NavBar from "./components/NavBar/NavBar";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
@@ -27,6 +28,7 @@ import LocationFilterPage from "./components/LocationFilterPage/LocationFilterPa
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
+  const { locationFilter, setLocationFilter } = useContext(LocationFilterContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState(null);
@@ -76,12 +78,57 @@ const App = () => {
     fetchUserProfile();
   }, [user, setUser]);
 
+  // Set location filter based on user's profile location
+  useEffect(() => {
+    const profileLoc = user?.profile?.location;
+    const currentUserId = user?._id;
+    const lastUserId = localStorage.getItem("lastUser");
+    const savedFilter = localStorage.getItem("cm_locationFilter");
+  
+    if (
+      profileLoc?.coordinates?.lat &&
+      profileLoc?.coordinates?.lng &&
+      profileLoc?.city &&
+      profileLoc?.state &&
+      currentUserId
+    ) {
+      const newFilter = {
+        lat: profileLoc.coordinates.lat,
+        lng: profileLoc.coordinates.lng,
+        radius: 10,
+        city: profileLoc.city,
+        state: profileLoc.state,
+      };
+  
+      const isSame =
+        locationFilter &&
+        locationFilter.lat === newFilter.lat &&
+        locationFilter.lng === newFilter.lng &&
+        locationFilter.radius === newFilter.radius &&
+        locationFilter.city === newFilter.city &&
+        locationFilter.state === newFilter.state;
+  
+      const shouldUpdate =
+        // No existing filter
+        !locationFilter ||
+        // New user logged in
+        currentUserId !== lastUserId ||
+        // Saved filter is missing or corrupted
+        !savedFilter;
+  
+      if (shouldUpdate && !isSame) {
+        console.log("🌎 Setting location from profile on login:", newFilter);
+        setLocationFilter(newFilter);
+        localStorage.setItem("lastUser", currentUserId);
+      }
+    }
+  }, [user, locationFilter, setLocationFilter]);
+
 
   useEffect(() => {
     const fetchAllListings = async () => {
       const listingData = await listingService.index();
 
-      // console.log('listingData', listingData)
       setListings(listingData);
     };
     fetchAllListings();

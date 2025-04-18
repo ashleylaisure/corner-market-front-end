@@ -22,7 +22,7 @@ const NavBar = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user?._id) return; // avoid null access error
-      
+
       try {
         const data = await userService.getUserProfile(user._id);
         setProfile(data.user.profile);
@@ -48,7 +48,7 @@ const NavBar = () => {
     fetchUnreadMessages();
   }, [user?._id]);
 
-  console.log("🔍 Profile state in NavBar:", profile);
+
   return (
     <nav className={styles.container}>
       <div className={styles.navLeft}>
@@ -100,9 +100,8 @@ const NavBar = () => {
                 <img
                   src={
                     profile?.profilePicture
-                      ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${
-                          profile.profilePicture
-                        }`
+                      ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.profilePicture
+                      }`
                       : defaultProfilePic
                   }
                   alt="profile picture"

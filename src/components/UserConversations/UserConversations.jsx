@@ -67,8 +67,7 @@ const UserConversations = () => {
               {conversations.map((convo) => {
                 const otherUser = getOtherUser(convo.participants);
                 const lastMessage = convo.messages[0];
-
-
+  
                 return (
                   <li
                     key={convo._id}
@@ -78,31 +77,26 @@ const UserConversations = () => {
                   >
                     <Link to={`/messages/${convo._id}`}>
                       <div className={styles.userConvoContainer}>
-                        <img src={defaultPhoto} alt="default user photo" />
-
-
-                    <div className={styles.userConvoContainer}>
-                      <img src={defaultPhoto} alt="default user photo"/>
-
-//                       <img src={
-//                           otherUsers._id.profile?.profilePicture ?
-//                           `${import.meta.env.VITE_BACK_END_SERVER_URL}${otherUsers._id.profile.profilePicture}`
-//                                       : defaultPhoto
-//                               }
-//                               alt={`${otherUsers._id.profile.profilePicture}'s profile`}
-//                               className={styles.sellerImage}
-//                               onError={(e) => {
-//                                   e.target.onerror = null;
-//                                   e.target.src = defaultPhoto;
-//                               }}
-//                           />
-                      
-                      
+                        {/* Choose one of these image implementations - I've uncommented the more sophisticated one */}
+                        {/* <img src={defaultPhoto} alt="default user photo" /> */}
+                        
+                        <img src={
+                            otherUser.profile?.profilePicture ?
+                            `${import.meta.env.VITE_BACK_END_SERVER_URL}${otherUser.profile.profilePicture}`
+                                        : defaultPhoto
+                                }
+                                alt={`${otherUser.username}'s profile`}
+                                className={styles.sellerImage}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = defaultPhoto;
+                                }}
+                            />
+                        
                         <div className={styles.userConvo}>
                           <h4>{otherUser.username}</h4>
                           <h6>{lastMessage?.message || "No messages yet"}</h6>
                         </div>
-
                       </div>
                     </Link>
                   </li>
