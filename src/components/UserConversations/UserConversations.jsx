@@ -13,7 +13,7 @@ import { GiConsoleController } from "react-icons/gi";
 const UserConversations = () => {
   const { user } = useContext(UserContext);
   const [conversations, setConversations] = useState([]);
-  const [otherUsers, setOtherUsers] = useState([])
+  const [sender, setSender] = useState([])
   
 
   const location = useLocation();
@@ -37,67 +37,76 @@ const UserConversations = () => {
 
   useEffect(() => {
     const fetchOtherUser = async () => {
-      const userList = [];
 
-      conversations.map( async (convo) => {
-        const otherUserId = getOtherUser(convo.participants);
-        // console.log("1", otherUserId)
-        const userProfile = await userService.getUserProfile(otherUserId._id);
-        // console.log("2", userProfile)
-        userList.push(userProfile);
-      })
+      try {
+        const userListPromises = conversations.map(async (convo) => {
+          const otherUserId = getOtherUser(convo.participants);
+          // console.log("1", otherUserId)
+          
+          const userProfile = await userService.getUserProfile(otherUserId._id);
+          // console.log("2", userProfile)
 
-      setOtherUsers(userList);
-    };
-      fetchOtherUser();
+          return userProfile.user
+        })
 
-      console.log("otherusers", otherUsers )
+        const userList = await Promise.all(userListPromises)
+        setSender(userList)
 
-  }, [conversations]);
+      } catch (error) {
+        console.error("Error fetching sent user profile", error)
+      }
+
+    }
+    
+    fetchOtherUser();
+  } , [conversations])
+
+  console.log("sender", sender)
 
   return (
     <div className={styles.container}>
+
       <main className={styles.containerBackdrop}>
+
         <div className={styles.userConversations}>
           <h4>Your Conversations</h4>
           {conversations.length === 0 ? (
             <p>No conversations yet.</p>
           ) : (
-            <ul>
+            <ul >
               {conversations.map((convo) => {
-                const otherUser = getOtherUser(convo.participants);
                 const lastMessage = convo.messages[0];
-  
+
+                const otherUserId = getOtherUser(convo.participants)
+                // console.log("otherUser", otherUserId)
+                const currentSender = sender.find((p) => p._id === otherUserId._id);
+
+                // console.log("sender", currentSender)
+
                 return (
-                  <li
-                    key={convo._id}
-                    className={
-                      lastMessage?.isRead === false ? "unreadConversation" : ""
-                    }
-                  >
+                  <li key={convo._id} >
                     <Link to={`/messages/${convo._id}`}>
-                      <div className={styles.userConvoContainer}>
-                        {/* Choose one of these image implementations - I've uncommented the more sophisticated one */}
-                        {/* <img src={defaultPhoto} alt="default user photo" /> */}
+
+
+                    <div className={styles.userConvoContainer}>
+                      {/* <img src={defaultPhoto} alt="default user photo"/> */}
+
+                      <img src={currentSender?.profile.profilePicture
+                          ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${currentSender.profile.profilePicture}`
+                          : defaultPhoto
+                        } alt={`${currentSender ? currentSender.username : ""}'s profile pic`}
+                        />
+                      
+                      <div className={styles.userConvo}>
+                        <h4>{currentSender ? currentSender.username : "loading"}</h4>
                         
-                        <img src={
-                            otherUser.profile?.profilePicture ?
-                            `${import.meta.env.VITE_BACK_END_SERVER_URL}${otherUser.profile.profilePicture}`
-                                        : defaultPhoto
-                                }
-                                alt={`${otherUser.username}'s profile`}
-                                className={styles.sellerImage}
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = defaultPhoto;
-                                }}
-                            />
-                        
-                        <div className={styles.userConvo}>
-                          <h4>{otherUser.username}</h4>
-                          <h6>{lastMessage?.message || "No messages yet"}</h6>
-                        </div>
+
+                        <h6>{lastMessage?.message || "No messages yet"}</h6>
+
                       </div>
+                    </div>
+                      
+                      
                     </Link>
                   </li>
                 );
@@ -105,16 +114,21 @@ const UserConversations = () => {
             </ul>
           )}
         </div>
-        {!userMessages && (
+        {!userMessages &&
           <div className={styles.rightSection}>
+
             <div className={styles.rightMessage}>
-              <i className="bx bxs-message-rounded-edit"></i>
+              <i className='bx bxs-message-rounded-edit'></i>
               <h3>Your Messages</h3>
               <h5>Select a Conversation to send a message</h5>
             </div>
-          </div>
-        )}
+
+        </div>
+        }
+        
+
       </main>
+
     </div>
   );
 };
