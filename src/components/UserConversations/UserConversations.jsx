@@ -76,6 +76,7 @@ const UserConversations = () => {
             <ul >
               {conversations.map((convo) => {
                 const lastMessage = convo.messages[0];
+
                 const otherUserId = getOtherUser(convo.participants)
                 // console.log("otherUser", otherUserId)
                 const currentSender = sender.find((p) => p._id === otherUserId._id);
@@ -85,6 +86,7 @@ const UserConversations = () => {
                 return (
                   <li key={convo._id} >
                     <Link to={`/messages/${convo._id}`}>
+
 
                     <div className={styles.userConvoContainer}>
                       {/* <img src={defaultPhoto} alt="default user photo"/> */}
@@ -100,6 +102,7 @@ const UserConversations = () => {
                         
 
                         <h6>{lastMessage?.message || "No messages yet"}</h6>
+
                       </div>
                     </div>
                       

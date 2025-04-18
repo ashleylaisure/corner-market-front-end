@@ -63,6 +63,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                     );
                     setLoading(false);
                 } catch (err) {
+                    console.error(err);
                     setError("Failed to load profile data");
                     setLoading(false);
                 }
@@ -81,14 +82,6 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
         }));
     };
 
-    // Handler for image upload completion
-    //   const handleImageUpload = (updatedProfile) => {
-    //     console.log('Profile image updated:', updatedProfile);
-    //     setUser((prevUser) => ({
-    //       ...prevUser,
-    //       profile: updatedProfile,
-    //     }));
-    //   };
 
     // Handler for form submission
     const handleSubmit = async (e) => {
@@ -97,7 +90,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
             // Geocode the location before saving
             const locationString = `${formData.location.city}, ${formData.location.state}`;
             const coords = await geocodeLocation(locationString);
-            
+
             if (!coords) {
                 setError("Failed to geocode location. Please check your input.");
                 return;
@@ -143,6 +136,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
             navigate(`/users/${currentUser._id}`, { replace: true });
         } catch (err) {
+            console.error(err);
             setError("Failed to save profile");
         }
     };
@@ -290,7 +284,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
                         <div className={styles.listingBtn}>
                             <button type="submit" className={styles.submitButton}>
-                            {isNewUser ? "Create Profile" : "Save Changes"}
+                                {isNewUser ? "Create Profile" : "Save Changes"}
                             </button>
                             {isNewUser ? (
                                 <button
@@ -300,7 +294,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                                 </button>
                             ) : (
                                 <button type="button" onClick={handleGoBack}>
-                                Cancel
+                                    Cancel
                                 </button>
                             )}
                         </div>
