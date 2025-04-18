@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import styles from "./ListingForm.module.css";
 
 import * as ListingService from "../../services/listingService.js";
 
 const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
+  const { user } = useContext(UserContext);
   const { listingId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState([]);
@@ -80,6 +83,8 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
         formData.images.forEach((file) =>
           formDataToSend.append("images", file)
         );
+      } else if (key === "location" && typeof formData[key] === "object") {
+        formDataToSend.append(key, JSON.stringify(formData[key]));
       } else {
         formDataToSend.append(key, formData[key]);
       }
@@ -89,6 +94,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
       navigate(`/listings/${listingId}`); // This triggers a refetch in ListingDetails
     } else {
       await handleAddListing(formDataToSend);
+      navigate(`/users/${user._id}`);
     }
   };
 
