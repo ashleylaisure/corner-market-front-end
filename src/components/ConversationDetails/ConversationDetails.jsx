@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 import { UserContext } from "../../contexts/UserContext.jsx";
 
 import * as messageService from "../../services/messageService.js";
+import * as userService from "../../services/userService.js";
 import UserConversations from "../UserConversations/UserConversations.jsx";
 
 import styles from './ConversationDetails.module.css'
@@ -30,7 +31,12 @@ const ConversationDetails = () => {
           conversationId
         );
         const other = conversation.participants.find((p) => p._id !== user._id);
-        setOtherUser(other);
+        // console.log("10", other)
+        const userProfile = await userService.getUserProfile(other._id);
+        // console.log("userProfile,", userProfile)
+
+        setOtherUser(userProfile);
+
       } catch (err) {
         console.error("Error fetching messages:", err);
       }
@@ -39,13 +45,15 @@ const ConversationDetails = () => {
     fetchMessages();
   }, [conversationId, user._id]);
 
+  console.log("now this", otherUser)
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
     try {
       await messageService.sendMessage(conversationId, {
         senderId: user._id,
-        receiverId: otherUser._id,
+        receiverId: otherUser.user._id,
         message: newMessage,
       });
 
@@ -71,8 +79,20 @@ const ConversationDetails = () => {
 
           <div className={styles.topRight}>
             <div className={styles.sentContainer}>
-              <img src={defaultPhoto} alt="default user photo"/>
-              <h4>{otherUser?.username}</h4>
+              {/* <img src={defaultPhoto} alt="default user photo"/> */}
+              <img src={ 
+                otherUser?.user?.profile?.profilePicture 
+                    ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${otherUser.user.profile.profilePicture}`
+                    : defaultPhoto
+                    } alt={`${otherUser?.user?.username || '' }'s profile pic`}
+
+              />
+              {otherUser && otherUser.user &&
+                <Link to={`/users/${otherUser.user._id}`}>
+                  {otherUser.user.username}'s Profile
+                </Link>
+              }
+
             </div>
             <div className={styles.sectionDivider}></div>
           </div>
