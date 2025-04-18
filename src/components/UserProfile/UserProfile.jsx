@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router";
 import { getUserProfile } from "../../services/userService";
 import styles from "./UserProfile.module.css";
 import * as messageService from "../../services/messageService.js";
-import defaultCoverPhoto from "../../assets/images/paul-povoroznuk-bJkynpjVRBQ-unsplash.jpg";
+import defaultCoverPhoto from "../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg";
 import defaultProfilePic from '../../assets/images/default-profile-picture.png';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+
 
 const UserProfile = ({ currentUser }) => {
     const [profile, setProfile] = useState(null);
@@ -31,7 +33,6 @@ const UserProfile = ({ currentUser }) => {
 
                 // Handle different response structures
                 if (data.user) {
-                    // Structure: { user: { profile: {...}, username, listings } }
                     const {
                         username,
                         listings = [],
@@ -145,50 +146,77 @@ const UserProfile = ({ currentUser }) => {
 
                     {/* User information section */}
                     <div className={styles.profileInfo}>
-                        <div className={styles.socialLinks}>
-                            {/* Social links if available */}
-                            {(profile.facebookLink ||
-                                profile.twitterLink ||
-                                profile.instagramLink) && (
-                                    <div>
-                                        {/* <h3>Social Media</h3> */}
-                                        {profile.facebookLink && (
-                                            <a
-                                                href={profile.facebookLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <i className="bx bxl-facebook-circle bxSocail"></i>
-                                            </a>
-                                        )}
-                                        {profile.twitterLink && (
-                                            <a
-                                                href={profile.twitterLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <i className="bx bxl-twitter bxSocail"></i>
-                                            </a>
-                                        )}
-                                        {profile.instagramLink && (
-                                            <a
-                                                href={profile.instagramLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <i className="bx bxl-instagram-alt bxSocail"></i>
-                                            </a>
-                                        )}
+                        <div className={styles.proflieLinks}>
+                            <div className={styles.socialLinks}>
+                                {/* Social links if available */}
+                                {(profile.facebookLink ||
+                                    profile.twitterLink ||
+                                    profile.instagramLink) && (
+                                        <div >
+                                            {/* <h3>Social Media</h3> */}
+                                            {profile.facebookLink && (
+                                                <a
+                                                    href={profile.facebookLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <i className="bx bxl-facebook-circle bxSocail"></i>
+                                                </a>
+                                            )}
+                                            {profile.twitterLink && (
+                                                <a
+                                                    href={profile.twitterLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <i className="bx bxl-twitter bxSocail"></i>
+                                                </a>
+                                            )}
+                                            {profile.instagramLink && (
+                                                <a
+                                                    href={profile.instagramLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <i className="bx bxl-instagram-alt bxSocail"></i>
+                                                </a>
+                                            )}
+                                        </div>
+                                    )}
+                            </div>
+
+                            <div className={styles.profileActions}>
+                                {/* Conditional rendering based on profile ownership */}
+                                {isOwnProfile ? (
+                                    // Show Edit Profile button if it's the user's own profile
+                                    <div className={styles.profileActionsBtn}>
+                                        <button
+                                            className="btn"
+                                            onClick={() => navigate("/profile/edit")}
+                                        >
+                                            <i className="bx bx-calendar-edit"></i>
+                                            Edit profile
+                                        </button>
+                                    </div>
+                                ) : (
+                                    // Show Message button if viewing someone else's profile
+                                    <div className={styles.profileActionsBtn} onClick={handleStartConversation}>
+                                        <button className="btn"><i className="bx bxl-messenger bxDetails"></i><p>message</p></button>
                                     </div>
                                 )}
+                            </div>
                         </div>
 
                         <div>
-                            <h2 className={styles.username}>{profile.username}</h2>
+                            <h3 className={styles.username}>{profile.username}</h3>
 
                             <div className={styles.locationInfo}>
                                 {/* <h5>Location</h5> */}
-                                <h5>{profile.location || "Not specified"}</h5>
+                                <h5>
+                                    {profile.location?.city && profile.location?.state
+                                        ? `${profile.location.city}, ${profile.location.state}`
+                                        : "Not specified"}
+                                </h5>
                             </div>
 
                             {/* Bio section with fallback for empty bio */}
@@ -196,29 +224,29 @@ const UserProfile = ({ currentUser }) => {
                             <p className={styles.bio}>{profile.bio || ""}</p>
                         </div>
 
-                        <div className={styles.profileActions}>
-                            {/* Conditional rendering based on profile ownership */}
-                            {isOwnProfile ? (
-                                // Show Edit Profile button if it's the user's own profile
-                                <div className={styles.profileActions}>
-                                    <button
-                                        className="btn"
-                                        onClick={() => navigate("/profile/edit")}
-                                    >
-                                        <i className="bx bx-calendar-edit"></i>
-                                        Edit profile
-                                    </button>
-                                </div>
-                            ) : (
-                                // Show Message button if viewing someone else's profile
-                                <div className={styles.links} onClick={handleStartConversation}>
-                                    <i className="bx bxl-messenger bxDetails"></i>
-                                    <p>Message</p>
-                                </div>
-                            )}
+                        {profile?.location?.coordinates?.lat && profile?.location?.coordinates?.lng && (
+                        <div className={styles.staticMap}>
+                            <MapContainer
+                                center={[profile.location.coordinates.lat, profile.location.coordinates.lng]}
+                                zoom={12}
+                                style={{ height: "300px", width: "100%" }}
+                                dragging={false}
+                                scrollWheelZoom={false}
+                                doubleClickZoom={false}
+                                zoomControl={false}
+                            >
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution="&copy; OpenStreetMap contributors"
+                                />
+                                <Marker position={[profile.location.coordinates.lat, profile.location.coordinates.lng]} />
+                            </MapContainer>
                         </div>
+                        )}
+                        
                     </div>
                 </div>
+                
 
                 <div className={styles.sectionDivider}></div>
 

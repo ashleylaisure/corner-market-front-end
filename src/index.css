@@ -6,15 +6,17 @@
   --color-primary: #ffffff;
   --color-primary-blue: #e7e7f4;
   --color-blue-gray: #cfcfe0;
-  --color-secondary: #eb4b00;
-  --color-hero: #1f00af;
-  --color-hero-dark: #00016f;
+  --color-secondary: #EB4B00;
+  --color-hero: #1F00AF;
+  --color-hero-light: #6253a4;
+  --color-hero-dark: #00016F;
   --color-dark: #000032;
 
   --border-radius: 2rem;
   --card-border-radius: 1rem;
   --btn-padding: 0.6rem 1rem;
   --card-padding: 1rem;
+
 }
 
 * {
@@ -25,6 +27,7 @@
   text-decoration: none;
   list-style: none;
   border: none;
+  
 }
 
 body {
@@ -37,6 +40,11 @@ h1 {
   font-family: "Slackey", sans-serif;
 }
 
+h3{
+  font-family: "Slackey", sans-serif;
+  font-weight: 200;
+}
+
 h2 {
   color: var(--color-dark-hero);
   font-weight: 500;
@@ -44,7 +52,7 @@ h2 {
 
 h5 {
   font-weight: 400;
-  font-style: italic;
+
 }
 
 h6 {
@@ -59,10 +67,6 @@ a {
 .bodyGrid {
   position: relative;
   top: 65px;
-  display: flex;
-  align-items: flex-start;
-  column-gap: 0.3rem;
-  position: absolute;
 }
 
 .bxNav {

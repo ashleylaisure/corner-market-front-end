@@ -3,7 +3,6 @@ import { Routes, Route, useNavigate, useLocation } from "react-router";
 import { UserContext } from "./contexts/UserContext";
 
 import NavBar from "./components/NavBar/NavBar";
-import Aside from "./components/Aside/Aside.jsx";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 // import Landing from "./components/Landing/Landing";
@@ -22,22 +21,26 @@ import UserConversations from "./components/UserConversations/UserConversations.
 import ConversationDetails from "./components/ConversationDetails/ConversationDetails.jsx";
 
 import * as listingService from "./services/listingService.js";
+import { getUserProfile } from './services/userService';
 import { IoGitMerge } from "react-icons/io5";
+import LocationFilterPage from "./components/LocationFilterPage/LocationFilterPage.jsx";
 
 const App = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
 
-  const noAsideRoutes = [
-    "/listings/new",
-    "/sign-up",
-    "/sign-in",
-    "/profile/new",
-  ];
-  const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
+  // const noAsideRoutes = [
+  //   "/listings/new",
+  //   "/sign-up",
+  //   "/sign-in",
+  //   "/profile/new",
+  // ];
+  
+  // const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
+
 
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
@@ -58,6 +61,21 @@ const App = () => {
 
     return deletedListing;
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user && !user.profile) {
+        const fullData = await getUserProfile(user._id);
+        setUser((prevUser) => ({
+          ...prevUser,
+          profile: fullData.user.profile,
+        }));
+      }
+    };
+
+    fetchUserProfile();
+  }, [user, setUser]);
+
 
   useEffect(() => {
     const fetchAllListings = async () => {
@@ -93,18 +111,16 @@ const App = () => {
       <NavBar />
 
       <main className="bodyGrid">
-        {!hideAsideRoutes && (
-          <div className="left">
-            <Aside />
-          </div>
-        )}
 
-        <div className="center">
+        <div>
           <Routes>
             {/* <Route path='/' element={user ? <Dashboard /> : <Landing />} /> */}
 
-            <Route path="/" element={<ListingIndex listings={listings} />} />
-            {/* <Route path='/listings' element={<ListingIndex listings={listings}/>}></Route> */}
+            <Route
+              path="/"
+              element={<ListingIndex listings={listings} key={location.pathname} />}
+            />
+
             <Route
               path="/listings/new"
               element={<ListingForm handleAddListing={handleAddListing} />}
@@ -117,6 +133,7 @@ const App = () => {
             />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
+            <Route path="/location-filter" element={<LocationFilterPage />} />
             <Route
               path="/listings/:listingId"
               element={
@@ -162,10 +179,7 @@ const App = () => {
             />
           </Routes>
         </div>
-
-        {/* <div className="right">
-          <h1>Messaging</h1>
-        </div> */}
+        
       </main>
     </>
   );

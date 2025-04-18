@@ -21,6 +21,8 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!user?._id) return; // avoid null access error
+      
       try {
         const data = await userService.getUserProfile(user._id);
         setProfile(data.user.profile);
@@ -67,7 +69,7 @@ const NavBar = () => {
       </div>
 
       <div>
-        {user ? <h3>Welcome, {user.username}</h3> : <h3>Welcome, Guest</h3>}
+        {user ? <h4>Welcome, {user.username}</h4> : <h4>Welcome, Guest</h4>}
       </div>
 
       <div>
