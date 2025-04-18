@@ -66,28 +66,6 @@ const UserProfile = ({ currentUser }) => {
         };
     }, [userId, currentUser, navigate]); // Only dependencies that should trigger refetch
 
-    // Create a separate refresh function that doesn't cause rendering loops
-    // const refreshProfile = () => {
-    //     setLoading(true);
-    //     getUserProfile(userId)
-    //         .then(data => {
-    //             if (data.user) {
-    //                 const { username, listings, profile: profileData } = data.user;
-    //                 setProfile({
-    //                     username,
-    //                     listings,
-    //                     ...profileData
-    //                 });
-    //             } else {
-    //                 setProfile(data);
-    //             }
-    //             setLoading(false);
-    //         })
-    //         .catch(err => {
-    //             setError('Failed to refresh profile. ' + err.message);
-    //             setLoading(false);
-    //         });
-    // };
 
     const handleStartConversation = async () => {
         try {
@@ -108,192 +86,174 @@ const UserProfile = ({ currentUser }) => {
 
     return (
         <div className={styles.container}>
-            <main className={styles.profileContent}>
-                {/* Cover photo (fallback included) */}
-                <div className={styles.coverPhoto}>
+          <main className={styles.profileContent}>
+            {/* Cover photo (fallback included) */}
+            <div className={styles.coverPhoto}>
+              <img
+                src={
+                  profile?.coverPhoto
+                    ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.coverPhoto}`
+                    : defaultCoverPhoto
+                }
+                alt="Cover"
+                className={styles.coverPhoto}
+                onError={(e) => {
+                  e.target.onerror = null
+                  e.target.src = defaultCoverPhoto
+                }}
+              />
+            </div>
+      
+            {/* Profile header: left = avatar/info/actions, right = map */}
+            <div className={styles.profileHeader}>
+      
+              {/* ← LEFT COLUMN: grid of 4 areas */}
+              <div className={styles.profileSidebar}>
+                <div className={styles.profileGrid}>
+      
+                  <div className={styles.profilePicture}>
                     <img
-                        src={
-                            profile?.coverPhoto
-                                ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.coverPhoto}`
-                                : defaultCoverPhoto
-                        }
-                        alt="Cover"
-                        className={styles.coverPhoto}
-                        onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = defaultCoverPhoto;
-                        }}
+                      src={
+                        profile?.profilePicture
+                          ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.profilePicture}`
+                          : defaultProfilePic
+                      }
+                      alt={`${profile.username}'s profile picture`}
+                      className={styles.profileImage}
+                      onError={(e) => {
+                        e.target.onerror = null
+                        e.target.src = defaultProfilePic
+                      }}
                     />
+                  </div>
+      
+                  {/* 2) name / location / bio */}
+                  <div className={styles.profileTextInfo}>
+                    <h3 className={styles.username}>{profile.username}</h3>
+                    <div className={styles.locationInfo}>
+                      {profile.location?.city && profile.location?.state
+                        ? `${profile.location.city}, ${profile.location.state}`
+                        : "Not specified"}
+                    </div>
+                    <p className={styles.bio}>{profile.bio || ""}</p>
+                  </div>
+      
+                  {/* 3) social links */}
+                  <div className={styles.socialLinks}>
+                    {profile.facebookLink && (
+                      <a href={profile.facebookLink} target="_blank" rel="noopener noreferrer">
+                        <i className="bx bxl-facebook-circle bxSocail"></i>
+                      </a>
+                    )}
+                    {profile.twitterLink && (
+                      <a href={profile.twitterLink} target="_blank" rel="noopener noreferrer">
+                        <i className="bx bxl-twitter bxSocail"></i>
+                      </a>
+                    )}
+                    {profile.instagramLink && (
+                      <a href={profile.instagramLink} target="_blank" rel="noopener noreferrer">
+                        <i className="bx bxl-instagram-alt bxSocail"></i>
+                      </a>
+                    )}
+                  </div>
+      
+                  {/* 4) action buttons */}
+                  <div className={styles.profileActions}>
+                    {isOwnProfile ? (
+                      <>
+                        <button className={styles.smallBtn} onClick={() => navigate("/profile/edit")}>
+                          <i className="bx bx-calendar-edit"></i>
+                          Edit profile
+                        </button>
+                        <button className={styles.smallBtn} onClick={() => navigate("/listings/new")}>
+                          <i className="bx bx-add-to-queue"></i>
+                          Create New Listing
+                        </button>
+                      </>
+                    ) : (
+                      <button className={styles.smallBtn} onClick={handleStartConversation}>
+                        <i className="bx bxl-messenger bxDetails"></i>
+                        Message
+                      </button>
+                    )}
+                  </div>
+      
                 </div>
-
-                {/* Profile header with user image and info */}
-                <div className={styles.profileHeader}>
-                    <div className={styles.profilePicture}>
+              </div>
+      
+              {/* ← RIGHT COLUMN: map */}
+              {profile?.location?.coordinates?.lat && profile?.location?.coordinates?.lng && (
+                <div className={styles.profileMapWrapper}>
+                  <MapContainer
+                    center={[
+                      profile.location.coordinates.lat,
+                      profile.location.coordinates.lng,
+                    ]}
+                    zoom={12}
+                    style={{ height: "250px", width: "80%" }}
+                    dragging={false}
+                    scrollWheelZoom={false}
+                    doubleClickZoom={false}
+                    zoomControl={false}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution="&copy; OpenStreetMap contributors"
+                    />
+                    <Marker
+                      position={[
+                        profile.location.coordinates.lat,
+                        profile.location.coordinates.lng,
+                      ]}
+                    />
+                  </MapContainer>
+                </div>
+              )}
+      
+            </div>
+      
+            <div className={styles.sectionDivider} />
+      
+            {/* User’s listings */}
+            <section className={styles.listingsSection}>
+              <h2 className={styles.listingsHeading}>
+                {isOwnProfile
+                  ? "Your Listings"
+                  : `${profile.username}'s Listings`}
+              </h2>
+      
+              <div className={styles.listingsGrid}>
+                {profile.listings && profile.listings.length > 0 ? (
+                  profile.listings.map((listing) => (
+                    <div
+                      key={listing._id}
+                      className={styles.listingCard}
+                      onClick={() => navigate(`/listings/${listing._id}`)}
+                    >
+                      {listing.images && listing.images.length > 0 ? (
                         <img
-                            src={
-                                profile?.profilePicture
-                                    ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${profile.profilePicture}`
-                                    : defaultProfilePic
-                            }
-                            alt={`${profile.username}'s profile picture`}
-                            className={styles.profileImage}
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = defaultProfilePic;
-                            }}
+                          src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path}`}
+                          alt={listing.title}
+                          className={styles.listingImage}
                         />
+                      ) : (
+                        <div className={styles.noImagePlaceholder} />
+                      )}
+                      <div>
+                        <p>${listing.price}</p>
+                        <h2>{listing.title}</h2>
+                      </div>
                     </div>
-
-                    {/* User information section */}
-                    <div className={styles.profileInfo}>
-                        <div className={styles.proflieLinks}>
-                            <div className={styles.socialLinks}>
-                                {/* Social links if available */}
-                                {(profile.facebookLink ||
-                                    profile.twitterLink ||
-                                    profile.instagramLink) && (
-                                        <div >
-                                            {/* <h3>Social Media</h3> */}
-                                            {profile.facebookLink && (
-                                                <a
-                                                    href={profile.facebookLink}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <i className="bx bxl-facebook-circle bxSocail"></i>
-                                                </a>
-                                            )}
-                                            {profile.twitterLink && (
-                                                <a
-                                                    href={profile.twitterLink}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <i className="bx bxl-twitter bxSocail"></i>
-                                                </a>
-                                            )}
-                                            {profile.instagramLink && (
-                                                <a
-                                                    href={profile.instagramLink}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <i className="bx bxl-instagram-alt bxSocail"></i>
-                                                </a>
-                                            )}
-                                        </div>
-                                    )}
-                            </div>
-
-                            <div className={styles.profileActions}>
-                                {/* Conditional rendering based on profile ownership */}
-                                {isOwnProfile ? (
-                                    // Show Edit Profile button if it's the user's own profile
-                                    <div className={styles.profileActionsBtn}>
-                                        <button
-                                            className="btn"
-                                            onClick={() => navigate("/profile/edit")}
-                                        >
-                                            <i className="bx bx-calendar-edit"></i>
-                                            Edit profile
-                                        </button>
-                                    </div>
-                                ) : (
-                                    // Show Message button if viewing someone else's profile
-                                    <div className={styles.profileActionsBtn} onClick={handleStartConversation}>
-                                        <button className="btn"><i className="bx bxl-messenger bxDetails"></i><p>message</p></button>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className={styles.username}>{profile.username}</h3>
-
-                            <div className={styles.locationInfo}>
-                                {/* <h5>Location</h5> */}
-                                <h5>
-                                    {profile.location?.city && profile.location?.state
-                                        ? `${profile.location.city}, ${profile.location.state}`
-                                        : "Not specified"}
-                                </h5>
-                            </div>
-
-                            {/* Bio section with fallback for empty bio */}
-                            {/* <h3>Bio</h3> */}
-                            <p className={styles.bio}>{profile.bio || ""}</p>
-                        </div>
-
-                        {profile?.location?.coordinates?.lat && profile?.location?.coordinates?.lng && (
-                        <div className={styles.staticMap}>
-                            <MapContainer
-                                center={[profile.location.coordinates.lat, profile.location.coordinates.lng]}
-                                zoom={12}
-                                style={{ height: "300px", width: "100%" }}
-                                dragging={false}
-                                scrollWheelZoom={false}
-                                doubleClickZoom={false}
-                                zoomControl={false}
-                            >
-                                <TileLayer
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    attribution="&copy; OpenStreetMap contributors"
-                                />
-                                <Marker position={[profile.location.coordinates.lat, profile.location.coordinates.lng]} />
-                            </MapContainer>
-                        </div>
-                        )}
-                        
-                    </div>
-                </div>
-                
-
-                <div className={styles.sectionDivider}></div>
-
-                {/* User's listings section */}
-                <section className={styles.listingsSection}>
-                    <h2 className={styles.listingsHeading}>
-                        {isOwnProfile ? "Your Listings" : `${profile.username}'s Listings`}
-                    </h2>
-
-                    {/* Grid of listings with conditional rendering */}
-                    <div className={styles.listingsGrid}>
-                        {/* Check if user has listings */}
-
-                        {profile.listings && profile.listings.length > 0 ? (
-                            // Map through the listings array to create listing cards
-                            profile.listings.map((listing) => (
-                                <div
-                                    key={listing._id}
-                                    className={styles.listingCard}
-                                    onClick={() => navigate(`/listings/${listing._id}`)}
-                                >
-                                    {/* Use actual listing images if available */}
-                                    {listing.images && listing.images.length > 0 ? (
-                                        <img
-                                            src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path
-                                                }`}
-                                            alt={listing.title}
-                                            className={styles.listingImage}
-                                        />
-                                    ) : (
-                                        <div className={styles.noImagePlaceholder}></div>
-                                    )}
-                                    <div>
-                                        <p>${listing.price}</p>
-                                        <h2>{listing.title}</h2>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            // Display message if no listings available
-                            <p className={styles.noListings}>No listings available</p>
-                        )}
-                    </div>
-                </section>
-            </main>
+                  ))
+                ) : (
+                  <p className={styles.noListings}>No listings available</p>
+                )}
+              </div>
+            </section>
+          </main>
         </div>
-    );
-};
+      )
+      
+    };
 
 export default UserProfile;
