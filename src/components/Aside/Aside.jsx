@@ -1,64 +1,58 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import styles from './Aside.module.css';
 
 import { UserContext } from "../../contexts/UserContext"
-import LocationFilter from "../LocationFilter/LocationFilter";
+import { LocationFilterContext } from "../../contexts/LocationFilterContext.jsx";
 
 
 const Aside = () => {
 
     const { user } = useContext(UserContext);
-    const Navigate = useNavigate();
-    const [showLocationFilter, setShowLocationFilter] = useState(false);
+    const navigate = useNavigate();
+    const { locationFilter } = useContext(LocationFilterContext);
 
-    const handleApplyLocationFilter = ({ coords, radius }) => {
-        console.log("Location filter applied:", coords, radius);
-        setShowLocationFilter(false);
-    }
 
     return (
         <div className={styles.asideWrapper}>
-
             <aside className={styles.aside}>
+                {/* Search Bar */}
                 <div className={styles.search}>
-                    <i className='bx bx-search-alt'></i>
-                    <input type="search" placeholder="Search Market" ></input>
+                    <i className="bx bx-search-alt"></i>
+                    <input type="search" placeholder="Search Market" />
                 </div>
 
+                {/* Create Button */}
                 <div className={styles.create}>
                     {user ? (
-                        <div>
-                            <Link to="/listings/new" className="btn"><i className='bx bx-add-to-queue'></i> Create New Listing</Link>
-                        </div>
-
-                    ) : (<h5>Sign In to create a Listing</h5>)}
+                        <Link to="/listings/new" className="btn">
+                            <i className="bx bx-add-to-queue"></i> Create New Listing
+                        </Link>
+                    ) : (
+                        <h5>Sign in to create a listing</h5>
+                    )}
                 </div>
 
-                {user?.profile?.location?.city && user?.profile?.location?.state && (
+                {/* Location Display with click to update */}
+                {locationFilter && (
                     <div
                         className={styles.locationDisplay}
-                        onClick={() => Navigate("/location-filter")}
+                        onClick={() => navigate("/location-filter")}
                         title="Change location"
                         style={{ cursor: "pointer" }}
                     >
                         <h4 className={styles.locationHeader}>Location</h4>
                         <p className={styles.locationText}>
-                            {user.profile.location.city}, {user.profile.location.state}
-                            <span className={styles.locationRadius}> · Within 10 mi</span>
+                            {locationFilter?.city && locationFilter?.state
+                                ? `${locationFilter.city}, ${locationFilter.state}`
+                                : "Your Area, US"}
+                            <span className={styles.locationRadius}>
+                                · Within {locationFilter?.radius || 10} mi
+                            </span>
                         </p>
                     </div>
                 )}
-                {/* Location Filter Panel */}
-                {showLocationFilter && user?.profile?.location?.coordinates && (
-                    <LocationFilter
-                        initialCoords={user.profile.location.coordinates}
-                        initialRadius={10}
-                        onApplyFilter={handleApplyLocationFilter}
-                    />
-                )}
-
                 <h3>CATEGORIES</h3>
 
                 <div className={styles.catContainer}>

@@ -5,7 +5,7 @@ import { useLocation } from 'react-router';
 import * as listingService from '../../services/listingService';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
-
+import { LocationFilterContext } from '../../contexts/LocationFilterContext.jsx';
 
 import Aside from "../Aside/Aside.jsx";
 
@@ -16,7 +16,7 @@ const ListingIndex = ({ listings: initialListings }) => {
     const { category } = useParams();
     const { user } = useContext(UserContext);
 
-    const [locationFilter, setLocationFilter] = useState(null);
+    const { locationFilter, setLocationFilter } = useContext(LocationFilterContext);
     const [nearbyListings, setNearbyListings] = useState(null);
     // const [loadingNearby, setLoadingNearby] = useState(true);
     const [categoryListings, setCategoryListings] = useState(null);
@@ -30,6 +30,7 @@ const ListingIndex = ({ listings: initialListings }) => {
                 : []; // while waiting for nearbyListings to load
 
 
+            
     // Effect to fetch all listings when component mounts
     useEffect(() => {
         const fetchLatest = async () => {
@@ -68,45 +69,50 @@ const ListingIndex = ({ listings: initialListings }) => {
 
     // Effect to set location filter based on user profile
     useEffect(() => {
-        const coords = user?.profile?.location?.coordinates;
-
+        const profileLoc = user?.profile?.location;
+      
+        // Only set profile location if no locationFilter exists yet
         if (
-            coords &&
-            typeof coords.lat === "number" &&
-            typeof coords.lng === "number"
+          !locationFilter &&
+          profileLoc?.coordinates?.lat &&
+          profileLoc?.coordinates?.lng &&
+          profileLoc?.city &&
+          profileLoc?.state
         ) {
-            setLocationFilter({
-                lat: coords.lat,
-                lng: coords.lng,
-                radius: 10,
-            });
+          setLocationFilter({
+            lat: profileLoc.coordinates.lat,
+            lng: profileLoc.coordinates.lng,
+            radius: 10,
+            city: profileLoc.city,
+            state: profileLoc.state,
+          });
         }
-    }, [user]);
+      }, [user, locationFilter, setLocationFilter]);
 
 
     // Effect to fetch nearby listings based on location filter
     useEffect(() => {
         const fetchNearby = async () => {
-            const { lat, lng, radius } = locationFilter || {};
-            const isValid = typeof lat === "number" && typeof lng === "number" && typeof radius === "number";
-
-            if (!isValid) return;
-
-            try {
-                const nearby = await listingService.getNearbyListings(locationFilter);
-
-                const validListings = Array.isArray(nearby)
-                    ? nearby.filter(l => l.location?.coordinates && l.author?._id !== user?._id)
-                    : [];
-
-                setNearbyListings(validListings);
-            } catch (err) {
-                console.error("Error fetching nearby listings:", err);
-            }
+          const { lat, lng, radius } = locationFilter || {};
+          const isValid = typeof lat === "number" && typeof lng === "number" && typeof radius === "number";
+      
+          if (!isValid) return;
+      
+          try {
+            const nearby = await listingService.getNearbyListings({ lat, lng, radius });
+      
+            const valid = Array.isArray(nearby)
+              ? nearby.filter(l => l.location?.coordinates && l.author?._id !== user?._id)
+              : [];
+      
+            setNearbyListings(valid);
+          } catch (err) {
+            console.error("Error fetching nearby listings:", err);
+          }
         };
-
+      
         fetchNearby();
-    }, [locationFilter, user]);
+      }, [locationFilter, user]);
 
 
     return (
