@@ -1,4 +1,4 @@
-.container {
+.filterCard {
     max-width: 700px;
     margin: 2rem auto;
     padding: 2rem;
@@ -18,10 +18,40 @@
     flex-direction: column;
   }
   
-  .radiusSelect {
-    padding: 8px;
+  .input {
+    padding: 12px;
     font-size: 1rem;
-    border-radius: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+  
+  .radiusSelect {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+  
+  .applyBtn {
+    margin-top: 1.5rem;
+    padding: 12px;
+    background-color: #3f37c9;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .applyBtn:hover {
+    background-color: #342ead;
+  }
+  
+  .error {
+    color: crimson;
+    font-size: 0.9rem;
   }
   
   .map {
