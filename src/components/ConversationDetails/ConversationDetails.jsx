@@ -18,6 +18,8 @@ const ConversationDetails = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
+        await messageService.markMessagesAsRead(conversationId, user._id);
+
         const allMessages = await messageService.getMessages(
           conversationId,
           user._id
@@ -36,8 +38,6 @@ const ConversationDetails = () => {
 
     fetchMessages();
   }, [conversationId, user._id]);
-
-  console.log(messages);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();

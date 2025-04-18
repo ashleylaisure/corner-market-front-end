@@ -79,10 +79,41 @@ const sendMessage = async (conversationId, messageData) => {
   }
 };
 
+const getUnreadMessageCount = async (userId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/unread-count/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching unread message count:", error);
+  }
+};
+
+const markMessagesAsRead = async (conversationId, userId) => {
+  const res = await fetch(`${BASE_URL}/${conversationId}/mark-read/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  return res.json();
+};
+
 export {
   getConversations,
   getMessages,
   sendMessage,
   createOrGetConversation,
   getConversation,
+  getUnreadMessageCount,
+  markMessagesAsRead,
 };
