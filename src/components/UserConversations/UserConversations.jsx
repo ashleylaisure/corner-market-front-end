@@ -5,11 +5,16 @@ import styles from "./UserConversations.module.css";
 import defaultPhoto from "../../assets/images/default-profile-picture.png";
 
 import * as messageService from "../../services/messageService.js";
-import { VscGlobe } from "react-icons/vsc";
+
+import * as userService from "../../services/userService.js";
+import { GiConsoleController } from "react-icons/gi";
+
 
 const UserConversations = () => {
   const { user } = useContext(UserContext);
   const [conversations, setConversations] = useState([]);
+  const [otherUsers, setOtherUsers] = useState([])
+  
 
   const location = useLocation();
   // check if path matches /messages/:conversationId
@@ -30,6 +35,26 @@ const UserConversations = () => {
     return participants.find((participant) => participant._id !== user._id);
   };
 
+  useEffect(() => {
+    const fetchOtherUser = async () => {
+      const userList = [];
+
+      conversations.map( async (convo) => {
+        const otherUserId = getOtherUser(convo.participants);
+        // console.log("1", otherUserId)
+        const userProfile = await userService.getUserProfile(otherUserId._id);
+        // console.log("2", userProfile)
+        userList.push(userProfile);
+      })
+
+      setOtherUsers(userList);
+    };
+      fetchOtherUser();
+
+      console.log("otherusers", otherUsers )
+
+  }, [conversations]);
+
   return (
     <div className={styles.container}>
       <main className={styles.containerBackdrop}>
@@ -43,7 +68,6 @@ const UserConversations = () => {
                 const otherUser = getOtherUser(convo.participants);
                 const lastMessage = convo.messages[0];
 
-                console.log("otheruser", otherUser);
 
                 return (
                   <li
@@ -56,10 +80,29 @@ const UserConversations = () => {
                       <div className={styles.userConvoContainer}>
                         <img src={defaultPhoto} alt="default user photo" />
 
+
+                    <div className={styles.userConvoContainer}>
+                      <img src={defaultPhoto} alt="default user photo"/>
+
+//                       <img src={
+//                           otherUsers._id.profile?.profilePicture ?
+//                           `${import.meta.env.VITE_BACK_END_SERVER_URL}${otherUsers._id.profile.profilePicture}`
+//                                       : defaultPhoto
+//                               }
+//                               alt={`${otherUsers._id.profile.profilePicture}'s profile`}
+//                               className={styles.sellerImage}
+//                               onError={(e) => {
+//                                   e.target.onerror = null;
+//                                   e.target.src = defaultPhoto;
+//                               }}
+//                           />
+                      
+                      
                         <div className={styles.userConvo}>
                           <h4>{otherUser.username}</h4>
                           <h6>{lastMessage?.message || "No messages yet"}</h6>
                         </div>
+
                       </div>
                     </Link>
                   </li>
