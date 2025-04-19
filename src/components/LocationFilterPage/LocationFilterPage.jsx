@@ -6,6 +6,10 @@ import { LocationFilterContext } from "../../contexts/LocationFilterContext";
 import { reverseGeocode } from "../../utils/geocode";
 import styles from "./LocationFilterPage.module.css";
 
+
+// LocationFilterPage allows users to search for a location and update the global location filter.
+// On apply, it reverse-geocodes the coordinates to get city/state and updates context before redirecting home.
+
 const LocationFilterPage = () => {
     const { user } = useContext(UserContext);
     const { setLocationFilter } = useContext(LocationFilterContext);

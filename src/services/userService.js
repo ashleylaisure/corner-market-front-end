@@ -14,7 +14,7 @@ const index = async () => {
 
     return data
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 };
@@ -23,19 +23,17 @@ const index = async () => {
 
 const getUserProfile = async (userId) => {
   try {
-    // console.log('Fetching profile for user ID:', userId);
     const res = await fetch(`${BASE_URL}/${userId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
 
     const data = await res.json();
-    console.log('API response:', data); 
 
     if (data.err) {
       throw new Error(data.err);
     }
-     // If we got direct profile data (from image uploads)
-     if (data.profile && data.profile._id) {
+    // If we got direct profile data (from image uploads)
+    if (data.profile && data.profile._id) {
       return {
         username: data.user?.username || 'User',
         ...data.profile
@@ -46,7 +44,7 @@ const getUserProfile = async (userId) => {
 
   } catch (err) {
     console.error('Error fetching profile:', err);
-        throw err;
+    throw err;
   }
 }
 
@@ -69,7 +67,7 @@ const createUserProfile = async (userId, profileData) => {
 
     return data.profile;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err.message || 'Failed to create profile');
   }
 };
@@ -94,7 +92,7 @@ const updateUserProfile = async (userId, profileData) => {
 
     return data.profile;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err.message || 'Failed to update profile');
   }
 }
@@ -110,15 +108,15 @@ const uploadProfilePicture = async (userId, formData) => {
       },
       body: formData
     });
-    
+
     if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.err || 'Failed to upload profile picture');
     }
-    
+
     return res.json();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw err;
   }
 };
@@ -134,21 +132,21 @@ const uploadCoverPhoto = async (userId, formData) => {
       },
       body: formData
     });
-    
+
     if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.err || 'Failed to upload cover photo');
     }
-    
+
     return res.json();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw err;
   }
 };
 
 export {
-  index, 
+  index,
   getUserProfile,
   updateUserProfile,
   createUserProfile,

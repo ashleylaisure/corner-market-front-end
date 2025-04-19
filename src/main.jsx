@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <LocationFilterProvider> 
+        <LocationFilterProvider>
           <App />
         </LocationFilterProvider>
       </UserProvider>

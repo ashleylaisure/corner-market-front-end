@@ -1,12 +1,10 @@
 import { useEffect, useState, useContext } from 'react';
-
 import { UserContext } from '../../contexts/UserContext';
-
 import * as userService from '../../services/userService';
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
-  const [ users, setUsers ] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -14,7 +12,7 @@ const Dashboard = () => {
         const fetchedUsers = await userService.index();
         setUsers(fetchedUsers);
       } catch (err) {
-        console.log(err)
+        console.error('Error fetching users:', err);
       }
     }
     if (user) fetchUsers();

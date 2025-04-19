@@ -6,7 +6,6 @@ import styles from "./ListingDetails.module.css";
 import DetailsImageSlider from "../DetailsImageSlider/DetailsImageSlider.jsx";
 import { MapContainer, TileLayer, Circle } from 'react-leaflet';
 
-
 import { UserContext } from "../../contexts/UserContext.jsx";
 import * as messageService from "../../services/messageService.js";
 
@@ -33,7 +32,7 @@ const ListingDetails = (props) => {
             if (props.onListingDeleted) {
                 props.onListingDeleted(listingId); // removes from profile listings state
             }
-            navigate(`/users/${user._id}`); // go back to your profile
+            navigate(`/users/${user._id}`); 
         } catch (err) {
             console.error("Failed to delete listing:", err);
         }
@@ -59,7 +58,7 @@ const ListingDetails = (props) => {
             <div className={styles.listingImages}>
                 {listing.images && listing.images.length > 0 ? (
                     <DetailsImageSlider images={listing.images} />
-        
+
                 ) : (
                     <div className={styles.noImagePlaceholder}>No image available</div>
                 )}
@@ -94,7 +93,6 @@ const ListingDetails = (props) => {
                         </div>
 
                     )}
-
 
                 </div>
                 <div>

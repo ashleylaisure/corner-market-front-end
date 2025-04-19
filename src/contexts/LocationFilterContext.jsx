@@ -11,22 +11,22 @@ const LocationFilterProvider = ({ children }) => {
     const setLocationFilter = (filter) => {
         setLocationFilterState(filter);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(filter));
-        
+
 
         // Safely decode JWT to extract userId
         const token = localStorage.getItem("token");
         if (token) {
-          try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const userId = payload?._id;
-            if (userId) {
-              localStorage.setItem("lastUser", userId);
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const userId = payload?._id;
+                if (userId) {
+                    localStorage.setItem("lastUser", userId);
+                }
+            } catch (err) {
+                console.error("Failed to decode token:", err);
             }
-          } catch (err) {
-            console.error("Failed to decode token:", err);
-          }
         }
-      };
+    };
 
 
     // Load location filter from localStorage on initial render

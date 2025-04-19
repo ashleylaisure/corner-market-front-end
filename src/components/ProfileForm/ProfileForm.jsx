@@ -155,7 +155,7 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
 
                     <div className={styles.imageUploadSection}>
                         <h1>{isNewUser ? "Complete Your Profile" : "Edit Your Profile"}</h1>
-                        {/* <h3>Profile Images</h3> */}
+                        
                         <ProfileImageUpload
                             onSelectProfilePicture={(file) => setProfileImageFile(file)}
                             onSelectCoverPhoto={(file) => setCoverPhotoFile(file)}
