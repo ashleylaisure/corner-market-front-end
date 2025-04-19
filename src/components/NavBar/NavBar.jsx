@@ -75,25 +75,25 @@ const NavBar = () => {
       <div>
         {user ? (
           <div className={styles.navRight}>
-            
+
             <div className={styles.iconLabel} >
-                {unreadCount > 0 && (
-                      <div className={styles.unreadBadge}>
-                          <i className='bx bxs-bolt'></i>
-                      </div>
-                    )}
+              {unreadCount > 0 && (
+                <div className={styles.unreadBadge}>
+                  <i className='bx bxs-bolt'></i>
+                </div>
+              )}
               <div className={styles.messagingIcons}
-                    onMouseEnter={() => setShowLabel("mesg")}
-                    onMouseLeave={() => setShowLabel(null)}>
-                <Link to={`/conversations/user/${user._id}`} 
-                      onClick={() => setUnreadCount(0)}>
-                      <i className="bx bxl-messenger bxNav"></i>
-                      {showLabel === "mesg" && (
-                        <span className={styles.hoverLabel}>Messenger</span>
-                      )}
+                onMouseEnter={() => setShowLabel("mesg")}
+                onMouseLeave={() => setShowLabel(null)}>
+                <Link to={`/conversations/user/${user._id}`}
+                  onClick={() => setUnreadCount(0)}>
+                  <i className="bx bxl-messenger bxNav"></i>
+                  {showLabel === "mesg" && (
+                    <span className={styles.hoverLabel}>Messenger</span>
+                  )}
                 </Link>
               </div>
-              
+
             </div>
 
             <div

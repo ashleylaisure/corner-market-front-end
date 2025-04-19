@@ -5,7 +5,6 @@ import styles from './SignUpForm.module.css'
 import backgroud from '../../assets/images/paul-povoroznuk-bJkynpjVRBQ-unsplash.jpg'
 
 import { signUp } from '../../services/authService';
-
 import { UserContext } from '../../contexts/UserContext';
 
 const SignUpForm = () => {
@@ -42,13 +41,13 @@ const SignUpForm = () => {
 
   return (
     <main className={styles.overlay}>
-      <img src={backgroud} alt="man shopping"/>
+      <img src={backgroud} alt="man shopping" />
 
-      <div className={styles.signIn}> 
+      <div className={styles.signIn}>
         <h1>Sign Up</h1>
         <p className={styles.singInMesg}>{message}</p>
         <form onSubmit={handleSubmit} className={styles.signInForm}>
-          
+
           <div className={styles.signInInput}>
             <label htmlFor='username'>Username:</label>
             <input

@@ -31,9 +31,9 @@ const ConversationDetails = () => {
           conversationId
         );
         const other = conversation.participants.find((p) => p._id !== user._id);
-        // console.log("10", other)
+
         const userProfile = await userService.getUserProfile(other._id);
-        // console.log("userProfile,", userProfile)
+
 
         setOtherUser(userProfile);
 
@@ -45,7 +45,6 @@ const ConversationDetails = () => {
     fetchMessages();
   }, [conversationId, user._id]);
 
-  console.log("now this", otherUser)
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -73,59 +72,58 @@ const ConversationDetails = () => {
       <div className={styles.containerBackdrop}>
         <div className={styles.jointContainer}>
           <UserConversations />
-        
 
-        <div className={styles.rightContainer}>
 
-          <div className={styles.topRight}>
-            <div className={styles.sentContainer}>
-              {/* <img src={defaultPhoto} alt="default user photo"/> */}
-              <img src={ 
-                otherUser?.user?.profile?.profilePicture 
+          <div className={styles.rightContainer}>
+
+            <div className={styles.topRight}>
+              <div className={styles.sentContainer}>
+
+                <img src={
+                  otherUser?.user?.profile?.profilePicture
                     ? `${import.meta.env.VITE_BACK_END_SERVER_URL}${otherUser.user.profile.profilePicture}`
                     : defaultPhoto
-                    } alt={`${otherUser?.user?.username || '' }'s profile pic`}
+                } alt={`${otherUser?.user?.username || ''}'s profile pic`}
 
-              />
-              {otherUser && otherUser.user &&
-                <Link to={`/users/${otherUser.user._id}`}>
-                  {otherUser.user.username}'s Profile
-                </Link>
-              }
+                />
+                {otherUser && otherUser.user &&
+                  <Link to={`/users/${otherUser.user._id}`}>
+                    {otherUser.user.username}'s Profile
+                  </Link>
+                }
 
+              </div>
+              <div className={styles.sectionDivider}></div>
             </div>
-            <div className={styles.sectionDivider}></div>
-          </div>
 
-          <div className={styles.bottomRight}>
-            <div className={styles.messageingCentral}>
-              <ul className={styles.convoCentral}>
-                {messages.map((msg) => (
-                  <li key={msg._id} className={msg.senderId._id === user._id ? styles.userSent : styles.otherUserSent}>
-                    {/* {msg.senderId._id === user._id ? "You" : msg.senderId.username}:{" "} */}
-                    <h5>{msg.message}</h5>
-                  </li>
-                ))}
-              </ul>
-      
+            <div className={styles.bottomRight}>
+              <div className={styles.messageingCentral}>
+                <ul className={styles.convoCentral}>
+                  {messages.map((msg) => (
+                    <li key={msg._id} className={msg.senderId._id === user._id ? styles.userSent : styles.otherUserSent}>
 
-              <div >
-                <form onSubmit={handleSendMessage} className={styles.sendMessage}>
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Message..."
-                  />
-                  <button type="submit"><p>Send</p></button>
-                </form>
+                      <h5>{msg.message}</h5>
+                    </li>
+                  ))}
+                </ul>
+
+                <div >
+                  <form onSubmit={handleSendMessage} className={styles.sendMessage}>
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Message..."
+                    />
+                    <button type="submit"><p>Send</p></button>
+                  </form>
+                </div>
               </div>
             </div>
+
           </div>
 
         </div>
-
-      </div>
 
       </div>
 

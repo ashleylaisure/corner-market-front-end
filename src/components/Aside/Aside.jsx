@@ -17,13 +17,11 @@ const Aside = () => {
     return (
         <div className={styles.asideWrapper}>
             <aside className={styles.aside}>
-                {/* Search Bar */}
                 <div className={styles.search}>
                     <i className="bx bx-search-alt"></i>
                     <input type="search" placeholder="Search Market" />
                 </div>
 
-                {/* Create Button */}
                 <div className={styles.create}>
                     {user ? (
                         <Link to="/listings/new" className="btn">

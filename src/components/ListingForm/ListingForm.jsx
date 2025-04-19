@@ -77,6 +77,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if all required fields are filled
     const formDataToSend = new FormData();
     for (const key in formData) {
       if (key === "images") {
@@ -91,7 +92,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
     }
     if (listingId) {
       await handleUpdateListing(listingId, formDataToSend);
-      navigate(`/listings/${listingId}`); // This triggers a refetch in ListingDetails
+      navigate(`/listings/${listingId}`); // triggers a refetch in ListingDetails
     } else {
       await handleAddListing(formDataToSend);
       navigate(`/users/${user._id}`);
@@ -128,7 +129,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
           <div className={styles.listingInput}>
             <label htmlFor="image-input">Upload Images:</label>
             <div className={styles.fileUpload}>
-              <button 
+              <button
                 className={styles.fileUploadBtn}
                 onClick={handleImageButtonClick}>{imagePreview.length > 0 ? "Add Additional Images" : "Chose File"}</button>
               <input
@@ -139,9 +140,9 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
                 multiple
                 accept="image/*"
                 onChange={handleFileChange}
-                
+
               />
-              </div>
+            </div>
           </div>
 
           {/* Display image previews */}
@@ -155,57 +156,34 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
                   className={styles.previewImage}
                 />
 
-                {/* <button
-                  type="button"
-                  className={styles.removeButton}
-                  onClick={() => {
-                    const newImages = [...formData.images];
-                    newImages.splice(idx, 1);
-                    setFormData({ ...formData, images: newImages });
+                <button
+                  className={styles.deleteImageButton}
+                  onClick={async (e) => {
+                    e.preventDefault();
 
-                    const newPreviews = [...imagePreview];
+                    try {
+                      await ListingService.deleteListingImage(listingId, idx);
 
-                    // Only revoke blob URLs
-                    if (newPreviews[idx].startsWith("blob:")) {
-                      URL.revokeObjectURL(newPreviews[idx]);
+                      const newImages = [...formData.images];
+                      newImages.splice(idx, 1);
+                      setFormData({ ...formData, images: newImages });
+
+                      const newPreviews = [...imagePreview];
+
+                      // Only revoke blob URLs
+                      if (newPreviews[idx].startsWith("blob:")) {
+                        URL.revokeObjectURL(newPreviews[idx]);
+                      }
+
+                      newPreviews.splice(idx, 1);
+                      setImagePreview(newPreviews);
+
+                    } catch (err) {
+                      console.error("Failed to delete image:", err);
                     }
-
-                    newPreviews.splice(idx, 1);
-                    setImagePreview(newPreviews);
                   }}
                 >
                   Remove
-                </button> */}
-                <button
-                    className={styles.deleteImageButton}
-                    onClick={async (e) => {
-                        e.preventDefault();
-                        
-                        try {
-                            await ListingService.deleteListingImage( listingId,idx);
-                            
-                            const newImages = [...formData.images];
-                            newImages.splice(idx, 1);
-                            setFormData({ ...formData, images: newImages });
-
-                            const newPreviews = [...imagePreview];
-
-                            // Only revoke blob URLs
-                            if (newPreviews[idx].startsWith("blob:")) {
-                              URL.revokeObjectURL(newPreviews[idx]);
-                            }
-
-                            newPreviews.splice(idx, 1);
-                            setImagePreview(newPreviews);
-                            
-                            
-                      
-                        } catch (err) {
-                            console.error("Failed to delete image:", err);
-                        }
-                    }}
-                >
-                    Remove
                 </button>
               </div>
             ))}
@@ -309,7 +287,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             <button type="button" onClick={handleGoBack}>CANCEL</button>
           </div>
 
-          
+
         </form>
       </div>
     </main>

@@ -34,15 +34,6 @@ const App = () => {
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
 
-  // const noAsideRoutes = [
-  //   "/listings/new",
-  //   "/sign-up",
-  //   "/sign-in",
-  //   "/profile/new",
-  // ];
-  
-  // const hideAsideRoutes = noAsideRoutes.includes(location.pathname);
-
 
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
@@ -84,7 +75,7 @@ const App = () => {
     const currentUserId = user?._id;
     const lastUserId = localStorage.getItem("lastUser");
     const savedFilter = localStorage.getItem("cm_locationFilter");
-  
+
     if (
       profileLoc?.coordinates?.lat &&
       profileLoc?.coordinates?.lng &&
@@ -99,7 +90,7 @@ const App = () => {
         city: profileLoc.city,
         state: profileLoc.state,
       };
-  
+
       const isSame =
         locationFilter &&
         locationFilter.lat === newFilter.lat &&
@@ -107,7 +98,7 @@ const App = () => {
         locationFilter.radius === newFilter.radius &&
         locationFilter.city === newFilter.city &&
         locationFilter.state === newFilter.state;
-  
+
       const shouldUpdate =
         // No existing filter
         !locationFilter ||
@@ -115,9 +106,8 @@ const App = () => {
         currentUserId !== lastUserId ||
         // Saved filter is missing or corrupted
         !savedFilter;
-  
+
       if (shouldUpdate && !isSame) {
-        console.log("🌎 Setting location from profile on login:", newFilter);
         setLocationFilter(newFilter);
         localStorage.setItem("lastUser", currentUserId);
       }
@@ -161,13 +151,10 @@ const App = () => {
 
         <div>
           <Routes>
-            {/* <Route path='/' element={user ? <Dashboard /> : <Landing />} /> */}
-
             <Route
               path="/"
               element={<ListingIndex listings={listings} key={location.pathname} />}
             />
-
             <Route
               path="/listings/new"
               element={<ListingForm handleAddListing={handleAddListing} />}
@@ -189,7 +176,6 @@ const App = () => {
             />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
-            {/* Added the UserProfile route */}
             <Route
               path="/users/:userId"
               element={
@@ -226,7 +212,6 @@ const App = () => {
             />
           </Routes>
         </div>
-        
       </main>
     </>
   );
