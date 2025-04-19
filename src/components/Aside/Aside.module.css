@@ -1,3 +1,4 @@
+/* ------------- Overall Aside Layout ------------- */
 aside {
     margin-left: 1.2rem;
     position: sticky;
@@ -10,6 +11,56 @@ aside {
     width: 20vw;
 }
 
+/* ------------- Search Input ------------- */
+.search {
+    display: flex;
+    width: 90%;
+    border-radius: var(--border-radius);
+    padding: var(--btn-padding);
+    background: var(--color-primary-blue);
+    margin-top: 8px;
+}
+
+.search input[type="search"]{
+    flex: 1;
+    background: transparent;
+    color: var(--color-hero-dark);
+    font-size: 0.8rem;
+}
+
+/* ------------- Create New Button ------------- */
+.create {
+    width: 90%;
+}
+
+/* ------------- Location Search ------------- */
+.locationDisplay {
+    margin-top: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.locationHeader {
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.locationText {
+    color: #1877f2;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.locationText:hover {
+    text-decoration: underline;
+}
+
+.locationRadius {
+    color: #333;
+    font-weight: normal;
+}
+
+/* ------------- Category Links ------------- */
 .catContainer {
     width: 90%;
 }
@@ -41,55 +92,8 @@ aside {
     
 }
 
-
-.search {
-    display: flex;
-    width: 90%;
-    border-radius: var(--border-radius);
-    padding: var(--btn-padding);
-    background: var(--color-primary-blue);
-    margin-top: 8px;
-}
-
-.search input[type="search"]{
-    flex: 1;
-    background: transparent;
-    color: var(--color-hero-dark);
-    font-size: 0.8rem;
-}
-
-.create {
-    width: 90%;
-}
-
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 650px) {
     aside {
         width: 150px;
     }
 }
-
-.locationDisplay {
-    margin-top: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .locationHeader {
-    font-size: 1rem;
-    margin-bottom: 2px;
-  }
-  
-  .locationText {
-    color: #1877f2;
-    font-size: 0.95rem;
-    font-weight: 500;
-  }
-  
-  .locationText:hover {
-    text-decoration: underline;
-  }
-  
-  .locationRadius {
-    color: #333;
-    font-weight: normal;
-  }

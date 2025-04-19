@@ -231,11 +231,13 @@ const UserProfile = ({ currentUser }) => {
                       onClick={() => navigate(`/listings/${listing._id}`)}
                     >
                       {listing.images && listing.images.length > 0 ? (
-                        <img
-                          src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path}`}
-                          alt={listing.title}
-                          className={styles.listingImage}
-                        />
+                        <div className={styles.listingImageCard}>
+                          <img
+                            src={`${import.meta.env.VITE_BACK_END_SERVER_URL}${listing.images[0].path}`}
+                            alt={listing.title}
+                            className={styles.listingImage}
+                          />
+                        </div>
                       ) : (
                         <div className={styles.noImagePlaceholder} />
                       )}

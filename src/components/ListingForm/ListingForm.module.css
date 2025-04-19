@@ -1,3 +1,4 @@
+/* ------------ Create Listing Container ------------ */
 .overlay {
     position: relative;
     width: 100vw;
@@ -9,6 +10,7 @@
 
 }
 
+/* ------------ Background Blur------------ */
 .formBackdrop {
     width: 100%;
     height: 100%;
@@ -19,6 +21,7 @@
     align-items: center;
 }
 
+/* ------------ Listing Form ------------ */
 .listingForm {
     background-color: var(--color-primary);
     padding: 2rem;
@@ -34,6 +37,7 @@
     margin: 2.5rem 0;
 }
 
+/* Listing fields */
 .listingForm input, select, button{
     width: 100%;
     padding: var(--btn-padding);
@@ -47,6 +51,7 @@
     align-items: center;
 }
 
+/* File Upload */
 .fileUpload {
     position: relative;
     display: inline;
@@ -71,6 +76,7 @@
     pointer-events: none;
 }
 
+/* image preview */
 .imagePreview {
     display: flex;
     flex-wrap: wrap;
@@ -97,6 +103,7 @@
     width: 100px;
 }
 
+/* submit/cancel buttons */
 .listingBtn {
     display: flex;
     justify-content: center;

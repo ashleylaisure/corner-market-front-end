@@ -1,9 +1,11 @@
+/* ------------- Listing Images ------------- */
 .imageContainer {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
+/* ------------- Image Click through buttons ------------- */
 .imageSlider {
     object-fit: cover;
     width: 100%;
@@ -55,6 +57,7 @@
     transform: translateX(10px)
 }
 
+/* ------------- Image Index Dots ------------- */
 .imageIndexBtn {
     position: absolute;
     bottom: .5rem;

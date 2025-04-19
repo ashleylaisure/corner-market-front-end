@@ -1,3 +1,4 @@
+/* ---------- Edit Profile Container ----------*/
 .formContainer {
     position: relative;
     width: 100vw;
@@ -7,7 +8,6 @@
     background-size: cover;
     background-repeat: no-repeat;
 
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,12 +15,12 @@
 
 }
 
-
 .formBackdrop {
     width: 100%;
     backdrop-filter: blur(4px);
 }
 
+/* ----------  Profile Form Container ----------*/
 .profileDataContainer {
     margin: 2.5rem 0;
     display: flex;
@@ -30,6 +30,7 @@
     gap: 1.4rem;
 }
 
+/* Image & Information Cards */
 .profileForm, .imageUploadSection {
     background-color: var(--color-primary);
     padding: 2rem;
@@ -51,6 +52,14 @@
     border-radius: var(--card-border-radius);
 }
 
+.imageUploadSection input{
+    width: 100%;
+    padding: var(--card-padding);
+    background: var(--color-primary-blue);
+    border-radius: var(--card-border-radius);
+}
+
+/* Form Fields */
 .formGroup {
     display: grid;
     grid-template-columns: 150px auto;
@@ -61,20 +70,14 @@
     align-items: center;
 }
 
-.imageUploadSection input{
-    width: 100%;
-    padding: var(--card-padding);
-    background: var(--color-primary-blue);
-    border-radius: var(--card-border-radius);
-}
 
-.listingBtn {
+/* Submit Form */
+.SubmitBtn {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
 }
-
 
 .profileForm button {
     cursor: pointer;

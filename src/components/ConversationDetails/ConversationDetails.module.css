@@ -1,3 +1,4 @@
+/* ------------- Container for conversations & Details ------------- */
 .jointContainer {
     position: relative;
     max-width: 700px;
@@ -6,6 +7,8 @@
     grid-template-columns: 300px 400px;
 }
 
+
+/* ------------- Container for Details only ------------- */
 .rightContainer {
     position: relative;
     top: 32px;
@@ -13,7 +16,7 @@
     flex-direction: column;
 }
 
-/* Message header */
+/* ------- Messanger Header -------- */
 .topRight{
     position: absolute;
     width: 400px;
@@ -22,6 +25,7 @@
     background: white;
 }
 
+/* ------- Sent User information -------- */
 .sentContainer {
     display: flex;
     justify-content: flex-start;
@@ -42,8 +46,7 @@
     margin-top: 10px;
 }
 
-/* send message text field */
-
+/* ------- Messaging center -------- */
 .bottomRight {
     position: relative;
     display: flex;
@@ -51,13 +54,50 @@
 }
 
 .messageingCentral {
-    
     position: flex;
     flex-direction: column;
     justify-content: flex-end;
     
 }
 
+.convoCentral {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    justify-content: flex-end;
+    
+    overflow-y: auto;
+    height: 88vh;
+}
+
+/* Text from other user */
+.otherUserSent {
+    background: var(--color-primary-blue);
+    max-width: 50%;
+    width: fit-content;
+    padding: var(--card-padding);
+    border-radius: 0 20px 20px 20px;
+    text-align: left;
+
+}
+
+/* text from user */
+.userSent {
+    position: relative;
+    right: 0;
+    background: var(--color-hero);
+    opacity: 0.7;
+    max-width: 50%;
+    width: fit-content;
+    padding: var(--card-padding);
+    border-radius: 20px 0 20px 20px;
+    text-align: left;
+    color: white;
+    margin-left: auto;
+}
+
+/* ------- Send Message field -------- */
 .sendMessage {
     display: flex;
     align-items: center;
@@ -82,41 +122,4 @@
 
 .sendMessage p:hover {
     color: var(--color-secondary)
-}
-
-/* Messages sent from another user */
-.convoCentral {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-    justify-content: flex-end;
-    
-    overflow-y: auto;
-    height: 88vh;
-}
-
-
-.otherUserSent {
-    background: var(--color-primary-blue);
-    max-width: 50%;
-    width: fit-content;
-    padding: var(--card-padding);
-    border-radius: 0 20px 20px 20px;
-    text-align: left;
-
-}
-
-.userSent {
-    position: relative;
-    right: 0;
-    background: var(--color-hero);
-    opacity: 0.7;
-    max-width: 50%;
-    width: fit-content;
-    padding: var(--card-padding);
-    border-radius: 20px 0 20px 20px;
-    text-align: left;
-    color: white;
-    margin-left: auto;
 }
