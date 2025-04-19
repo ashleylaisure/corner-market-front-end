@@ -282,8 +282,8 @@ const ProfileForm = ({ currentUser, isNewUser = false }) => {
                             />
                         </div>
 
-                        <div className={styles.listingBtn}>
-                            <button type="submit" className={styles.submitButton}>
+                        <div className={styles.SubmitBtn}>
+                            <button type="submit" >
                                 {isNewUser ? "Create Profile" : "Save Changes"}
                             </button>
                             {isNewUser ? (

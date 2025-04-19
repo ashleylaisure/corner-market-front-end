@@ -130,7 +130,7 @@ const ListingForm = ({ handleAddListing, handleUpdateListing }) => {
             <div className={styles.fileUpload}>
               <button 
                 className={styles.fileUploadBtn}
-                onClick={handleImageButtonClick}>{imagePreview.length > 0 ? "Add Additional Images" : "No File Chosen"}</button>
+                onClick={handleImageButtonClick}>{imagePreview.length > 0 ? "Add Additional Images" : "Chose File"}</button>
               <input
                 type="file"
                 name="images"

@@ -1,3 +1,4 @@
+/* ------- SignIn Container ------- */
 .overlay {
     position: relative;
     width: 100vw;
@@ -20,6 +21,7 @@
     z-index: 0;
 }
 
+/* ------- SignIn Card ------- */
 .signIn {
     position: relative;
     z-index: 1;
@@ -36,6 +38,7 @@
     margin-bottom: 1rem;
 }
 
+/* ------- SignIn Form ------- */
 .signInForm {
     display: flex;
     flex-direction: column;
@@ -69,6 +72,7 @@
     color: var(--color-white);
 }
 
+/* Error message */
 .singInMesg {
     color: var(--color-secondary)
 }
