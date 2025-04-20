@@ -6,8 +6,7 @@ import { LocationFilterContext } from "./contexts/LocationFilterContext";
 import NavBar from "./components/NavBar/NavBar";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
-// import Landing from "./components/Landing/Landing";
-// import Dashboard from "./components/Dashboard/Dashboard";
+
 
 import UserProfile from "./components/UserProfile/UserProfile";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
@@ -23,7 +22,6 @@ import ConversationDetails from "./components/ConversationDetails/ConversationDe
 
 import * as listingService from "./services/listingService.js";
 import { getUserProfile } from './services/userService';
-import { IoGitMerge } from "react-icons/io5";
 import LocationFilterPage from "./components/LocationFilterPage/LocationFilterPage.jsx";
 
 const App = () => {

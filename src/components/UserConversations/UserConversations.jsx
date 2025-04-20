@@ -7,7 +7,7 @@ import defaultPhoto from "../../assets/images/default-profile-picture.png";
 import * as messageService from "../../services/messageService.js";
 
 import * as userService from "../../services/userService.js";
-import { GiConsoleController } from "react-icons/gi";
+
 
 
 const UserConversations = () => {
