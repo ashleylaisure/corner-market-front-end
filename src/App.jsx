@@ -7,7 +7,6 @@ import NavBar from "./components/NavBar/NavBar";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import SignInForm from "./components/SignInForm/SignInForm";
 
-
 import UserProfile from "./components/UserProfile/UserProfile";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
 
@@ -21,17 +20,33 @@ import UserConversations from "./components/UserConversations/UserConversations.
 import ConversationDetails from "./components/ConversationDetails/ConversationDetails.jsx";
 
 import * as listingService from "./services/listingService.js";
-import { getUserProfile } from './services/userService';
+import { getUserProfile } from "./services/userService";
 import LocationFilterPage from "./components/LocationFilterPage/LocationFilterPage.jsx";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
-  const { locationFilter, setLocationFilter } = useContext(LocationFilterContext);
+  const { locationFilter, setLocationFilter } = useContext(
+    LocationFilterContext
+  );
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
 
+  const getPageTitle = (pathname) => {
+    if (pathname === "/") return "Corner Market";
+    if (pathname === "/sign-in") return "Sign In";
+    if (pathname === "/sign-up") return "Sign Up";
+    if (pathname.startsWith("/listings/new")) return "New Listing";
+    if (pathname.startsWith("/listings/") && pathname.endsWith("/edit"))
+      return "Edit Listing";
+    if (pathname.startsWith("/listings/")) return "Listing Details";
+    if (pathname.startsWith("/users/")) return "Profile";
+    if (pathname === "/profile/edit") return "Edit Profile";
+    if (pathname === "/profile/new") return "Create Profile";
+    if (pathname.startsWith("/conversations/user/")) return "Messages";
+    if (pathname === "/location-filter") return "Filter Location";
+  };
 
   const handleDeleteListing = async (listingId) => {
     const deletedListing = await listingService.deleteListing(listingId);
@@ -112,7 +127,6 @@ const App = () => {
     }
   }, [user, locationFilter, setLocationFilter]);
 
-
   useEffect(() => {
     const fetchAllListings = async () => {
       const listingData = await listingService.index();
@@ -121,6 +135,12 @@ const App = () => {
     };
     fetchAllListings();
   }, [user]);
+
+  // Set page title based on current path
+  useEffect(() => {
+    const title = getPageTitle(location.pathname);
+    document.title = title;
+  }, [location.pathname]);
 
   const handleAddListing = async (listingFormData) => {
     const newListing = await listingService.create(listingFormData);
@@ -146,12 +166,13 @@ const App = () => {
       <NavBar />
 
       <main className="bodyGrid">
-
         <div>
           <Routes>
             <Route
               path="/"
-              element={<ListingIndex listings={listings} key={location.pathname} />}
+              element={
+                <ListingIndex listings={listings} key={location.pathname} />
+              }
             />
             <Route
               path="/listings/new"

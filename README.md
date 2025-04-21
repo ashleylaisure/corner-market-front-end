@@ -180,9 +180,9 @@ Facebook Marketplace
 
 - Major Contribution: Messaging System
 
-- [LinkedIn](https://www.linkedin.com/)
+- [LinkedIn](https://www.linkedin.com/in/james-palumbo-8752a2361/)
 
-- [Github](https://github.com/)
+- [Github](https://github.com/JameseyBoy615)
 
 ## Works Cited:
 
