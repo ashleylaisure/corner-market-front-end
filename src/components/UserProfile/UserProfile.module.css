@@ -131,9 +131,11 @@
 .profileMapWrapper {
     width: 100%;
     height: 100%;
-    border-radius: 8px;
+    border-radius: 1rem;
     overflow: hidden;
 }
+
+
 
 /* ─── Divider & Listings Section (unchanged) ──────────────────────────── */
 

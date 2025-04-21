@@ -186,7 +186,7 @@ const UserProfile = ({ currentUser }) => {
                                     profile.location.coordinates.lng,
                                 ]}
                                 zoom={12}
-                                style={{ height: "250px", width: "80%" }}
+                                style={{ height: "250px", width: "100%", borderRadius : "1rem" }}
                                 dragging={false}
                                 scrollWheelZoom={false}
                                 doubleClickZoom={false}
