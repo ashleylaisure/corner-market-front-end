@@ -6,6 +6,8 @@ import * as messageService from "../../services/messageService.js";
 import defaultCoverPhoto from "../../assets/images/mats-hagwall-uzl47XdoLww-unsplash.jpg";
 import defaultProfilePic from '../../assets/images/default-profile-picture.png';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import '../../utils/leafletIconFix';
+
 
 
 const UserProfile = ({ currentUser }) => {
@@ -29,8 +31,7 @@ const UserProfile = ({ currentUser }) => {
             try {
                 setLoading(true);
                 const data = await getUserProfile(userId);
-                console.log("Profile data received:", data);
-
+                
                 // Handle different response structures
                 if (data.user) {
                     const {

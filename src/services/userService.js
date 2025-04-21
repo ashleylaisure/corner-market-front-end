@@ -27,6 +27,11 @@ const getUserProfile = async (userId) => {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
 
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Error fetching profile: ${res.status} - ${errorText}`);
+    }
+
     const data = await res.json();
 
     if (data.err) {
@@ -59,6 +64,11 @@ const createUserProfile = async (userId, profileData) => {
       body: JSON.stringify(profileData),
     });
 
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Create profile failed: ${res.status} - ${errorText}`);
+    }
+
     const data = await res.json();
 
     if (data.err) {
@@ -83,6 +93,11 @@ const updateUserProfile = async (userId, profileData) => {
       },
       body: JSON.stringify(profileData),
     });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Update profile failed: ${res.status} - ${errorText}`);
+    }
 
     const data = await res.json();
 

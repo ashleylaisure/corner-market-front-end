@@ -5,7 +5,7 @@ const index = async () => {
     const res = await fetch(BASE_URL);
     return res.json();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -14,7 +14,7 @@ const index = async () => {
       const res = await fetch(`${BASE_URL}/filter/${category}`);
       return res.json();
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   };
 
@@ -27,7 +27,7 @@ const index = async () => {
       const res = await fetch(`${BASE_URL}/nearby?lat=${lat}&lng=${lng}&radius=${radius}`);
       return await res.json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return [];
     }
   };
@@ -77,7 +77,7 @@ const index = async () => {
       const res = await fetch(`${BASE_URL}/${listingId}`);
       return res.json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -93,7 +93,7 @@ const index = async () => {
       return res.json()
 
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -116,7 +116,7 @@ const index = async () => {
 
       return res.json();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   };
